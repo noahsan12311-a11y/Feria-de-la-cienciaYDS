@@ -1,0 +1,4640 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Información - Scratch Projects Lab</title>
+
+    <style>
+
+        /* =========================================================
+           VARIABLES
+        ========================================================= */
+
+        :root {
+
+            --bg-principal: #080d18;
+            --bg-secundario: #0d1424;
+            --bg-tarjeta: #121b2d;
+            --bg-tarjeta-hover: #172338;
+
+            --texto-principal: #f4f7fb;
+            --texto-secundario: #9aa9bd;
+            --texto-suave: #718096;
+
+            --acento: #38bdf8;
+            --acento-claro: #7dd3fc;
+            --acento-oscuro: #0284c7;
+
+            --verde: #4ade80;
+            --amarillo: #fbbf24;
+
+            --borde: rgba(148, 163, 184, 0.14);
+            --borde-acento: rgba(56, 189, 248, 0.35);
+
+            --sombra:
+                0 20px 50px rgba(0, 0, 0, 0.25);
+
+            --sombra-acento:
+                0 15px 45px rgba(56, 189, 248, 0.10);
+
+            --fuente-principal:
+                "Inter",
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            --fuente-titulo:
+                "Space Grotesk",
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            --fuente-codigo:
+                "JetBrains Mono",
+                "Cascadia Code",
+                "Courier New",
+                monospace;
+        }
+
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            margin: 0;
+            padding: 0;
+
+            font-family: var(--fuente-principal);
+
+            color: var(--texto-principal);
+
+            background:
+
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(56, 189, 248, 0.08),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 85% 30%,
+                    rgba(59, 130, 246, 0.06),
+                    transparent 25%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #080d18,
+                    #0a1020 45%,
+                    #080d18
+                );
+
+            min-height: 100vh;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+           BARRA SUPERIOR
+        ========================================================= */
+
+        header {
+
+            position: relative;
+
+            padding: 32px 6vw;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(18, 27, 45, 0.96),
+                    rgba(10, 17, 31, 0.96)
+                );
+
+            border-bottom: 1px solid var(--borde);
+
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.20);
+
+            overflow: hidden;
+        }
+
+
+        header::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 300px;
+            height: 300px;
+
+            top: -180px;
+            left: 20%;
+
+            background: var(--acento);
+
+            opacity: 0.035;
+
+            border-radius: 50%;
+
+            filter: blur(30px);
+
+            pointer-events: none;
+        }
+
+
+        .header-titulo {
+            position: relative;
+            z-index: 2;
+        }
+
+
+        .header-titulo h1 {
+
+            margin: 0;
+
+            font-family: var(--fuente-titulo);
+
+            font-size: clamp(1.6rem, 3vw, 2.3rem);
+
+            font-weight: 800;
+
+            letter-spacing: -0.8px;
+
+            color: var(--texto-principal);
+        }
+
+
+        .header-titulo h1::before {
+
+            content: "01 / ";
+
+            color: var(--acento);
+
+            font-family: var(--fuente-codigo);
+
+            font-size: 0.7em;
+
+            font-weight: 500;
+        }
+
+
+        .header-titulo p {
+
+            margin: 7px 0 0;
+
+            color: var(--texto-secundario);
+
+            font-size: 0.92rem;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        .consola-status {
+
+            position: relative;
+
+            padding: 10px 16px;
+
+            border-radius: 8px;
+
+            background: rgba(8, 13, 24, 0.8);
+
+            border: 1px solid rgba(74, 222, 128, 0.18);
+
+            color: var(--verde);
+
+            font-family: var(--fuente-codigo);
+
+            font-size: 0.72rem;
+
+            letter-spacing: 0.4px;
+
+            box-shadow:
+                inset 0 0 20px rgba(74, 222, 128, 0.025);
+
+            white-space: nowrap;
+        }
+
+
+        .consola-status::before {
+
+            content: "●";
+
+            margin-right: 8px;
+
+            color: var(--verde);
+
+            text-shadow:
+                0 0 10px rgba(74, 222, 128, 0.8);
+        }
+
+
+        /* =========================================================
+           CONTENEDOR PRINCIPAL
+        ========================================================= */
+
+        .main-container {
+
+            width: min(1180px, calc(100% - 40px));
+
+            margin: 55px auto;
+
+        }
+
+
+        /* =========================================================
+           CAJA DE INFORMACIÓN
+        ========================================================= */
+
+        .seccion-info {
+
+            position: relative;
+
+            margin-bottom: 38px;
+
+            padding: 22px 26px;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(18, 27, 45, 0.95),
+                    rgba(13, 20, 36, 0.95)
+                );
+
+            border: 1px solid var(--borde);
+
+            border-left: 3px solid var(--acento);
+
+            color: var(--texto-secundario);
+
+            font-size: 0.94rem;
+
+            box-shadow: var(--sombra);
+        }
+
+
+        .seccion-info::before {
+
+            content: "PROJECT_INFO";
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: var(--acento);
+
+            font-family: var(--fuente-codigo);
+
+            font-size: 0.68rem;
+
+            letter-spacing: 1px;
+        }
+
+
+        .seccion-info strong {
+
+            color: var(--texto-principal);
+
+            font-weight: 650;
+        }
+
+
+        /* =========================================================
+           SECCIONES
+        ========================================================= */
+
+        .seccion {
+
+            position: relative;
+
+            margin-bottom: 38px;
+
+            padding: 34px;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(18, 27, 45, 0.96),
+                    rgba(13, 20, 36, 0.96)
+                );
+
+            border: 1px solid var(--borde);
+
+            box-shadow: var(--sombra);
+
+            overflow: hidden;
+        }
+
+
+        .seccion::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 250px;
+            height: 250px;
+
+            right: -160px;
+            top: -160px;
+
+            border-radius: 50%;
+
+            background: var(--acento);
+
+            opacity: 0.025;
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================================
+           TÍTULOS
+        ========================================================= */
+
+        .titulo-seccion {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin: 0 0 26px;
+
+            padding-bottom: 14px;
+
+            border-bottom: 1px solid var(--borde);
+
+            color: var(--texto-principal);
+
+            font-family: var(--fuente-titulo);
+
+            font-size: 1.35rem;
+
+            font-weight: 700;
+
+            letter-spacing: -0.3px;
+        }
+
+
+        .titulo-seccion::first-letter {
+
+            color: var(--acento);
+        }
+
+
+        .seccion > p {
+
+            max-width: 900px;
+
+            margin: 0 0 16px;
+
+            color: var(--texto-secundario);
+
+            font-size: 0.94rem;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+           SCRATCH BOX
+        ========================================================= */
+
+        .scratch-box {
+
+            position: relative;
+
+            margin-top: 28px;
+
+            padding: 24px 26px;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(251, 191, 36, 0.055),
+                    rgba(13, 20, 36, 0.8)
+                );
+
+            border: 1px solid rgba(251, 191, 36, 0.14);
+
+            border-left: 3px solid var(--amarillo);
+        }
+
+
+        .scratch-box h3 {
+
+            margin: 0 0 10px;
+
+            color: var(--amarillo);
+
+            font-family: var(--fuente-codigo);
+
+            font-size: 0.83rem;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .scratch-box p {
+
+            margin: 0;
+
+            color: var(--texto-secundario);
+
+            font-size: 0.9rem;
+        }
+
+
+        /* =========================================================
+           GRID DEL PROCESO
+        ========================================================= */
+
+        .proceso-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-top: 25px;
+        }
+
+
+        /* =========================================================
+           TARJETAS DEL PROCESO
+        ========================================================= */
+
+        .proceso-card {
+
+            position: relative;
+
+            min-height: 205px;
+
+            padding: 23px;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13, 20, 36, 0.95),
+                    rgba(10, 16, 29, 0.95)
+                );
+
+            border: 1px solid var(--borde);
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+
+            overflow: hidden;
+        }
+
+
+        .proceso-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 100px;
+            height: 100px;
+
+            right: -55px;
+            bottom: -55px;
+
+            border-radius: 50%;
+
+            background: var(--acento);
+
+            opacity: 0.035;
+
+            transition: opacity 0.25s ease;
+        }
+
+
+        .proceso-card:hover {
+
+            transform: translateY(-6px);
+
+            border-color: var(--borde-acento);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(23, 35, 56, 0.98),
+                    rgba(13, 22, 38, 0.98)
+                );
+
+            box-shadow: var(--sombra-acento);
+        }
+
+
+        .proceso-card:hover::after {
+
+            opacity: 0.09;
+        }
+
+
+        .proceso-header {
+
+            margin-bottom: 14px;
+
+            color: var(--acento);
+
+            font-family: var(--fuente-codigo);
+
+            font-size: 0.67rem;
+
+            letter-spacing: 0.9px;
+
+            opacity: 0.85;
+        }
+
+
+        .proceso-card h3 {
+
+            margin: 0 0 10px;
+
+            color: var(--texto-principal);
+
+            font-family: var(--fuente-titulo);
+
+            font-size: 1.05rem;
+
+            font-weight: 650;
+        }
+
+
+        .proceso-card p {
+
+            margin: 0;
+
+            color: var(--texto-secundario);
+
+            font-size: 0.86rem;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+           EQUIPO
+        ========================================================= */
+
+        .creadores-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-top: 28px;
+        }
+
+
+        /* =========================================================
+           TARJETAS DE CREADORES
+        ========================================================= */
+
+        .creador-card {
+
+            position: relative;
+
+            padding: 30px 24px;
+
+            text-align: center;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    160deg,
+                    rgba(18, 29, 48, 0.98),
+                    rgba(10, 17, 30, 0.98)
+                );
+
+            border: 1px solid var(--borde);
+
+            transition:
+                transform 0.28s ease,
+                border-color 0.28s ease,
+                box-shadow 0.28s ease;
+        }
+
+
+        .creador-card:hover {
+
+            transform: translateY(-7px);
+
+            border-color: var(--borde-acento);
+
+            box-shadow:
+                0 20px 45px rgba(0, 0, 0, 0.28),
+                0 0 30px rgba(56, 189, 248, 0.05);
+        }
+
+
+        /* =========================================================
+           FOTOS
+        ========================================================= */
+
+        .foto-creador {
+
+            position: relative;
+
+            width: 125px;
+            height: 125px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #162338,
+                    #0d1525
+                );
+
+            border: 2px solid rgba(56, 189, 248, 0.45);
+
+            padding: 4px;
+
+            box-shadow:
+                0 0 0 6px rgba(56, 189, 248, 0.035),
+                0 12px 30px rgba(0, 0, 0, 0.3);
+
+            overflow: hidden;
+        }
+
+
+        .foto-creador img {
+
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            transition:
+                transform 0.4s ease;
+        }
+
+
+        .creador-card:hover .foto-creador img {
+
+            transform: scale(1.06);
+        }
+
+
+        /* =========================================================
+           NOMBRE
+        ========================================================= */
+
+        .creador-card h3 {
+
+            margin: 0 0 8px;
+
+            color: var(--texto-principal);
+
+            font-family: var(--fuente-titulo);
+
+            font-size: 1.18rem;
+
+            font-weight: 700;
+
+            letter-spacing: -0.3px;
+        }
+
+
+        /* =========================================================
+           ROL
+        ========================================================= */
+
+        .creador-rol {
+
+            display: inline-block;
+
+            margin-bottom: 18px;
+
+            padding: 5px 9px;
+
+            border-radius: 5px;
+
+            background: rgba(74, 222, 128, 0.06);
+
+            border: 1px solid rgba(74, 222, 128, 0.13);
+
+            color: var(--verde);
+
+            font-family: var(--fuente-codigo);
+
+            font-size: 0.65rem;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        /* =========================================================
+           DESCRIPCIÓN
+        ========================================================= */
+
+        .creador-card p {
+
+            margin: 0;
+
+            color: var(--texto-secundario);
+
+            font-size: 0.86rem;
+
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+           CAMPOS
+        ========================================================= */
+
+        .campo-info {
+
+            margin-top: 13px;
+
+            padding: 9px 11px;
+
+            text-align: left;
+
+            border-radius: 6px;
+
+            background: rgba(255, 255, 255, 0.015);
+
+            border: 1px dashed rgba(148, 163, 184, 0.16);
+
+            color: var(--texto-suave);
+
+            font-family: var(--fuente-codigo);
+
+            font-size: 0.67rem;
+        }
+
+
+        /* =========================================================
+           FOTO DE GRUPO
+        ========================================================= */
+
+        .foto-grupo-container {
+
+            margin-top: 45px;
+
+            padding-top: 35px;
+
+            border-top: 1px solid var(--borde);
+
+            text-align: center;
+        }
+
+
+        .foto-grupo-titulo {
+
+            margin-bottom: 17px;
+
+            color: var(--acento);
+
+            font-family: var(--fuente-codigo);
+
+            font-size: 0.72rem;
+
+            letter-spacing: 1px;
+        }
+
+
+        .foto-grupo {
+
+            position: relative;
+
+            width: 100%;
+
+            max-width: 850px;
+
+            height: 350px;
+
+            margin: auto;
+
+            padding: 5px;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(56, 189, 248, 0.35),
+                    rgba(30, 41, 59, 0.8)
+                );
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.25);
+
+            overflow: hidden;
+        }
+
+
+        .foto-grupo img {
+
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+
+            border-radius: 10px;
+        }
+
+
+        /* =========================================================
+           BOTÓN
+        ========================================================= */
+
+        .navegacion {
+
+            margin: 48px 0 20px;
+
+            text-align: center;
+        }
+
+
+        .boton-pagina {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 13px 22px;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--acento),
+                    var(--acento-oscuro)
+                );
+
+            color: #03111d;
+
+            text-decoration: none;
+
+            font-family: var(--fuente-codigo);
+
+            font-size: 0.78rem;
+
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+
+            box-shadow:
+                0 8px 25px rgba(56, 189, 248, 0.15);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                filter 0.2s ease;
+        }
+
+
+        .boton-pagina:hover {
+
+            transform: translateY(-3px);
+
+            filter: brightness(1.08);
+
+            box-shadow:
+                0 12px 30px rgba(56, 189, 248, 0.25);
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+
+            margin-top: 80px;
+
+            padding: 22px 6vw;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            border-top: 1px solid var(--borde);
+
+            background:
+                rgba(8, 13, 24, 0.75);
+
+            color: var(--texto-suave);
+
+            font-family: var(--fuente-codigo);
+
+            font-size: 0.68rem;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        /* =========================================================
+           BARRA DE SCROLL
+        ========================================================= */
+
+        ::-webkit-scrollbar {
+            width: 9px;
+        }
+
+
+        ::-webkit-scrollbar-track {
+            background: #080d18;
+        }
+
+
+        ::-webkit-scrollbar-thumb {
+
+            background:
+                linear-gradient(
+                    var(--acento),
+                    var(--acento-oscuro)
+                );
+
+            border-radius: 10px;
+
+            border: 2px solid #080d18;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 950px) {
+
+            .proceso-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .creadores-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            header {
+
+                padding: 25px 20px;
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .main-container {
+
+                width: min(100% - 24px, 1180px);
+
+                margin: 30px auto;
+            }
+
+
+            .seccion {
+
+                padding: 24px 18px;
+            }
+
+
+            .proceso-grid,
+            .creadores-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .foto-grupo {
+
+                height: 230px;
+            }
+
+
+            footer {
+
+                flex-direction: column;
+
+                padding: 22px;
+            }
+
+        }
+
+
+        @media (max-width: 420px) {
+
+            .header-titulo h1 {
+
+                font-size: 1.4rem;
+            }
+
+
+            .header-titulo p {
+
+                font-size: 0.8rem;
+            }
+
+
+            .consola-status {
+
+                font-size: 0.62rem;
+            }
+
+
+            .titulo-seccion {
+
+                font-size: 1.1rem;
+            }
+
+
+            .foto-creador {
+
+                width: 110px;
+                height: 110px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         ENCABEZADO
+    ========================================================== -->
+
+    <header>
+
+        <div class="header-titulo">
+
+            <h1>
+                INFORMACIÓN DEL PROYECTO
+            </h1>
+
+            <p>
+                Scratch Projects Lab // Documentación y desarrolladores
+            </p>
+
+        </div>
+
+
+        <div class="consola-status">
+
+            STATUS: ONLINE // INFO_READY
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================================
+         CONTENIDO
+    ========================================================== -->
+
+    <main class="main-container">
+
+
+        <!-- INFORMACIÓN GENERAL -->
+
+        <div class="seccion-info">
+
+            <strong>
+                En esta sección se explica cómo fueron creados
+                nuestros videojuegos utilizando Scratch y se
+                presenta información sobre los tres integrantes
+                responsables del proyecto.
+            </strong>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             SOBRE LOS JUEGOS
+        ====================================================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo-seccion">
+
+                &gt; SOBRE_NUESTROS_JUEGOS
+
+            </h2>
+
+
+            <p>
+
+                Para realizar nuestros proyectos utilizamos
+                Scratch, una plataforma de programación visual
+                que permite crear videojuegos, animaciones y
+                aplicaciones interactivas mediante bloques.
+
+            </p>
+
+
+            <p>
+
+                Nuestro objetivo fue aprender conceptos básicos
+                de programación mientras desarrollábamos
+                diferentes proyectos interactivos.
+
+            </p>
+
+
+            <p>
+
+                Durante el proceso tuvimos que planificar las
+                ideas, diseñar los personajes y escenarios,
+                programar las acciones y realizar diferentes
+                pruebas para comprobar que los juegos funcionaran
+                correctamente.
+
+            </p>
+
+
+            <div class="scratch-box">
+
+                <h3>
+
+                    SCRATCH_ENGINE // SISTEMA_DE_DESARROLLO
+
+                </h3>
+
+
+                <p>
+
+                    Los bloques de Scratch nos permitieron crear
+                    instrucciones mediante eventos, movimientos,
+                    variables, condiciones, ciclos, sonidos y
+                    diferentes elementos interactivos.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             PROCESO
+        ====================================================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo-seccion">
+
+                &gt; PROCESO_DE_DESARROLLO
+
+            </h2>
+
+
+            <div class="proceso-grid">
+
+
+                <div class="proceso-card">
+
+                    <div class="proceso-header">
+                        PROCESS_01 // IDEA
+                    </div>
+
+                    <h3>
+                        💡 Creación de la idea
+                    </h3>
+
+                    <p>
+                        Primero pensamos qué tipo de juego
+                        queríamos realizar, cuál sería su
+                        objetivo y qué tendría que hacer
+                        el jugador.
+                    </p>
+
+                </div>
+
+
+
+                <div class="proceso-card">
+
+                    <div class="proceso-header">
+                        PROCESS_02 // DESIGN
+                    </div>
+
+                    <h3>
+                        🎨 Diseño
+                    </h3>
+
+                    <p>
+                        Creamos los personajes, escenarios,
+                        fondos y demás elementos visuales
+                        necesarios para nuestros proyectos.
+                    </p>
+
+                </div>
+
+
+
+                <div class="proceso-card">
+
+                    <div class="proceso-header">
+                        PROCESS_03 // CODE
+                    </div>
+
+                    <h3>
+                        🧱 Programación
+                    </h3>
+
+                    <p>
+                        Utilizamos bloques de Scratch para
+                        programar movimientos, condiciones,
+                        puntuaciones, sonidos y acciones.
+                    </p>
+
+                </div>
+
+
+
+                <div class="proceso-card">
+
+                    <div class="proceso-header">
+                        PROCESS_04 // TEST
+                    </div>
+
+                    <h3>
+                        🧪 Pruebas
+                    </h3>
+
+                    <p>
+                        Probamos los juegos varias veces para
+                        encontrar errores y comprobar que
+                        todas las funciones funcionaran.
+                    </p>
+
+                </div>
+
+
+
+                <div class="proceso-card">
+
+                    <div class="proceso-header">
+                        PROCESS_05 // DEBUG
+                    </div>
+
+                    <h3>
+                        🔧 Corrección
+                    </h3>
+
+                    <p>
+                        Corregimos los problemas encontrados
+                        durante las pruebas y modificamos
+                        algunas partes del código.
+                    </p>
+
+                </div>
+
+
+
+                <div class="proceso-card">
+
+                    <div class="proceso-header">
+                        PROCESS_06 // RELEASE
+                    </div>
+
+                    <h3>
+                        🚀 Resultado final
+                    </h3>
+
+                    <p>
+                        Después de completar las pruebas,
+                        terminamos nuestros juegos y los
+                        presentamos como parte del proyecto.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             SOBRE NOSOTROS
+        ====================================================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo-seccion">
+
+                &gt; SOBRE_NOSOTROS
+
+            </h2>
+
+
+            <p>
+
+                Este proyecto fue realizado por tres integrantes
+                que participaron en diferentes áreas del
+                desarrollo, desde la programación y el diseño
+                hasta la creación de ideas y los videojuegos.
+
+            </p>
+
+
+            <div class="creadores-grid">
+
+
+                <!-- =================================================
+                     ALEJANDRO SUAREZ
+                ================================================== -->
+
+                <div class="creador-card">
+
+                    <div class="foto-creador">
+
+                        <img
+                            src="alejandro_suarez.WEBP"
+                            alt="Alejandro Suarez"
+                        >
+
+                    </div>
+
+
+                    <h3>
+                        Alejandro Suarez
+                    </h3>
+
+
+                    <div class="creador-rol">
+
+                        ROLE: DESARROLLADOR / COFUNDADOR
+
+                    </div>
+
+
+                    <p>
+
+                        Participó en parte del desarrollo del
+                        código de la página y colaboró en la
+                        creación de algunos videojuegos.
+                        También disfruta de la lectura y el
+                        fútbol.
+
+                    </p>
+
+
+                    <div class="campo-info">
+
+                        Nombre: Alejandro Suarez
+
+                    </div>
+
+
+                    <div class="campo-info">
+
+                        Aporte: Código y desarrollo de juegos
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ALEJANDRO GONZALEZ
+                ================================================== -->
+
+               <div class="creador-card" id="founder-alejandro">
+
+                    <div class="foto-creador">
+
+                        <img
+                            src="alejandro_gonzalez.WEBP"
+                            alt="Alejandro Gonzalez"
+                        >
+
+                    </div>
+
+
+                    <h3>
+                        Alejandro Gonzalez
+                    </h3>
+
+
+                    <div class="creador-rol">
+
+                        ROLE: FUNDADOR / DISEÑADOR
+
+                    </div>
+
+
+                    <p>
+
+                        Fundador del proyecto y principal encargado
+                        del diseño de la página. También participó
+                        en el desarrollo de juegos y en la creación
+                        de diferentes ideas. Le interesan los
+                        videojuegos, la lectura, el dibujo, el café
+                        y los gatos.
+
+                    </p>
+
+
+                    <div class="campo-info">
+
+                        Nombre: Alejandro Gonzalez
+
+                    </div>
+
+
+                    <div class="campo-info">
+
+                        Aporte: Diseño, ideas y desarrollo
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     GERMAN VALENCIA
+                ================================================== -->
+
+                <div class="creador-card">
+
+                    <div class="foto-creador">
+
+                        <img
+                            src="german_valencia.WEBP"
+                            alt="German Valencia"
+                        >
+
+                    </div>
+
+
+                    <h3>
+                        German Valencia
+                    </h3>
+
+
+                    <div class="creador-rol">
+
+                        ROLE: COFUNDADOR / DESARROLLADOR
+
+                    </div>
+
+
+                    <p>
+
+                        Cofundador del proyecto y uno de los
+                        principales participantes en el desarrollo
+                        de los videojuegos. También aportó ideas
+                        para los diseños y distintos proyectos.
+                        Le gustan los videojuegos, comer y jugar
+                        ajedrez con Daniel.
+
+                    </p>
+
+
+                    <div class="campo-info">
+
+                        Nombre: German Valencia
+
+                    </div>
+
+
+                    <div class="campo-info">
+
+                        Aporte: Juegos, ideas y diseño
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FOTO DEL GRUPO
+            ================================================== -->
+
+            <div class="foto-grupo-container">
+
+                <div class="foto-grupo-titulo">
+
+                    TEAM_PHOTO // GRUPO_DE_DESARROLLO
+
+                </div>
+
+
+                <div class="foto-grupo">
+
+                    <img
+                        src="foto_grupo.WEBP"
+                        alt="Foto grupal de los integrantes del proyecto"
+                    >
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             NAVEGACIÓN
+        ====================================================== -->
+
+        <div class="navegacion">
+
+            <a
+                href="index.html"
+                class="boton-pagina"
+            >
+
+                &lt; RETURN_TO_PROJECTS
+
+            </a>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+
+    <footer>
+
+        <span>
+            Scratch Projects Lab // v2026
+        </span>
+
+        <span>
+            SYSTEM: SCRATCH_DEVELOPMENT
+        </span>
+
+    </footer>
+<!-- =========================================================
+     SECRET ARCHIVE SYSTEM
+     4 CLICS EN EL FUNDADOR ALEJANDRO
+========================================================= -->
+
+<!-- ZONA SECRETA: ESQUINA INFERIOR DERECHA -->
+
+<div id="archive-secret-zone"></div>
+
+<!-- =========================================================
+     TERMINAL DE ACCESO
+========================================================= -->
+
+<div id="archive-code-panel">
+
+```
+<div class="archive-code-box">
+
+    <div class="archive-code-warning">
+        // CLASSIFIED DEVELOPER CHANNEL
+    </div>
+
+    <div class="archive-code-title">
+        SECRET ARCHIVE
+    </div>
+
+    <div class="archive-code-sub">
+        ENTER ACCESS CODE
+    </div>
+
+    <div id="archive-code-display">
+
+        <span>_</span>
+        <span>_</span>
+        <span>_</span>
+        <span>_</span>
+
+    </div>
+
+    <div id="archive-code-message">
+        AWAITING INPUT...
+    </div>
+
+    <div class="archive-keypad">
+
+        <button data-key="1">1</button>
+        <button data-key="2">2</button>
+        <button data-key="3">3</button>
+
+        <button data-key="4">4</button>
+        <button data-key="5">5</button>
+        <button data-key="6">6</button>
+
+        <button data-key="7">7</button>
+        <button data-key="8">8</button>
+        <button data-key="9">9</button>
+
+        <button data-key="clear">CLR</button>
+        <button data-key="0">0</button>
+        <button data-key="enter">ENTER</button>
+
+    </div>
+
+    <button id="archive-close-button">
+        CANCEL
+    </button>
+
+</div>
+```
+
+</div>
+
+<!-- =========================================================
+     CINEMATIC DE DESBLOQUEO
+========================================================= -->
+
+<div id="archive-unlock-cinematic">
+
+```
+<div class="archive-cinematic-grid"></div>
+
+<div class="archive-cinematic-ring"></div>
+
+<div class="archive-cinematic-eye">
+    ◉
+</div>
+
+<div
+    id="archive-cinematic-text"
+    class="archive-cinematic-text"
+>
+    ACCESS GRANTED
+</div>
+```
+
+</div>
+
+<!-- =========================================================
+     ARCHIVO SECRETO
+========================================================= -->
+
+<section id="secret-archive">
+
+```
+<div class="archive-header">
+
+    <div class="archive-label">
+        // DEVELOPER ARCHIVE
+    </div>
+
+    <h2>
+        SECRET ARCHIVE
+    </h2>
+
+    <p>
+        UNKNOWN ENTITIES DETECTED
+    </p>
+
+</div>
+
+
+<!-- =====================================================
+     PROGRESO
+===================================================== -->
+
+<div class="archive-progress">
+
+    <div class="archive-progress-top">
+
+        <span>
+            DISCOVERY PROGRESS
+        </span>
+
+        <strong id="archive-counter">
+            0 / 3
+        </strong>
+
+    </div>
+
+    <div class="archive-progress-bar">
+
+        <div id="archive-progress-fill"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RESET DISCOVERY
+===================================================== -->
+
+<div class="archive-reset-area">
+
+    <button id="archive-reset-button">
+
+        <span>↻</span>
+
+        RESET DISCOVERY
+
+    </button>
+
+
+    <div id="archive-reset-confirm">
+
+        <div class="reset-warning">
+            // WARNING: THIS WILL RESET ALL DISCOVERIES
+        </div>
+
+        <div class="reset-question">
+            ARE YOU SURE?
+        </div>
+
+        <div class="reset-actions">
+
+            <button id="archive-reset-confirm-button">
+                CONFIRM RESET
+            </button>
+
+            <button id="archive-reset-cancel-button">
+                CANCEL
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ENTIDADES — CLASSIFIED RECORDS
+===================================================== -->
+
+<div class="archive-grid">
+
+
+    <!-- =================================================
+         YHWACH
+    ================================================= -->
+
+    <article
+        class="archive-card archive-yhwach"
+        data-character="yhwach"
+    >
+
+        <div class="archive-card-status">
+
+            <span></span>
+
+            <label id="status-yhwach">
+                DESCONOCIDO
+            </label>
+
+        </div>
+
+
+        <div class="archive-record-id">
+            RECORD // 001
+        </div>
+
+
+        <div class="archive-symbol yhwach-symbol">
+            ◉
+        </div>
+
+
+        <div class="archive-card-name">
+            YHWACH
+        </div>
+
+        <div class="archive-card-title">
+            THE ALMIGHTY
+        </div>
+
+
+        <div class="archive-classification">
+
+            <span>
+                CLASIFICACIÓN
+            </span>
+
+            <strong>
+                ANOMALIA FUTURA
+            </strong>
+
+        </div>
+
+
+        <div class="archive-threat">
+
+            <span>
+                NIVEL DE ARCHIVO
+            </span>
+
+            <strong>
+                Ω / DESCONOCIDO
+            </strong>
+
+        </div>
+
+
+        <div class="archive-lore">
+
+            <div class="archive-lore-label">
+                // RECOPILANDO LORE
+            </div>
+
+            <p>
+                Una presencia asociada con futuros 
+                que dejan de comportarse como posibilidades.
+            </p>
+
+            <p>
+                El archivo describe una entidad capaz de 
+                observar caminos antes de que se conviertan en realidad.
+            </p>
+
+        </div>
+
+
+        <div class="archive-discovery">
+
+            <div class="archive-discovery-label">
+                REGISTRO DE DESCUBRIMIENTO
+            </div>
+
+            <div
+                class="archive-discovery-text"
+                id="discovery-yhwach"
+            >
+             SEÑAL NO VERIFICADA
+            </div>
+
+        </div>
+
+
+        <div class="archive-card-code">
+
+            <span>
+                ACCESS CODE
+            </span>
+
+            <strong id="code-yhwach">
+                ████
+            </strong>
+
+        </div>
+
+
+        <div class="archive-card-description">
+            EL FUTURO YA FUE VISTO POR MI..
+        </div>
+
+
+        <button
+            class="archive-button"
+            id="button-yhwach"
+            onclick="openArchiveCharacter('yhwach')"
+        >
+            LOCKED
+        </button>
+
+    </article>
+
+
+
+    <!-- =================================================
+         SUKUNA
+    ================================================= -->
+
+    <article
+        class="archive-card archive-sukuna"
+        data-character="sukuna"
+    >
+
+        <div class="archive-card-status">
+
+            <span></span>
+
+            <label id="status-sukuna">
+                UNKNOWN
+            </label>
+
+        </div>
+
+
+        <div class="archive-record-id">
+            RECORD // 002
+        </div>
+
+
+        <div class="archive-symbol sukuna-symbol">
+            伏
+        </div>
+
+
+        <div class="archive-card-name">
+            SUKUNA
+        </div>
+
+        <div class="archive-card-title">
+            MALEVOLENT SHRINE
+        </div>
+
+
+        <div class="archive-classification">
+
+            <span>
+                CLASIFICACIÓN
+            </span>
+
+            <strong>
+                ANOMALIA DOMINANTE
+            </strong>
+
+        </div>
+
+
+        <div class="archive-threat">
+
+            <span>
+               NIVEL DE ARCHIVO
+            </span>
+
+            <strong>
+                S / CRITICO
+            </strong>
+
+        </div>
+
+
+        <div class="archive-lore">
+
+            <div class="archive-lore-label">
+                // RECOPILANDO LORE
+            </div>
+
+            <p>
+                El archivo registra una señal que proviene de un territorio 
+                donde la destrucción se vuelve absoluta.
+            </p>
+
+            <p>
+                Cada fragmento recuperado hace referencia a un santuario 
+                que no debería existir dentro del espacio normal.
+            </p>
+
+        </div>
+
+
+        <div class="archive-discovery">
+
+            <div class="archive-discovery-label">
+                REGISTRO DE DESCUBRIMIENTO
+            </div>
+
+            <div
+                class="archive-discovery-text"
+                id="discovery-sukuna"
+            >
+               SEÑAL NO VERIFICADA
+            </div>
+
+        </div>
+
+
+        <div class="archive-card-code">
+
+            <span>
+                ACCESS CODE
+            </span>
+
+            <strong id="code-sukuna">
+                ████
+            </strong>
+
+        </div>
+
+
+        <div class="archive-card-description">
+            EL SANTUARIO SE HA ABIERTO..
+        </div>
+
+
+        <button
+            class="archive-button"
+            id="button-sukuna"
+            onclick="openArchiveCharacter('sukuna')"
+        >
+            LOCKED
+        </button>
+
+    </article>
+
+
+
+    <!-- =================================================
+         DIO
+    ================================================= -->
+
+    <article
+        class="archive-card archive-dio"
+        data-character="dio"
+    >
+
+        <div class="archive-card-status">
+
+            <span></span>
+
+            <label id="status-dio">
+                UNKNOWN
+            </label>
+
+        </div>
+
+
+        <div class="archive-record-id">
+            RECORD // 003
+        </div>
+
+
+        <div class="archive-symbol dio-symbol">
+            ◷
+        </div>
+
+
+        <div class="archive-card-name">
+            DIO
+        </div>
+
+        <div class="archive-card-title">
+            THE WORLD
+        </div>
+
+
+        <div class="archive-classification">
+
+            <span>
+                CLASIFICACION:
+            </span>
+
+            <strong>
+             ANOMALÍA TEMPORAL
+            </strong>
+
+        </div>
+
+
+        <div class="archive-threat">
+
+            <span>
+                NIVEL DE ARCHIVO
+            </span>
+
+            <strong>
+                S / CRITICO
+            </strong>
+
+        </div>
+
+
+        <div class="archive-lore">
+
+            <div class="archive-lore-label">
+                // RECOPILANDO LORE
+            </div>
+
+            <p>
+              Varios registros de archivo contienen intervalos 
+                  en los que causa y efecto parecen perder continuidad.
+            </p>
+
+            <p>
+                La única referencia repetida es un solo nombre
+                y un fenómeno descrito simplemente como detención del tiempo
+            </p>
+
+        </div>
+
+
+        <div class="archive-discovery">
+
+            <div class="archive-discovery-label">
+               REGISTRO DE DESCUBRIMIENTO
+            </div>
+
+            <div
+                class="archive-discovery-text"
+                id="discovery-dio"
+            >
+                SEÑAL NO VERIFICADA
+            </div>
+
+        </div>
+
+
+        <div class="archive-card-code">
+
+            <span>
+                ACCESS CODE
+            </span>
+
+            <strong id="code-dio">
+                ████
+            </strong>
+
+        </div>
+
+
+        <div class="archive-card-description">
+            EL TIEMPO SE HA DETENIDO..
+        </div>
+
+
+        <button
+            class="archive-button"
+            id="button-dio"
+            onclick="openArchiveCharacter('dio')"
+        >
+            LOCKED
+        </button>
+
+    </article>
+
+</div>
+
+
+
+<!-- =====================================================
+     COMPLETADO
+===================================================== -->
+
+<div id="archive-complete">
+
+    <div class="complete-line"></div>
+
+    <div class="complete-text">
+        SECRET ARCHIVE COMPLETE
+    </div>
+
+    <div class="complete-sub">
+        ALL THREE ENTITIES HAVE BEEN DISCOVERED.
+    </div>
+
+    <div class="complete-line"></div>
+
+</div>
+
+    <div class="complete-line"></div>
+
+</div>
+```
+
+</section>
+
+<style>
+
+/* =========================================================
+   ZONA SECRETA
+========================================================= */
+
+#archive-secret-zone{
+
+    position:fixed;
+
+    right:0;
+    bottom:0;
+
+    width:32px;
+    height:32px;
+
+    z-index:999999;
+
+    cursor:default;
+
+}
+
+
+/* =========================================================
+   TERMINAL
+========================================================= */
+
+#archive-code-panel{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    z-index:2147483000;
+
+    background:
+        rgba(0,0,0,.88);
+
+    backdrop-filter:
+        blur(14px);
+
+}
+
+
+#archive-code-panel.active{
+
+    display:flex;
+
+}
+
+
+.archive-code-box{
+
+    width:min(400px,90vw);
+
+    padding:30px;
+
+    box-sizing:border-box;
+
+    text-align:center;
+
+    font-family:monospace;
+
+    background:
+        linear-gradient(
+            145deg,
+            #07111d,
+            #02060a
+        );
+
+    border:
+        1px solid
+        rgba(56,189,248,.4);
+
+    box-shadow:
+
+        0 0 30px
+        rgba(56,189,248,.15),
+
+        inset 0 0 30px
+        rgba(56,189,248,.025);
+
+}
+
+
+.archive-code-warning{
+
+    font-size:8px;
+
+    letter-spacing:3px;
+
+    color:#38bdf8;
+
+    opacity:.6;
+
+}
+
+
+.archive-code-title{
+
+    margin-top:12px;
+
+    font-size:28px;
+
+    font-weight:900;
+
+    letter-spacing:5px;
+
+}
+
+
+.archive-code-sub{
+
+    margin-top:8px;
+
+    font-size:9px;
+
+    letter-spacing:3px;
+
+    opacity:.45;
+
+}
+
+
+#archive-code-display{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+    margin:25px 0 10px;
+
+}
+
+
+#archive-code-display span{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:42px;
+    height:48px;
+
+    border-bottom:
+        2px solid #38bdf8;
+
+    font-size:24px;
+
+    color:#fff;
+
+}
+
+
+#archive-code-message{
+
+    min-height:18px;
+
+    margin-bottom:20px;
+
+    font-size:8px;
+
+    letter-spacing:2px;
+
+    color:#64748b;
+
+}
+
+
+.archive-keypad{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:7px;
+
+}
+
+
+.archive-keypad button{
+
+    padding:13px 5px;
+
+    font-family:monospace;
+
+    font-weight:bold;
+
+    color:#cbd5e1;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    cursor:pointer;
+
+    transition:.2s ease;
+
+}
+
+
+.archive-keypad button:hover{
+
+    color:#fff;
+
+    border-color:#38bdf8;
+
+    background:
+        rgba(56,189,248,.1);
+
+}
+
+
+#archive-close-button{
+
+    width:100%;
+
+    margin-top:15px;
+
+    padding:9px;
+
+    font-family:monospace;
+
+    font-size:8px;
+
+    letter-spacing:3px;
+
+    color:#64748b;
+
+    background:transparent;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    cursor:pointer;
+
+}
+
+
+.archive-code-box.error{
+
+    animation:
+        archiveShake .35s ease;
+
+    border-color:#ef4444;
+
+}
+
+
+@keyframes archiveShake{
+
+    0%,100%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-8px);
+    }
+
+    75%{
+        transform:translateX(8px);
+    }
+
+}
+
+
+/* =========================================================
+   CINEMATIC
+========================================================= */
+
+#archive-unlock-cinematic{
+
+    position:fixed;
+
+    inset:0;
+
+    width:100vw;
+    height:100vh;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    z-index:2147483647;
+
+    overflow:hidden;
+
+    background:#000;
+
+}
+
+
+#archive-unlock-cinematic.active{
+
+    display:flex;
+
+}
+
+
+.archive-cinematic-grid{
+
+    position:absolute;
+
+    inset:-50%;
+
+    background:
+
+        linear-gradient(
+            rgba(56,189,248,.1) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(56,189,248,.1) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        60px 60px;
+
+    animation:
+        archiveGrid 3s linear forwards;
+
+}
+
+
+@keyframes archiveGrid{
+
+    from{
+
+        transform:
+            perspective(500px)
+            rotateX(55deg)
+            scale(.4);
+
+        opacity:0;
+
+    }
+
+    25%{
+        opacity:1;
+    }
+
+    to{
+
+        transform:
+            perspective(500px)
+            rotateX(55deg)
+            scale(2);
+
+        opacity:0;
+
+    }
+
+}
+
+
+.archive-cinematic-ring{
+
+    position:absolute;
+
+    width:30px;
+    height:30px;
+
+    border-radius:50%;
+
+    border:
+        2px solid #38bdf8;
+
+    box-shadow:
+
+        0 0 30px #38bdf8,
+
+        0 0 100px
+        rgba(56,189,248,.7);
+
+    animation:
+        archiveRing 2.8s ease-out forwards;
+
+}
+
+
+@keyframes archiveRing{
+
+    from{
+
+        transform:scale(.1);
+
+        opacity:0;
+
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    to{
+
+        transform:scale(40);
+
+        opacity:0;
+
+    }
+
+}
+
+
+.archive-cinematic-eye{
+
+    position:relative;
+
+    z-index:2;
+
+    font-size:
+        clamp(70px,15vw,180px);
+
+    color:#38bdf8;
+
+    text-shadow:
+
+        0 0 20px #38bdf8,
+
+        0 0 60px #0ea5e9,
+
+        0 0 120px #0369a1;
+
+    animation:
+        archiveEye 2.8s ease-out forwards;
+
+}
+
+
+@keyframes archiveEye{
+
+    0%{
+
+        transform:scale(.1);
+
+        opacity:0;
+
+    }
+
+    25%{
+
+        transform:scale(1.2);
+
+        opacity:1;
+
+    }
+
+    55%{
+
+        transform:scale(1);
+
+    }
+
+    100%{
+
+        transform:scale(5);
+
+        opacity:0;
+
+    }
+
+}
+
+
+.archive-cinematic-text{
+
+    position:absolute;
+
+    z-index:5;
+
+    top:68%;
+
+    width:100%;
+
+    text-align:center;
+
+    font-family:monospace;
+
+    font-size:
+        clamp(20px,4vw,50px);
+
+    font-weight:900;
+
+    letter-spacing:6px;
+
+    color:#fff;
+
+    text-shadow:
+        0 0 20px #38bdf8;
+
+    animation:
+        archiveText 2.8s ease-out forwards;
+
+}
+
+
+@keyframes archiveText{
+
+    0%{
+
+        opacity:0;
+
+        transform:
+            translateY(20px);
+
+    }
+
+    25%{
+
+        opacity:1;
+
+        transform:
+            translateY(0);
+
+    }
+
+    70%{
+        opacity:1;
+    }
+
+    100%{
+
+        opacity:0;
+
+        transform:
+            translateY(-20px);
+
+    }
+
+}
+
+
+/* =========================================================
+   SECRET ARCHIVE
+========================================================= */
+
+#secret-archive{
+
+    display:none;
+
+    margin-top:60px;
+
+    padding:35px;
+
+    border-radius:14px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(5,12,22,.98),
+            rgba(8,17,31,.98)
+        );
+
+    border:
+        1px solid
+        rgba(56,189,248,.18);
+
+    box-shadow:
+
+        0 20px 60px
+        rgba(0,0,0,.35),
+
+        inset 0 0 40px
+        rgba(56,189,248,.025);
+
+}
+
+
+#secret-archive.unlocked{
+
+    display:block;
+
+    animation:
+        archiveAppear .8s ease forwards;
+
+}
+
+
+@keyframes archiveAppear{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+.archive-header{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+}
+
+
+.archive-label{
+
+    color:#38bdf8;
+
+    font-family:monospace;
+
+    font-size:9px;
+
+    letter-spacing:3px;
+
+    opacity:.7;
+
+}
+
+
+.archive-header h2{
+
+    margin:8px 0;
+
+    font-family:var(--fuente-titulo);
+
+    font-size:
+        clamp(1.8rem,4vw,3rem);
+
+    letter-spacing:4px;
+
+}
+
+
+.archive-header p{
+
+    margin:0;
+
+    color:#718096;
+
+    font-family:monospace;
+
+    font-size:10px;
+
+    letter-spacing:2px;
+
+}
+
+
+/* =========================================================
+   PROGRESO
+========================================================= */
+
+.archive-progress{
+
+    max-width:800px;
+
+    margin:0 auto 15px;
+
+}
+
+
+.archive-progress-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:8px;
+
+    color:#9aa9bd;
+
+    font-family:monospace;
+
+    font-size:10px;
+
+    letter-spacing:1px;
+
+}
+
+
+.archive-progress-top strong{
+
+    color:#38bdf8;
+
+}
+
+
+.archive-progress-bar{
+
+    height:5px;
+
+    overflow:hidden;
+
+    background:
+        rgba(255,255,255,.05);
+
+    border-radius:5px;
+
+}
+
+
+#archive-progress-fill{
+
+    width:0%;
+
+    height:100%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #0284c7,
+            #38bdf8,
+            #7dd3fc
+        );
+
+    box-shadow:
+        0 0 15px
+        rgba(56,189,248,.6);
+
+    transition:
+        width .6s ease;
+
+}
+
+
+/* =========================================================
+   RESET DISCOVERY
+========================================================= */
+
+.archive-reset-area{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    margin:
+        0 auto 35px;
+
+}
+
+
+#archive-reset-button{
+
+    padding:
+        8px 15px;
+
+    font-family:monospace;
+
+    font-size:8px;
+
+    letter-spacing:2px;
+
+    color:#64748b;
+
+    background:
+        rgba(255,255,255,.02);
+
+    border:
+        1px solid
+        rgba(148,163,184,.12);
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+}
+
+
+#archive-reset-button span{
+
+    display:inline-block;
+
+    margin-right:6px;
+
+    font-size:12px;
+
+    transition:
+        transform .4s ease;
+
+}
+
+
+#archive-reset-button:hover{
+
+    color:#fbbf24;
+
+    border-color:
+        rgba(251,191,36,.35);
+
+    background:
+        rgba(251,191,36,.04);
+
+    box-shadow:
+        0 0 18px
+        rgba(251,191,36,.06);
+
+}
+
+
+#archive-reset-button:hover span{
+
+    transform:
+        rotate(-180deg);
+
+}
+
+
+/* =========================================================
+   CONFIRMACIÓN DEL RESET
+========================================================= */
+
+#archive-reset-confirm{
+
+    display:none;
+
+    width:
+        min(400px,90%);
+
+    margin-top:10px;
+
+    padding:16px;
+
+    box-sizing:border-box;
+
+    text-align:center;
+
+    background:
+        rgba(3,8,15,.96);
+
+    border:
+        1px solid
+        rgba(239,68,68,.25);
+
+    box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.35);
+
+}
+
+
+#archive-reset-confirm.active{
+
+    display:block;
+
+    animation:
+        resetConfirmAppear
+        .25s ease;
+
+}
+
+
+@keyframes resetConfirmAppear{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(-8px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+.reset-warning{
+
+    color:#ef4444;
+
+    font-family:monospace;
+
+    font-size:7px;
+
+    letter-spacing:1.5px;
+
+    margin-bottom:10px;
+
+}
+
+
+.reset-question{
+
+    color:#fff;
+
+    font-family:monospace;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    letter-spacing:3px;
+
+    margin-bottom:14px;
+
+}
+
+
+.reset-actions{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:8px;
+
+}
+
+
+.reset-actions button{
+
+    padding:
+        8px 12px;
+
+    font-family:monospace;
+
+    font-size:7px;
+
+    letter-spacing:1px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    cursor:pointer;
+
+    transition:.2s ease;
+
+}
+
+
+#archive-reset-confirm-button{
+
+    color:#ef4444;
+
+    border-color:
+        rgba(239,68,68,.3);
+
+}
+
+
+#archive-reset-confirm-button:hover{
+
+    background:
+        rgba(239,68,68,.08);
+
+    box-shadow:
+        0 0 15px
+        rgba(239,68,68,.08);
+
+}
+
+
+#archive-reset-cancel-button{
+
+    color:#64748b;
+
+}
+
+
+#archive-reset-cancel-button:hover{
+
+    color:#fff;
+
+    border-color:
+        rgba(255,255,255,.25);
+
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.archive-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:18px;
+
+}
+
+
+.archive-card{
+
+    position:relative;
+
+    min-height:340px;
+
+    padding:25px;
+
+    text-align:center;
+
+    background:
+        linear-gradient(
+            160deg,
+            rgba(15,23,42,.98),
+            rgba(4,10,18,.98)
+        );
+
+    border:
+        1px solid
+        rgba(148,163,184,.12);
+
+    overflow:hidden;
+
+    transition:
+        transform .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+
+}
+
+
+.archive-card:hover{
+
+    transform:
+        translateY(-7px);
+
+    border-color:
+        rgba(56,189,248,.35);
+
+    box-shadow:
+        0 20px 45px
+        rgba(0,0,0,.35);
+
+}
+
+
+/* =========================================================
+   ESTADO
+========================================================= */
+
+.archive-card-status{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:7px;
+
+    font-family:monospace;
+
+    font-size:8px;
+
+    letter-spacing:2px;
+
+    color:#64748b;
+
+}
+
+
+.archive-card-status span{
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background:#64748b;
+
+}
+
+
+.archive-symbol{
+
+    margin:25px 0 10px;
+
+    font-size:65px;
+
+    line-height:1;
+
+    opacity:.15;
+
+    transition:.4s ease;
+
+}
+
+
+.archive-card-name{
+
+    font-family:var(--fuente-titulo);
+
+    font-size:1.4rem;
+
+    font-weight:900;
+
+    letter-spacing:3px;
+
+    opacity:.45;
+
+}
+
+
+.archive-card-title{
+
+    margin-top:4px;
+
+    font-family:monospace;
+
+    font-size:9px;
+
+    letter-spacing:2px;
+
+    color:#64748b;
+
+}
+
+
+.archive-card-code{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:22px;
+
+    padding:9px 10px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
+
+    font-family:monospace;
+
+    font-size:8px;
+
+    color:#64748b;
+
+}
+
+
+.archive-card-code strong{
+
+    letter-spacing:2px;
+
+    color:#475569;
+
+}
+
+
+.archive-card-description{
+
+    margin-top:18px;
+
+    color:#64748b;
+
+    font-family:monospace;
+
+    font-size:8px;
+
+    letter-spacing:1px;
+
+}
+
+
+.archive-button{
+
+    width:100%;
+
+    margin-top:22px;
+
+    padding:11px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    color:#475569;
+
+    font-family:monospace;
+
+    font-size:9px;
+
+    font-weight:bold;
+
+    letter-spacing:2px;
+
+    cursor:not-allowed;
+
+}
+
+
+/* =========================================================
+   DESCUBIERTO
+========================================================= */
+
+.archive-card.discovered{
+
+    border-color:
+        rgba(74,222,128,.2);
+
+}
+
+
+.archive-card.discovered .archive-symbol{
+
+    opacity:1;
+
+}
+
+
+.archive-card.discovered .archive-card-name{
+
+    opacity:1;
+
+}
+
+
+.archive-card.discovered .archive-card-status{
+
+    color:#4ade80;
+
+}
+
+
+.archive-card.discovered
+.archive-card-status span{
+
+    background:#4ade80;
+
+    box-shadow:
+        0 0 10px
+        rgba(74,222,128,.8);
+
+}
+
+
+.archive-card.discovered
+.archive-card-code strong{
+
+    color:#4ade80;
+
+}
+
+
+.archive-card.discovered
+.archive-button{
+
+    color:#4ade80;
+
+    border-color:
+        rgba(74,222,128,.25);
+
+    cursor:pointer;
+
+}
+
+
+.archive-card.discovered
+.archive-button:hover{
+
+    background:
+        rgba(74,222,128,.08);
+
+}
+
+
+/* =========================================================
+   COLORES INDIVIDUALES
+========================================================= */
+
+.archive-yhwach.discovered{
+
+    border-color:
+        rgba(250,204,21,.3);
+
+    box-shadow:
+        0 0 25px
+        rgba(250,204,21,.05);
+
+}
+
+
+.archive-yhwach.discovered
+.archive-card-status{
+
+    color:#facc15;
+
+}
+
+
+.archive-yhwach.discovered
+.archive-card-status span{
+
+    background:#facc15;
+
+}
+
+
+.archive-yhwach.discovered
+.archive-card-code strong{
+
+    color:#facc15;
+
+}
+
+
+.archive-sukuna.discovered{
+
+    border-color:
+        rgba(239,68,68,.3);
+
+    box-shadow:
+        0 0 25px
+        rgba(239,68,68,.05);
+
+}
+
+
+.archive-sukuna.discovered
+.archive-card-status{
+
+    color:#ef4444;
+
+}
+
+
+.archive-sukuna.discovered
+.archive-card-status span{
+
+    background:#ef4444;
+
+}
+
+
+.archive-sukuna.discovered
+.archive-card-code strong{
+
+    color:#ef4444;
+
+}
+
+
+.archive-dio.discovered{
+
+    border-color:
+        rgba(234,179,8,.3);
+
+    box-shadow:
+        0 0 25px
+        rgba(234,179,8,.05);
+
+}
+
+
+.archive-dio.discovered
+.archive-card-status{
+
+    color:#eab308;
+
+}
+
+
+.archive-dio.discovered
+.archive-card-status span{
+
+    background:#eab308;
+
+}
+
+
+.archive-dio.discovered
+.archive-card-code strong{
+
+    color:#eab308;
+
+}
+
+
+/* =========================================================
+   COMPLETADO
+========================================================= */
+
+#archive-complete{
+
+    display:none;
+
+    margin-top:40px;
+
+    text-align:center;
+
+}
+
+
+#archive-complete.unlocked{
+
+    display:block;
+
+    animation:
+        archiveComplete 1s ease forwards;
+
+}
+
+
+.complete-line{
+
+    width:100%;
+
+    height:1px;
+
+    margin:12px 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #38bdf8,
+            transparent
+        );
+
+}
+
+
+.complete-text{
+
+    color:#38bdf8;
+
+    font-family:monospace;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    letter-spacing:4px;
+
+}
+
+
+.complete-sub{
+
+    margin-top:6px;
+
+    color:#64748b;
+
+    font-family:monospace;
+
+    font-size:8px;
+
+    letter-spacing:2px;
+
+}
+
+
+@keyframes archiveComplete{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.95);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:800px){
+
+    .archive-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    #secret-archive{
+
+        padding:24px 15px;
+
+    }
+
+}
+
+
+@media(max-width:500px){
+
+    .archive-code-box{
+
+        padding:22px;
+
+    }
+
+    .archive-code-title{
+
+        font-size:21px;
+
+    }
+
+    .reset-actions{
+
+        flex-direction:column;
+
+    }
+
+    .reset-actions button{
+
+        width:100%;
+
+    }
+
+}
+
+</style>
+
+<script>
+
+(function(){
+
+    /* =====================================================
+       CONFIGURACIÓN
+    ===================================================== */
+
+    const ARCHIVE_CODE = "1999";
+
+
+    const characters = {
+
+        yhwach:{
+            code:"2011",
+            page:"Yhwa.html"
+        },
+
+        sukuna:{
+            code:"2007",
+            page:"Sukuna.html"
+        },
+
+        dio:{
+            code:"1987",
+            page:"Dio.html"
+        }
+
+    };
+
+
+    /* =====================================================
+       ELEMENTOS
+    ===================================================== */
+
+    const panel =
+        document.getElementById(
+            "archive-code-panel"
+        );
+
+    const display =
+        document.getElementById(
+            "archive-code-display"
+        );
+
+    const message =
+        document.getElementById(
+            "archive-code-message"
+        );
+
+    const closeButton =
+        document.getElementById(
+            "archive-close-button"
+        );
+
+    const cinematic =
+        document.getElementById(
+            "archive-unlock-cinematic"
+        );
+
+    const cinematicText =
+        document.getElementById(
+            "archive-cinematic-text"
+        );
+
+
+    let enteredCode = "";
+
+    let founderClicks = 0;
+
+    let founderTimer = null;
+
+
+    /* =====================================================
+       ABRIR TERMINAL
+    ===================================================== */
+
+    function openArchiveTerminal(){
+
+        panel.classList.add("active");
+
+        enteredCode = "";
+
+        updateDisplay();
+
+    }
+
+
+    /* =====================================================
+       4 CLICS EN ALEJANDRO GONZALEZ
+    ===================================================== */
+
+    const alejandro =
+        document.getElementById(
+            "founder-alejandro"
+        );
+
+
+    if(alejandro){
+
+        alejandro.addEventListener(
+            "click",
+            () => {
+
+                founderClicks++;
+
+                clearTimeout(
+                    founderTimer
+                );
+
+                founderTimer =
+                    setTimeout(
+                        () => {
+
+                            founderClicks = 0;
+
+                        },
+                        1800
+                    );
+
+
+                if(founderClicks >= 4){
+
+                    founderClicks = 0;
+
+                    clearTimeout(
+                        founderTimer
+                    );
+
+                    openArchiveTerminal();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ESQUINA SECRETA
+    ===================================================== */
+
+    document
+        .getElementById(
+            "archive-secret-zone"
+        )
+        .addEventListener(
+            "click",
+            openArchiveTerminal
+        );
+
+
+    /* =====================================================
+       CERRAR
+    ===================================================== */
+
+    closeButton.addEventListener(
+        "click",
+        () => {
+
+            panel.classList.remove(
+                "active"
+            );
+
+            enteredCode = "";
+
+            updateDisplay();
+
+        }
+    );
+
+
+    /* =====================================================
+       TECLADO
+    ===================================================== */
+
+    document
+        .querySelectorAll(
+            ".archive-keypad button"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const key =
+                            button.dataset.key;
+
+
+                        if(key === "enter"){
+
+                            verify();
+
+                            return;
+
+                        }
+
+
+                        if(key === "clear"){
+
+                            enteredCode = "";
+
+                            updateDisplay();
+
+                            return;
+
+                        }
+
+
+                        if(
+                            enteredCode.length < 4
+                        ){
+
+                            enteredCode += key;
+
+                            updateDisplay();
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       TECLADO FÍSICO
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if(
+                !panel.classList.contains(
+                    "active"
+                )
+            ){
+
+                return;
+
+            }
+
+
+            if(
+                /^[0-9]$/.test(
+                    event.key
+                )
+            ){
+
+                if(
+                    enteredCode.length < 4
+                ){
+
+                    enteredCode +=
+                        event.key;
+
+                    updateDisplay();
+
+                }
+
+            }
+
+
+            if(
+                event.key ===
+                "Backspace"
+            ){
+
+                enteredCode =
+                    enteredCode.slice(
+                        0,
+                        -1
+                    );
+
+                updateDisplay();
+
+            }
+
+
+            if(
+                event.key ===
+                "Enter"
+            ){
+
+                verify();
+
+            }
+
+
+            if(
+                event.key ===
+                "Escape"
+            ){
+
+                panel.classList.remove(
+                    "active"
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       ACTUALIZAR DISPLAY
+    ===================================================== */
+
+    function updateDisplay(){
+
+        const slots =
+            display.querySelectorAll(
+                "span"
+            );
+
+
+        slots.forEach(
+            (slot,index) => {
+
+                slot.innerText =
+                    enteredCode[index]
+                    || "_";
+
+            }
+        );
+
+
+        message.innerText =
+            enteredCode.length === 4
+            ? "READY TO VERIFY..."
+            : "AWAITING INPUT...";
+
+    }
+
+
+    /* =====================================================
+       VERIFICAR
+    ===================================================== */
+
+    function verify(){
+
+        if(
+            enteredCode.length !== 4
+        ){
+
+            return;
+
+        }
+
+
+        if(
+            enteredCode ===
+            ARCHIVE_CODE
+        ){
+
+            unlockArchive();
+
+        }else{
+
+            wrongCode();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CÓDIGO INCORRECTO
+    ===================================================== */
+
+    function wrongCode(){
+
+        const box =
+            document.querySelector(
+                ".archive-code-box"
+            );
+
+
+        message.innerText =
+            "ACCESS DENIED";
+
+        message.style.color =
+            "#ef4444";
+
+
+        box.classList.remove(
+            "error"
+        );
+
+
+        void box.offsetWidth;
+
+
+        box.classList.add(
+            "error"
+        );
+
+
+        setTimeout(
+            () => {
+
+                enteredCode = "";
+
+                message.style.color =
+                    "";
+
+                updateDisplay();
+
+            },
+            700
+        );
+
+    }
+
+
+    /* =====================================================
+       DESBLOQUEAR ARCHIVO
+    ===================================================== */
+
+    function unlockArchive(){
+
+        message.innerText =
+            "ACCESS GRANTED";
+
+        message.style.color =
+            "#4ade80";
+
+
+        setTimeout(
+            () => {
+
+                panel.classList.remove(
+                    "active"
+                );
+
+
+                cinematic.classList.add(
+                    "active"
+                );
+
+
+                cinematicText.innerText =
+                    "ACCESS GRANTED";
+
+
+                setTimeout(
+                    () => {
+
+                        cinematicText.innerText =
+                            "ARCHIVE UNLOCKED";
+
+                    },
+                    900
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        cinematic.classList.remove(
+                            "active"
+                        );
+
+
+                        const archive =
+                            document.getElementById(
+                                "secret-archive"
+                            );
+
+
+                        if(archive){
+
+                            archive.classList.add(
+                                "unlocked"
+                            );
+
+
+                            archive.scrollIntoView({
+                                behavior:"smooth",
+                                block:"start"
+                            });
+
+                        }
+
+
+                    },
+                    2900
+                );
+
+
+            },
+            500
+        );
+
+    }
+
+
+    /* =====================================================
+       LOCAL STORAGE
+    ===================================================== */
+
+    function isDiscovered(character){
+
+        return localStorage.getItem(
+            "archive_" + character
+        ) === "true";
+
+    }
+
+
+    /* =====================================================
+       ACTUALIZAR ARCHIVO
+    ===================================================== */
+
+    function updateArchive(){
+
+        let discovered = 0;
+
+
+        Object.keys(characters)
+            .forEach(
+                character => {
+
+                    const card =
+                        document.querySelector(
+                            `[data-character="${character}"]`
+                        );
+
+
+                    const status =
+                        document.getElementById(
+                            "status-" +
+                            character
+                        );
+
+
+                    const code =
+                        document.getElementById(
+                            "code-" +
+                            character
+                        );
+
+
+                    const button =
+                        document.getElementById(
+                            "button-" +
+                            character
+                        );
+
+
+                    if(
+                        isDiscovered(
+                            character
+                        )
+                    ){
+
+                        discovered++;
+
+
+                        card.classList.add(
+                            "discovered"
+                        );
+
+
+                        status.innerText =
+                            "DISCOVERED";
+
+
+                        code.innerText =
+                            characters[
+                                character
+                            ].code;
+
+
+                        button.innerText =
+                            "OPEN GAME";
+
+                    }else{
+
+                        /*
+                         * RESTAURAR ESTADO BLOQUEADO
+                         */
+
+                        card.classList.remove(
+                            "discovered"
+                        );
+
+
+                        status.innerText =
+                            "UNKNOWN";
+
+
+                        code.innerText =
+                            "████";
+
+
+                        button.innerText =
+                            "LOCKED";
+
+                    }
+
+                }
+            );
+
+
+        /* =================================================
+           CONTADOR
+        ================================================= */
+
+        document.getElementById(
+            "archive-counter"
+        ).innerText =
+            discovered + " / 3";
+
+
+        /* =================================================
+           BARRA
+        ================================================= */
+
+        document.getElementById(
+            "archive-progress-fill"
+        ).style.width =
+            (
+                discovered / 3
+            ) * 100 + "%";
+
+
+        /* =================================================
+           MENSAJE DE COMPLETADO
+        ================================================= */
+
+        const complete =
+            document.getElementById(
+                "archive-complete"
+            );
+
+
+        if(
+            discovered === 3
+        ){
+
+            complete.classList.add(
+                "unlocked"
+            );
+
+        }else{
+
+            complete.classList.remove(
+                "unlocked"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       ABRIR JUEGO
+    ===================================================== */
+
+    window.openArchiveCharacter =
+        function(character){
+
+            if(
+                !characters[character]
+                ||
+                !isDiscovered(character)
+            ){
+
+                return;
+
+            }
+
+
+            window.location.href =
+                characters[character].page;
+
+        };
+
+
+    /* =====================================================
+       RESET DISCOVERY
+    ===================================================== */
+
+    const resetButton =
+        document.getElementById(
+            "archive-reset-button"
+        );
+
+
+    const resetConfirm =
+        document.getElementById(
+            "archive-reset-confirm"
+        );
+
+
+    const resetConfirmButton =
+        document.getElementById(
+            "archive-reset-confirm-button"
+        );
+
+
+    const resetCancelButton =
+        document.getElementById(
+            "archive-reset-cancel-button"
+        );
+
+
+    /* ABRIR CONFIRMACIÓN */
+
+    resetButton.addEventListener(
+        "click",
+        () => {
+
+            resetConfirm.classList.add(
+                "active"
+            );
+
+        }
+    );
+
+
+    /* CANCELAR */
+
+    resetCancelButton.addEventListener(
+        "click",
+        () => {
+
+            resetConfirm.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    /* CONFIRMAR RESET */
+
+    resetConfirmButton.addEventListener(
+        "click",
+        () => {
+
+            /*
+             * ELIMINAR LOS TRES DESCUBRIMIENTOS
+             */
+
+            localStorage.removeItem(
+                "archive_yhwach"
+            );
+
+            localStorage.removeItem(
+                "archive_sukuna"
+            );
+
+            localStorage.removeItem(
+                "archive_dio"
+            );
+
+
+            /*
+             * CERRAR CONFIRMACIÓN
+             */
+
+            resetConfirm.classList.remove(
+                "active"
+            );
+
+
+            /*
+             * ACTUALIZAR TODO EL ARCHIVO
+             */
+
+            updateArchive();
+
+        }
+    );
+
+
+    /* =====================================================
+       INICIALIZAR
+    ===================================================== */
+
+    updateArchive();
+
+})();
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,5655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JUJUTSU KAISEN — KING OF CURSES</title>
+
+<style>
+
+/* =========================================================
+   CORE
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    user-select:none;
+}
+
+:root{
+    --red:#d5122d;
+    --brightRed:#ff2948;
+    --darkred:#520813;
+    --black:#030304;
+    --white:#eeeeee;
+    --gray:#777;
+    --blue:#4ea6ff;
+    --purple:#a85cff;
+    --ice:#8cecff;
+    --gold:#e0b957;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+}
+
+body{
+    background:#020202;
+    color:white;
+    font-family:Arial,Helvetica,sans-serif;
+    overflow:hidden;
+}
+
+/* =========================================================
+   BOOT
+========================================================= */
+
+#boot{
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at center,#180308 0%,#050102 38%,#000 80%);
+    z-index:99999;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+#boot::before{
+    content:"";
+    position:absolute;
+    inset:-50%;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0 5px,
+            rgba(255,0,30,.025) 6px
+        );
+    animation:bootScan 8s linear infinite;
+}
+
+#boot::after{
+    content:"";
+    position:absolute;
+    width:700px;
+    height:700px;
+    border-radius:50%;
+    background:radial-gradient(
+        circle,
+        rgba(180,0,30,.12),
+        transparent 65%
+    );
+    animation:bootPulse 2s infinite alternate;
+}
+
+.bootBox{
+    text-align:center;
+    position:relative;
+    z-index:2;
+}
+
+.bootKanji{
+    font-size:95px;
+    color:#a50c20;
+    text-shadow:
+        0 0 10px #8c0919,
+        0 0 35px #8c0919,
+        0 0 80px rgba(255,0,40,.4);
+    animation:kanjiPulse 2s infinite alternate;
+}
+
+.bootTitle{
+    font-size:65px;
+    letter-spacing:12px;
+    color:#d9152d;
+    text-shadow:
+        0 0 10px #d9152d,
+        0 0 35px rgba(213,18,45,.7);
+}
+
+.bootSub{
+    color:#666;
+    letter-spacing:6px;
+    margin-top:10px;
+}
+
+.start{
+    margin-top:35px;
+    padding:15px 55px;
+    background:rgba(18,4,7,.9);
+    border:1px solid #a90f24;
+    color:#ddd;
+    cursor:pointer;
+    letter-spacing:4px;
+    position:relative;
+    overflow:hidden;
+    transition:.25s;
+}
+
+.start::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.15),
+        transparent
+    );
+    transform:translateX(-100%);
+    transition:.5s;
+}
+
+.start:hover::before{
+    transform:translateX(100%);
+}
+
+.start:hover{
+    background:#8e0c1d;
+    color:white;
+    box-shadow:
+        0 0 20px #8e0c1d,
+        0 0 60px rgba(142,12,29,.5);
+    transform:scale(1.04);
+}
+
+@keyframes bootScan{
+    to{transform:translateY(100px)}
+}
+
+@keyframes bootPulse{
+    from{transform:scale(.8);opacity:.4}
+    to{transform:scale(1.2);opacity:.8}
+}
+
+@keyframes kanjiPulse{
+    from{opacity:.65}
+    to{
+        opacity:1;
+        text-shadow:
+            0 0 15px #8c0919,
+            0 0 45px #d5122d;
+    }
+}
+
+/* =========================================================
+   GAME
+========================================================= */
+
+#game{
+    height:100vh;
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            #300b12,
+            #090506 48%,
+            #010101 100%
+        );
+    position:relative;
+    overflow:hidden;
+    transition:
+        background 1s,
+        filter .3s,
+        transform .1s;
+}
+
+#game::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:2;
+    background:
+        linear-gradient(
+            rgba(255,255,255,.018) 50%,
+            transparent 50%
+        );
+    background-size:100% 4px;
+    opacity:.5;
+}
+
+#game::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:3;
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 35%,
+            rgba(0,0,0,.65) 100%
+        );
+}
+
+#game.shrine{
+    background:
+        radial-gradient(circle at center,#7c111d,#30070d 35%,#050102 78%);
+}
+
+#game.gojoStage{
+    background:
+        radial-gradient(circle,#162a52,#070b18 50%,#020203);
+}
+
+#game.iceStage{
+    background:
+        radial-gradient(circle,#193d4a,#081318 55%,#020304);
+}
+
+#game.purpleStage{
+    background:
+        radial-gradient(circle,#392054,#100918 50%,#020202);
+}
+
+/* =========================================================
+   SCENE
+========================================================= */
+
+.scene{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    z-index:5;
+}
+
+.floor{
+    position:absolute;
+    bottom:-90px;
+    left:-10%;
+    width:120%;
+    height:45%;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 100px,
+            rgba(180,20,30,.08) 102px,
+            transparent 104px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            transparent 0 60px,
+            rgba(255,255,255,.025) 61px,
+            transparent 63px
+        ),
+        linear-gradient(#130609,#050304);
+    transform:perspective(500px) rotateX(55deg);
+    transform-origin:bottom;
+}
+
+.floor::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(255,0,35,.15),
+            transparent 65%
+        );
+    animation:floorPulse 2s infinite alternate;
+}
+
+.gate{
+    position:absolute;
+    width:280px;
+    height:360px;
+    left:50%;
+    top:45%;
+    transform:translate(-50%,-50%);
+    border:12px solid #190508;
+    opacity:.5;
+    box-shadow:
+        0 0 30px rgba(120,0,20,.2),
+        inset 0 0 30px rgba(120,0,20,.2);
+}
+
+.gate::before,
+.gate::after{
+    content:"";
+    position:absolute;
+    top:-25px;
+    width:30px;
+    height:400px;
+    background:#20070b;
+    box-shadow:0 0 20px rgba(200,0,30,.15);
+}
+
+.gate::before{left:-45px}
+.gate::after{right:-45px}
+
+.shrineSymbol{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    font-size:120px;
+    color:#25070c;
+    opacity:.6;
+    text-shadow:0 0 40px #6e0b18;
+    animation:symbolPulse 3s infinite alternate;
+}
+
+@keyframes floorPulse{
+    from{opacity:.6}
+    to{opacity:1}
+}
+
+@keyframes symbolPulse{
+    from{
+        opacity:.3;
+        transform:translate(-50%,-50%) scale(.95);
+    }
+    to{
+        opacity:.7;
+        transform:translate(-50%,-50%) scale(1.05);
+    }
+}
+
+/* =========================================================
+   HUD
+========================================================= */
+
+.top{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:70px;
+    background:rgba(3,3,4,.92);
+    border-bottom:1px solid #361018;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    box-shadow:0 5px 30px rgba(0,0,0,.7);
+}
+
+.logo{
+    color:#df172f;
+    letter-spacing:4px;
+    font-weight:bold;
+    text-shadow:0 0 12px rgba(223,23,47,.5);
+}
+
+.phase{
+    color:#777;
+    font-size:11px;
+    letter-spacing:2px;
+    transition:.3s;
+}
+
+.hpArea{
+    position:absolute;
+    top:82px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(950px,90%);
+    z-index:80;
+}
+
+.hpRow{
+    margin-bottom:8px;
+}
+
+.hpLabel{
+    display:flex;
+    justify-content:space-between;
+    color:#aaa;
+    font-size:10px;
+    margin-bottom:4px;
+    letter-spacing:1px;
+}
+
+.bar{
+    height:11px;
+    background:#160609;
+    border:1px solid #401019;
+    overflow:hidden;
+    box-shadow:
+        inset 0 0 8px #000,
+        0 0 8px rgba(0,0,0,.5);
+}
+
+.bar div{
+    height:100%;
+    transition:.25s;
+    position:relative;
+}
+
+.bar div::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.28),
+            transparent
+        );
+    animation:barShine 1.5s linear infinite;
+}
+
+.enemyBar{
+    background:linear-gradient(90deg,#600611,#ed1833,#ff4b5e);
+    box-shadow:0 0 12px rgba(237,24,51,.7);
+}
+
+.playerBar{
+    background:linear-gradient(90deg,#777,#eee,#fff);
+}
+
+.ceBar{
+    background:linear-gradient(90deg,#2b0c38,#7b36d5,#b56cff);
+    box-shadow:0 0 12px rgba(168,92,255,.5);
+}
+
+.comboBar{
+    background:linear-gradient(90deg,#c28b16,#ffe078);
+}
+
+.terrorBar{
+    background:linear-gradient(90deg,#37000a,#ec1932,#ff5669);
+    box-shadow:0 0 10px rgba(236,25,50,.5);
+}
+
+@keyframes barShine{
+    from{transform:translateX(-100%)}
+    to{transform:translateX(100%)}
+}
+
+/* =========================================================
+   COMBATANTS
+========================================================= */
+
+.combat{
+    position:absolute;
+    top:150px;
+    bottom:205px;
+    left:0;
+    width:100%;
+    z-index:20;
+}
+
+.fighter{
+    position:absolute;
+    bottom:20px;
+    width:260px;
+    height:350px;
+    transition:.25s;
+    z-index:30;
+}
+
+.player{
+    left:10%;
+    filter:drop-shadow(0 15px 15px rgba(0,0,0,.8));
+}
+
+.sukuna{
+    right:10%;
+    filter:
+        drop-shadow(0 15px 15px rgba(0,0,0,.8))
+        drop-shadow(0 0 25px rgba(210,10,30,.25));
+}
+
+.fighter.attack{
+    animation:attackDash .25s;
+}
+
+.fighter.damage{
+    animation:damageShake .28s;
+}
+
+.fighter.dead{
+    animation:deathFall 1s forwards;
+}
+
+@keyframes attackDash{
+    0%{transform:translateX(0)}
+    45%{
+        transform:
+            translateX(110px)
+            scale(1.04);
+        filter:brightness(1.5);
+    }
+    100%{transform:translateX(0)}
+}
+
+@keyframes damageShake{
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-15px)}
+    40%{transform:translateX(15px)}
+    60%{transform:translateX(-10px)}
+    80%{transform:translateX(8px)}
+}
+
+@keyframes deathFall{
+    0%{
+        transform:translateY(0) rotate(0);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(120px) rotate(15deg);
+        opacity:.15;
+        filter:grayscale(1);
+    }
+}
+
+/* =========================================================
+   YUJI
+========================================================= */
+
+.yuji{
+    position:absolute;
+    width:170px;
+    height:280px;
+    left:40px;
+    bottom:0;
+    filter:drop-shadow(0 0 12px rgba(255,80,60,.15));
+}
+
+.head{
+    position:absolute;
+    width:90px;
+    height:100px;
+    left:40px;
+    top:20px;
+    background:#dba892;
+    border:2px solid #201114;
+    border-radius:45%;
+    z-index:2;
+}
+
+.hair{
+    position:absolute;
+    width:115px;
+    height:65px;
+    left:28px;
+    top:4px;
+    background:#966f5c;
+    clip-path:polygon(
+        0 40%,10% 0,25% 30%,40% 0,
+        55% 35%,70% 0,100% 35%,
+        80% 70%,58% 45%,40% 75%,20% 50%
+    );
+    z-index:4;
+}
+
+.eye{
+    position:absolute;
+    width:20px;
+    height:5px;
+    background:#161015;
+    top:62px;
+    z-index:5;
+}
+
+.e1{left:62px}
+.e2{left:99px}
+
+.body{
+    position:absolute;
+    left:30px;
+    top:110px;
+    width:115px;
+    height:155px;
+    background:#2a1820;
+    clip-path:polygon(
+        12% 0,88% 0,100% 100%,0 100%
+    );
+}
+
+/* =========================================================
+   GOJO
+========================================================= */
+
+.gojo{
+    position:absolute;
+    width:180px;
+    height:300px;
+    left:30px;
+    bottom:0;
+}
+
+.gojo .head{
+    background:#edc0aa;
+}
+
+.gojo .hair{
+    background:#e9e9ef;
+}
+
+.blind{
+    position:absolute;
+    z-index:8;
+    top:55px;
+    left:34px;
+    width:105px;
+    height:24px;
+    background:#07070a;
+    box-shadow:0 0 8px #111;
+}
+
+.gojo .body{
+    background:#11182b;
+}
+
+.infinity{
+    position:absolute;
+    width:250px;
+    height:250px;
+    left:-10px;
+    top:20px;
+    border:1px solid #6b9dff;
+    border-radius:50%;
+    opacity:.35;
+    animation:infinitySpin 5s linear infinite;
+    box-shadow:
+        0 0 25px rgba(70,140,255,.25),
+        inset 0 0 25px rgba(70,140,255,.2);
+}
+
+.infinity::after{
+    content:"";
+    position:absolute;
+    inset:25px;
+    border:1px solid #b0cfff;
+    border-radius:50%;
+}
+
+@keyframes infinitySpin{
+    to{transform:rotate(360deg)}
+}
+
+/* =========================================================
+   YUTA
+========================================================= */
+
+.yuta{
+    position:absolute;
+    width:190px;
+    height:300px;
+    left:25px;
+    bottom:0;
+}
+
+.yuta .hair{
+    background:#dfe5ec;
+}
+
+.yuta .body{
+    background:#1c1d24;
+}
+
+.rikaAura{
+    position:absolute;
+    width:260px;
+    height:260px;
+    left:-35px;
+    top:20px;
+    border:2px solid #d8dce6;
+    border-radius:50%;
+    box-shadow:
+        0 0 40px rgba(220,225,255,.5),
+        inset 0 0 30px rgba(220,225,255,.2);
+    opacity:.5;
+    animation:pulseAura 1s infinite alternate;
+}
+
+@keyframes pulseAura{
+    to{
+        transform:scale(1.08);
+        opacity:.75;
+    }
+}
+
+/* =========================================================
+   MEGUMI
+========================================================= */
+
+.megumi{
+    position:absolute;
+    width:180px;
+    height:290px;
+    left:30px;
+    bottom:0;
+}
+
+.megumi .hair{
+    background:#10161b;
+    clip-path:polygon(
+        0 40%,10% 0,25% 35%,40% 0,
+        55% 30%,70% 0,100% 45%,
+        75% 60%,55% 45%,35% 75%,15% 50%
+    );
+}
+
+.megumi .body{
+    background:#10171d;
+}
+
+.shadow{
+    position:absolute;
+    width:260px;
+    height:90px;
+    left:-40px;
+    bottom:0;
+    background:#020204;
+    filter:blur(15px);
+}
+
+/* =========================================================
+   MAKI
+========================================================= */
+
+.maki{
+    position:absolute;
+    width:180px;
+    height:300px;
+    left:30px;
+    bottom:0;
+}
+
+.maki .hair{
+    background:#141517;
+}
+
+.maki .body{
+    background:#152923;
+}
+
+.sword{
+    position:absolute;
+    width:13px;
+    height:230px;
+    right:0;
+    top:45px;
+    background:#e9e9e9;
+    transform:rotate(22deg);
+    box-shadow:
+        0 0 15px white,
+        0 0 30px rgba(255,255,255,.5);
+}
+
+/* =========================================================
+   SUKUNA
+========================================================= */
+
+.sukunaBody{
+    position:absolute;
+    width:260px;
+    height:330px;
+    bottom:0;
+    right:0;
+}
+
+.sukunaBody::before{
+    content:"";
+    position:absolute;
+    width:300px;
+    height:300px;
+    left:-20px;
+    top:15px;
+    border-radius:50%;
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,0,30,.18),
+            transparent 65%
+        );
+    animation:sukunaAura 1.4s infinite alternate;
+}
+
+.sukunaBody::after{
+    content:"";
+    position:absolute;
+    width:270px;
+    height:30px;
+    left:-5px;
+    bottom:0;
+    background:#d5122d;
+    filter:blur(25px);
+    opacity:.2;
+}
+
+.sHead{
+    position:absolute;
+    width:125px;
+    height:140px;
+    left:68px;
+    top:20px;
+    background:#dba38d;
+    border:3px solid #160607;
+    border-radius:48%;
+    z-index:3;
+    box-shadow:
+        0 0 20px rgba(210,20,40,.15);
+}
+
+.sHair{
+    position:absolute;
+    width:165px;
+    height:75px;
+    left:48px;
+    top:3px;
+    background:#151215;
+    clip-path:polygon(
+        0 40%,10% 0,25% 28%,40% 0,
+        53% 28%,67% 0,82% 28%,100% 12%,
+        88% 70%,68% 45%,55% 75%,40% 45%,
+        25% 75%,13% 48%
+    );
+    z-index:5;
+}
+
+.sEyes{
+    position:absolute;
+    width:30px;
+    height:8px;
+    border-radius:50%;
+    background:#110306;
+    z-index:7;
+    box-shadow:0 0 8px rgba(255,0,30,.5);
+}
+
+.se1{left:83px;top:68px}
+.se2{left:137px;top:68px}
+.se3{left:83px;top:106px}
+.se4{left:137px;top:106px}
+
+.mark{
+    position:absolute;
+    width:38px;
+    height:4px;
+    background:#720916;
+    z-index:7;
+    box-shadow:0 0 5px rgba(255,0,30,.3);
+}
+
+.mk1{left:83px;top:54px;transform:rotate(25deg)}
+.mk2{left:83px;top:126px;transform:rotate(-25deg)}
+.mk3{right:83px;top:54px;transform:rotate(-25deg)}
+.mk4{right:83px;top:126px;transform:rotate(25deg)}
+
+.sTorso{
+    position:absolute;
+    width:190px;
+    height:210px;
+    left:35px;
+    top:145px;
+    background:#27171d;
+    clip-path:polygon(
+        10% 0,90% 0,100% 100%,0 100%
+    );
+    box-shadow:inset 0 0 25px rgba(0,0,0,.5);
+}
+
+@keyframes sukunaAura{
+    from{
+        transform:scale(.85);
+        opacity:.5;
+    }
+    to{
+        transform:scale(1.15);
+        opacity:1;
+    }
+}
+
+/* =========================================================
+   EXTRA PARTICLES
+========================================================= */
+
+#particles{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:15;
+    overflow:hidden;
+}
+
+.particle{
+    position:absolute;
+    width:3px;
+    height:3px;
+    background:#d5122d;
+    box-shadow:0 0 8px #ff3048;
+    animation:particleFly linear forwards;
+}
+
+@keyframes particleFly{
+    from{
+        transform:translateY(0) scale(1);
+        opacity:1;
+    }
+    to{
+        transform:
+            translate(
+                calc((var(--x) - 50) * 5px),
+                -180px
+            )
+            scale(0);
+        opacity:0;
+    }
+}
+
+/* =========================================================
+   EFFECTS
+========================================================= */
+
+#effects{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:500;
+    overflow:hidden;
+}
+
+.slash{
+    position:absolute;
+    width:420px;
+    height:5px;
+    background:white;
+    box-shadow:
+        0 0 8px white,
+        0 0 20px #ff3048,
+        0 0 45px #d5122d;
+    animation:slash .4s forwards;
+}
+
+@keyframes slash{
+    0%{
+        opacity:0;
+        transform:scaleX(0) rotate(-25deg);
+    }
+    20%{opacity:1}
+    100%{
+        opacity:0;
+        transform:scaleX(1.5) rotate(-25deg);
+    }
+}
+
+.flash{
+    position:absolute;
+    inset:0;
+    background:white;
+    opacity:.8;
+    animation:flash .22s forwards;
+}
+
+.redFlash{
+    position:absolute;
+    inset:0;
+    background:#d20c26;
+    opacity:.5;
+    animation:flash .35s forwards;
+}
+
+.purpleFlash{
+    position:absolute;
+    inset:0;
+    background:#a349ff;
+    opacity:.4;
+    animation:flash .5s forwards;
+}
+
+.iceFlash{
+    position:absolute;
+    inset:0;
+    background:#7beaff;
+    opacity:.35;
+    animation:flash .4s forwards;
+}
+
+.blueFlash{
+    position:absolute;
+    inset:0;
+    background:#318dff;
+    opacity:.3;
+    animation:flash .35s forwards;
+}
+
+.blackFlash{
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(
+            circle,
+            white 0%,
+            #fff 5%,
+            #151515 12%,
+            #000 35%
+        );
+    animation:blackFlash .45s forwards;
+}
+
+@keyframes blackFlash{
+    0%{
+        opacity:0;
+        transform:scale(.5);
+    }
+    20%{
+        opacity:1;
+    }
+    100%{
+        opacity:0;
+        transform:scale(1.8);
+    }
+}
+
+@keyframes flash{
+    to{opacity:0}
+}
+
+.impact{
+    position:absolute;
+    width:30px;
+    height:30px;
+    border:4px solid white;
+    border-radius:50%;
+    animation:impact .5s forwards;
+    box-shadow:
+        0 0 15px white,
+        0 0 30px #ff3048;
+}
+
+@keyframes impact{
+    to{
+        transform:scale(7);
+        opacity:0;
+    }
+}
+
+.fire{
+    position:absolute;
+    width:80px;
+    height:80px;
+    background:#e51b22;
+    border-radius:50%;
+    box-shadow:
+        0 0 40px #ff3d19,
+        0 0 80px #ff1700;
+    animation:fire .7s forwards;
+}
+
+@keyframes fire{
+    0%{
+        transform:scale(.2);
+        opacity:1;
+    }
+    100%{
+        transform:scale(5);
+        opacity:0;
+    }
+}
+
+/* =========================================================
+   DAMAGE NUMBER
+========================================================= */
+
+.damageNumber{
+    position:absolute;
+    z-index:700;
+    font-size:28px;
+    font-weight:bold;
+    color:#fff;
+    text-shadow:
+        0 0 5px #000,
+        0 0 15px #d5122d;
+    pointer-events:none;
+    animation:damageNumber 1s forwards;
+}
+
+@keyframes damageNumber{
+    0%{
+        opacity:0;
+        transform:translateY(20px) scale(.7);
+    }
+    15%{
+        opacity:1;
+        transform:translateY(0) scale(1.15);
+    }
+    100%{
+        opacity:0;
+        transform:translateY(-80px) scale(.8);
+    }
+}
+
+/* =========================================================
+   BOTTOM UI
+========================================================= */
+
+.controls{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    min-height:185px;
+    background:
+        linear-gradient(
+            rgba(4,3,4,.94),
+            rgba(4,3,4,.98)
+        );
+    border-top:1px solid #361018;
+    z-index:200;
+    padding:12px;
+    box-shadow:0 -15px 35px rgba(0,0,0,.6);
+}
+
+.skillGrid{
+    width:min(1100px,95%);
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:7px;
+}
+
+.skill{
+    min-height:62px;
+    background:
+        linear-gradient(
+            145deg,
+            #13090c,
+            #080506
+        );
+    border:1px solid #3d1119;
+    color:#ddd;
+    cursor:pointer;
+    transition:.15s;
+    position:relative;
+    overflow:hidden;
+}
+
+.skill::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:3px;
+    height:100%;
+    background:#65101b;
+    transition:.2s;
+}
+
+.skill:hover::before{
+    background:#ff2948;
+    box-shadow:0 0 15px #ff2948;
+}
+
+.skill:hover{
+    background:#4a0b15;
+    border-color:#dc1a32;
+    transform:translateY(-3px);
+    box-shadow:
+        0 5px 20px rgba(213,18,45,.25);
+}
+
+.skill:active{
+    transform:translateY(0) scale(.98);
+}
+
+.skill:disabled{
+    opacity:.3;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.skill b{
+    display:block;
+    color:#eee;
+    letter-spacing:1px;
+}
+
+.skill small{
+    display:block;
+    color:#777;
+    margin-top:4px;
+}
+
+.comboText{
+    width:min(1100px,95%);
+    margin:9px auto 0;
+    display:flex;
+    justify-content:space-between;
+    color:#888;
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+.comboText b{
+    color:#ddd;
+}
+
+#battleLog{
+    position:absolute;
+    left:15px;
+    bottom:195px;
+    width:320px;
+    height:105px;
+    overflow:hidden;
+    z-index:250;
+    pointer-events:none;
+}
+
+.log{
+    font-family:monospace;
+    font-size:11px;
+    color:#999;
+    margin-bottom:4px;
+    text-shadow:0 0 5px black;
+    animation:logIn .2s;
+}
+
+.log.red{color:#ff4a5e}
+.log.gold{color:#e3c35f}
+.log.white{color:white}
+.log.blue{color:#7fc8ff}
+
+@keyframes logIn{
+    from{
+        opacity:0;
+        transform:translateX(-15px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+/* =========================================================
+   CINEMATIC
+========================================================= */
+
+#cinematic{
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(80,0,12,.18),
+            #000 70%
+        );
+    z-index:9000;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    overflow:hidden;
+}
+
+#cinematic::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0 5px,
+            rgba(255,0,30,.025) 6px
+        );
+    animation:cineScan 5s linear infinite;
+}
+
+#cinematic::after{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    border-radius:50%;
+    background:
+        radial-gradient(
+            circle,
+            rgba(213,18,45,.12),
+            transparent 70%
+        );
+    animation:cinePulse 1.8s infinite alternate;
+}
+
+.cineBox{
+    width:min(900px,90%);
+    position:relative;
+    z-index:2;
+    animation:cineEnter .5s ease-out;
+}
+
+.cineWho{
+    color:#777;
+    letter-spacing:7px;
+    font-size:12px;
+    margin-bottom:25px;
+    text-shadow:0 0 10px rgba(255,255,255,.15);
+}
+
+.cineQuote{
+    font-size:32px;
+    line-height:1.5;
+    min-height:110px;
+    text-shadow:
+        0 0 10px rgba(255,255,255,.2),
+        0 0 35px rgba(213,18,45,.25);
+}
+
+.cineButton{
+    margin-top:25px;
+    padding:11px 40px;
+    background:#130609;
+    color:white;
+    border:1px solid #9c1324;
+    cursor:pointer;
+    letter-spacing:3px;
+    transition:.2s;
+}
+
+.cineButton:hover{
+    background:#861020;
+    box-shadow:
+        0 0 20px #9c1324,
+        0 0 50px rgba(156,19,36,.35);
+}
+
+@keyframes cineEnter{
+    from{
+        opacity:0;
+        transform:scale(.9);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@keyframes cinePulse{
+    from{transform:scale(.8);opacity:.3}
+    to{transform:scale(1.2);opacity:.8}
+}
+
+@keyframes cineScan{
+    to{transform:translateY(80px)}
+}
+
+/* =========================================================
+   SYNERGY
+========================================================= */
+
+#synergy{
+    position:fixed;
+    inset:0;
+    z-index:8500;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,.78);
+    pointer-events:none;
+}
+
+.synText{
+    text-align:center;
+    transform:scale(.5);
+    animation:synergyIn .8s forwards;
+}
+
+.synSmall{
+    color:#aaa;
+    letter-spacing:7px;
+}
+
+.synBig{
+    font-size:65px;
+    color:#fff;
+    text-shadow:
+        0 0 10px #fff,
+        0 0 30px #d21b36,
+        0 0 70px #d21b36;
+    letter-spacing:8px;
+}
+
+@keyframes synergyIn{
+    to{
+        transform:scale(1);
+    }
+}
+
+/* =========================================================
+   DEATH
+========================================================= */
+
+#death{
+    position:fixed;
+    inset:0;
+    z-index:9200;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background:
+        radial-gradient(
+            circle,
+            rgba(100,0,15,.25),
+            #000 65%
+        );
+    text-align:center;
+}
+
+.deathWho{
+    font-size:70px;
+    color:#d51a30;
+    letter-spacing:8px;
+    text-shadow:
+        0 0 15px #d51a30,
+        0 0 45px rgba(213,26,48,.5);
+    animation:deathPulse 1s infinite alternate;
+}
+
+.deathText{
+    margin-top:20px;
+    color:#999;
+    letter-spacing:3px;
+}
+
+@keyframes deathPulse{
+    from{opacity:.6}
+    to{opacity:1}
+}
+
+/* =========================================================
+   MAHORAGA
+========================================================= */
+
+#mahoraga{
+    position:fixed;
+    inset:0;
+    z-index:8800;
+    background:
+        radial-gradient(
+            circle,
+            rgba(100,80,30,.16),
+            rgba(0,0,0,.96) 70%
+        );
+    display:none;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.maho{
+    position:relative;
+    width:260px;
+    height:300px;
+    margin:20px auto;
+    filter:drop-shadow(0 0 25px rgba(210,180,90,.25));
+}
+
+.wheel{
+    position:absolute;
+    width:160px;
+    height:160px;
+    border:12px solid #d0ad5c;
+    border-radius:50%;
+    left:50px;
+    top:-10px;
+    box-shadow:
+        0 0 20px #a27d30,
+        0 0 50px rgba(210,170,80,.25);
+    animation:wheel 4s linear infinite;
+}
+
+.wheel::before{
+    content:"";
+    position:absolute;
+    inset:18px;
+    border:3px dashed #d0ad5c;
+    border-radius:50%;
+}
+
+.mahoHead{
+    position:absolute;
+    width:110px;
+    height:120px;
+    background:#d6ccb2;
+    border-radius:50%;
+    left:75px;
+    top:55px;
+    border:3px solid #4f452d;
+    box-shadow:0 0 20px rgba(210,190,130,.3);
+}
+
+.mahoBody{
+    position:absolute;
+    width:160px;
+    height:150px;
+    background:#514a3b;
+    left:50px;
+    top:150px;
+    clip-path:polygon(
+        15% 0,85% 0,100% 100%,0 100%
+    );
+}
+
+.adapt{
+    width:350px;
+    max-width:80%;
+    height:13px;
+    margin:15px auto;
+    background:#211b0f;
+    border:1px solid #8f763b;
+}
+
+.adapt div{
+    height:100%;
+    width:0%;
+    background:
+        linear-gradient(
+            90deg,
+            #8f763b,
+            #d8b85f,
+            #ffe28a
+        );
+    transition:.4s;
+    box-shadow:0 0 15px #d8b85f;
+}
+
+.maho button{
+    padding:10px 30px;
+    background:#161108;
+    color:#ddd;
+    border:1px solid #806b36;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.maho button:hover{
+    background:#5a471b;
+}
+
+@keyframes wheel{
+    to{transform:rotate(360deg)}
+}
+
+/* =========================================================
+   EVENT
+========================================================= */
+
+#event{
+    position:fixed;
+    inset:0;
+    z-index:8700;
+    background:rgba(0,0,0,.88);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.eventBox{
+    width:min(650px,90%);
+    background:
+        linear-gradient(
+            145deg,
+            #14070a,
+            #070304
+        );
+    border:1px solid #871425;
+    padding:35px;
+    box-shadow:
+        0 0 50px rgba(135,20,37,.2);
+    animation:eventEnter .3s;
+}
+
+.eventBox h2{
+    color:#e11a32;
+    letter-spacing:6px;
+}
+
+.eventBox p{
+    color:#999;
+    line-height:1.7;
+    margin:20px 0;
+}
+
+.eventButton{
+    padding:12px 25px;
+    background:#18080c;
+    color:#ddd;
+    border:1px solid #46131c;
+    cursor:pointer;
+    margin:4px;
+    transition:.2s;
+}
+
+.eventButton:hover{
+    background:#711020;
+    border-color:#d5122d;
+}
+
+@keyframes eventEnter{
+    from{
+        opacity:0;
+        transform:scale(.9);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+/* =========================================================
+   DEV
+========================================================= */
+
+#dev{
+    position:fixed;
+    right:10px;
+    bottom:195px;
+    z-index:10000;
+}
+
+#devButton{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#080808;
+    border:1px solid #555;
+    color:#888;
+    cursor:pointer;
+    transition:.2s;
+}
+
+#devButton:hover{
+    color:white;
+    border-color:#d5122d;
+    box-shadow:0 0 20px rgba(213,18,45,.4);
+}
+
+#devMenu{
+    display:none;
+    position:absolute;
+    right:0;
+    bottom:48px;
+    width:230px;
+    max-height:70vh;
+    overflow:auto;
+    background:#080608;
+    border:1px solid #681321;
+    padding:8px;
+    box-shadow:0 0 30px rgba(0,0,0,.8);
+}
+
+.devBtn{
+    width:100%;
+    padding:7px;
+    margin:2px 0;
+    background:#13090c;
+    color:#aaa;
+    border:1px solid #321017;
+    cursor:pointer;
+}
+
+.devBtn:hover{
+    background:#5a0c18;
+    color:white;
+}
+
+/* =========================================================
+   ENDING
+========================================================= */
+
+#ending{
+    position:fixed;
+    inset:0;
+    z-index:99998;
+    display:none;
+    background:
+        radial-gradient(
+            circle,
+            rgba(100,0,15,.25),
+            #000 70%
+        );
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.endTitle{
+    font-size:65px;
+    color:#db172e;
+    letter-spacing:10px;
+    text-shadow:
+        0 0 15px #db172e,
+        0 0 50px rgba(219,23,46,.4);
+}
+
+.endText{
+    color:#888;
+    margin:20px;
+}
+
+.restart{
+    padding:12px 35px;
+    background:#85101e;
+    color:white;
+    border:0;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.restart:hover{
+    background:#c5142c;
+    box-shadow:0 0 25px rgba(213,18,45,.5);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:900px){
+
+    .skillGrid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .player{
+        left:2%;
+    }
+
+    .sukuna{
+        right:2%;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .skillGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .fighter{
+        transform:scale(.7);
+    }
+
+    .player{
+        left:-40px;
+    }
+
+    .sukuna{
+        right:-40px;
+    }
+
+    .cineQuote{
+        font-size:22px;
+    }
+
+    .bootTitle{
+        font-size:40px;
+        letter-spacing:7px;
+    }
+
+    .bootKanji{
+        font-size:65px;
+    }
+
+    .synBig{
+        font-size:35px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+BOOT
+===================================================== -->
+
+<div id="boot">
+
+    <div class="bootBox">
+
+        <div class="bootKanji">宿儺</div>
+
+        <div class="bootTitle">
+            SUKUNA
+        </div>
+
+        <div class="bootSub">
+            KING OF CURSES
+        </div>
+
+        <button class="start" onclick="startGame()">
+            ENTER THE SHRINE
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+GAME
+===================================================== -->
+
+<div id="game">
+
+    <div class="scene">
+
+        <div class="floor"></div>
+
+        <div class="gate"></div>
+
+        <div class="shrineSymbol">
+            卍
+        </div>
+
+    </div>
+
+    <div id="particles"></div>
+
+    <!-- TOP -->
+
+    <div class="top">
+
+        <div class="logo">
+            JUJUTSU // KING OF CURSES
+        </div>
+
+        <div class="phase" id="phase">
+            PHASE I — PLAYTIME
+        </div>
+
+    </div>
+
+    <!-- HP -->
+
+    <div class="hpArea">
+
+        <div class="hpRow">
+
+            <div class="hpLabel">
+                <span>RYOMEN SUKUNA</span>
+                <span id="enemyHPText">15000 / 15000</span>
+            </div>
+
+            <div class="bar">
+                <div
+                    id="enemyHP"
+                    class="enemyBar"
+                    style="width:100%">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="hpRow">
+
+            <div class="hpLabel">
+                <span id="playerName">YUJI ITADORI</span>
+                <span id="playerHPText">3200 / 3200</span>
+            </div>
+
+            <div class="bar">
+                <div
+                    id="playerHP"
+                    class="playerBar"
+                    style="width:100%">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="hpRow">
+
+            <div class="hpLabel">
+                <span>CURSED ENERGY</span>
+                <span id="ceText">100 / 100</span>
+            </div>
+
+            <div class="bar">
+                <div
+                    id="ce"
+                    class="ceBar"
+                    style="width:100%">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="hpRow">
+
+            <div class="hpLabel">
+                <span>COMBO</span>
+                <span id="comboText">0 HIT</span>
+            </div>
+
+            <div class="bar">
+                <div
+                    id="combo"
+                    class="comboBar"
+                    style="width:0%">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="hpRow">
+
+            <div class="hpLabel">
+                <span>SUKUNA'S PRESENCE</span>
+                <span id="terrorText">0%</span>
+            </div>
+
+            <div class="bar">
+                <div
+                    id="terror"
+                    class="terrorBar"
+                    style="width:0%">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- COMBAT -->
+
+    <div class="combat">
+
+        <div
+            class="fighter player"
+            id="playerFighter">
+
+            <div id="playerCharacter"></div>
+
+        </div>
+
+        <div
+            class="fighter sukuna"
+            id="sukunaFighter">
+
+            <div class="sukunaBody">
+
+                <div class="sHair"></div>
+
+                <div class="sHead">
+
+                    <div class="sEyes se1"></div>
+                    <div class="sEyes se2"></div>
+                    <div class="sEyes se3"></div>
+                    <div class="sEyes se4"></div>
+
+                    <div class="mark mk1"></div>
+                    <div class="mark mk2"></div>
+                    <div class="mark mk3"></div>
+                    <div class="mark mk4"></div>
+
+                </div>
+
+                <div class="sTorso"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- EFFECTS -->
+
+    <div id="effects"></div>
+
+    <!-- LOG -->
+
+    <div id="battleLog"></div>
+
+    <!-- CONTROLS -->
+
+    <div class="controls">
+
+        <div class="skillGrid">
+
+            <button
+                class="skill"
+                id="attack1"
+                onclick="useSkill('basic')">
+
+                <b>STRIKE</b>
+                <small>10 CE</small>
+
+            </button>
+
+            <button
+                class="skill"
+                id="attack2"
+                onclick="useSkill('technique')">
+
+                <b>TECHNIQUE</b>
+                <small>20 CE</small>
+
+            </button>
+
+            <button
+                class="skill"
+                id="attack3"
+                onclick="useSkill('special')">
+
+                <b>SPECIAL</b>
+                <small>30 CE</small>
+
+            </button>
+
+            <button
+                class="skill"
+                id="attack4"
+                onclick="useSkill('ultimate')">
+
+                <b>ULTIMATE</b>
+                <small>50 CE</small>
+
+            </button>
+
+            <button
+                class="skill"
+                onclick="defend()">
+
+                <b>GUARD</b>
+                <small>Reduce damage</small>
+
+            </button>
+
+            <button
+                class="skill"
+                onclick="switchCharacter()">
+
+                <b>SWITCH</b>
+                <small>Change fighter</small>
+
+            </button>
+
+            <button
+                class="skill"
+                onclick="synergyAttack()">
+
+                <b>SYNERGY</b>
+                <small>Team attack</small>
+
+            </button>
+
+            <button
+                class="skill"
+                onclick="randomEvent()">
+
+                <b>EVENT</b>
+                <small>Battle event</small>
+
+            </button>
+
+            <button
+                class="skill"
+                onclick="showMahoraga()">
+
+                <b>MAHORAGA</b>
+                <small>Wheel status</small>
+
+            </button>
+
+            <button
+                class="skill"
+                onclick="observe()">
+
+                <b>OBSERVE</b>
+                <small>Analyze Sukuna</small>
+
+            </button>
+
+            <button
+                class="skill"
+                onclick="recover()">
+
+                <b>RCT</b>
+                <small>Recover HP</small>
+
+            </button>
+
+            <button
+                class="skill"
+                onclick="charge()">
+
+                <b>CHARGE</b>
+                <small>+35 CE</small>
+
+            </button>
+
+        </div>
+
+        <div class="comboText">
+
+            <span>
+                ACTIVE:
+                <b id="activeText">YUJI</b>
+            </span>
+
+            <span>
+                STREAK:
+                <b id="streak">0</b>
+            </span>
+
+            <span>
+                PHASE:
+                <b id="phaseNumber">I</b>
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+CINEMATIC
+===================================================== -->
+
+<div id="cinematic">
+
+    <div class="cineBox">
+
+        <div
+            class="cineWho"
+            id="cineWho">
+
+            SUKUNA
+
+        </div>
+
+        <div
+            class="cineQuote"
+            id="cineQuote">
+        </div>
+
+        <button
+            class="cineButton"
+            onclick="nextCinematic()">
+
+            CONTINUE
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+SYNERGY
+===================================================== -->
+
+<div id="synergy">
+
+    <div class="synText">
+
+        <div class="synSmall">
+            COMBINATION ATTACK
+        </div>
+
+        <div
+            class="synBig"
+            id="synBig">
+
+            DOMAIN DUO
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+DEATH
+===================================================== -->
+
+<div id="death">
+
+    <div>
+
+        <div
+            class="deathWho"
+            id="deathWho">
+
+            DEATH
+
+        </div>
+
+        <div
+            class="deathText"
+            id="deathText">
+
+            THE FIGHTER HAS FALLEN
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+MAHORAGA
+===================================================== -->
+
+<div id="mahoraga">
+
+    <div>
+
+        <h1 style="
+            letter-spacing:8px;
+            color:#d5b65d;
+            text-shadow:0 0 20px #a27d30;
+        ">
+            MAHORAGA
+        </h1>
+
+        <div class="maho">
+
+            <div class="wheel"></div>
+
+            <div class="mahoHead"></div>
+
+            <div class="mahoBody"></div>
+
+        </div>
+
+        <div id="adaptText">
+            ADAPTATION: 0 / 4
+        </div>
+
+        <div class="adapt">
+
+            <div id="adaptFill"></div>
+
+        </div>
+
+        <button onclick="closeMahoraga()">
+            RETURN
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+EVENT
+===================================================== -->
+
+<div id="event">
+
+    <div class="eventBox">
+
+        <h2 id="eventTitle">
+            EVENT
+        </h2>
+
+        <p id="eventDescription"></p>
+
+        <div id="eventButtons"></div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+DEV
+===================================================== -->
+
+<div id="dev">
+
+    <button
+        id="devButton"
+        onclick="toggleDev()">
+
+        ⚙
+
+    </button>
+
+    <div id="devMenu">
+
+        <button
+            class="devBtn"
+            onclick="dev('damage')">
+
+            -1000 SUKUNA
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('heal')">
+
+            FULL HEAL
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('energy')">
+
+            MAX CE
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('gojo')">
+
+            GOJO
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('yuta')">
+
+            YUTA
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('megumi')">
+
+            MEGUMI
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('maki')">
+
+            MAKI
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('shrine')">
+
+            MALEVOLENT SHRINE
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('purple')">
+
+            HOLLOW PURPLE
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('maho')">
+
+            MAHORAGA
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('adapt')">
+
+            MAX ADAPTATION
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('event')">
+
+            RANDOM EVENT
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="dev('win')">
+
+            FORCE WIN
+
+        </button>
+
+        <button
+            class="devBtn"
+            onclick="location.reload()">
+
+            RESET
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+ENDING
+===================================================== -->
+
+<div id="ending">
+
+    <div>
+
+        <div
+            class="endTitle"
+            id="endTitle">
+
+            THE END
+
+        </div>
+
+        <div
+            class="endText"
+            id="endText">
+        </div>
+
+        <button
+            class="restart"
+            onclick="location.reload()">
+
+            RESTART
+
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+STATE
+========================================================= */
+
+const state={
+
+    started:false,
+
+    sukuna:15000,
+    maxSukuna:15000,
+
+    energy:100,
+
+    combo:0,
+    streak:0,
+
+    terror:0,
+
+    phase:1,
+
+    active:"yuji",
+
+    defending:false,
+
+    locked:false,
+
+    gameOver:false,
+
+    mahoraga:false,
+
+    adaptation:0,
+
+    characters:{
+
+        yuji:{
+            name:"YUJI ITADORI",
+            hp:3200,
+            max:3200,
+            alive:true,
+            basic:170,
+            technique:340,
+            special:520,
+            ultimate:850
+        },
+
+        gojo:{
+            name:"SATORU GOJO",
+            hp:4300,
+            max:4300,
+            alive:false,
+            basic:220,
+            technique:650,
+            special:900,
+            ultimate:1500
+        },
+
+        yuta:{
+            name:"YUTA OKKOTSU",
+            hp:3400,
+            max:3400,
+            alive:false,
+            basic:190,
+            technique:430,
+            special:700,
+            ultimate:1100
+        },
+
+        megumi:{
+            name:"MEGUMI FUSHIGURO",
+            hp:2700,
+            max:2700,
+            alive:true,
+            basic:150,
+            technique:400,
+            special:500,
+            ultimate:900
+        },
+
+        maki:{
+            name:"MAKI ZENIN",
+            hp:3100,
+            max:3100,
+            alive:false,
+            basic:260,
+            technique:420,
+            special:650,
+            ultimate:1000
+        },
+
+        uraume:{
+            name:"URAUME",
+            hp:2500,
+            max:2500,
+            alive:false,
+            basic:150,
+            technique:450,
+            special:700,
+            ultimate:1000
+        }
+
+    },
+
+    cooldowns:{
+
+        basic:0,
+        technique:0,
+        special:0,
+        ultimate:0,
+        synergy:0
+
+    }
+
+};
+
+/* =========================================================
+CHARACTER HTML
+========================================================= */
+
+function characterHTML(id){
+
+    if(id==="yuji"){
+
+        return `
+        <div class="yuji">
+            <div class="hair"></div>
+
+            <div class="head">
+                <div class="eye e1"></div>
+                <div class="eye e2"></div>
+            </div>
+
+            <div class="body"></div>
+        </div>`;
+
+    }
+
+    if(id==="gojo"){
+
+        return `
+        <div class="gojo">
+
+            <div class="infinity"></div>
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="blind"></div>
+            <div class="body"></div>
+
+        </div>`;
+
+    }
+
+    if(id==="yuta"){
+
+        return `
+        <div class="yuta">
+
+            <div class="rikaAura"></div>
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="body"></div>
+
+        </div>`;
+
+    }
+
+    if(id==="megumi"){
+
+        return `
+        <div class="megumi">
+
+            <div class="shadow"></div>
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="body"></div>
+
+        </div>`;
+
+    }
+
+    if(id==="maki"){
+
+        return `
+        <div class="maki">
+
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="sword"></div>
+
+        </div>`;
+
+    }
+
+    if(id==="uraume"){
+
+        return `
+        <div class="maki">
+
+            <div
+                class="hair"
+                style="background:#d9edf3">
+            </div>
+
+            <div class="head"></div>
+
+            <div
+                class="body"
+                style="background:#dce8eb">
+            </div>
+
+        </div>`;
+
+    }
+
+}
+
+/* =========================================================
+START
+========================================================= */
+
+function startGame(){
+
+    state.started=true;
+
+    document.getElementById("boot")
+        .style.display="none";
+
+    render();
+
+    startParticles();
+
+    cinematic([
+
+        ["SUKUNA","¿Otra vez tú?"],
+
+        ["YUJI","No voy a dejar que sigas."],
+
+        ["SUKUNA","Entonces ven."],
+
+        ["SUKUNA","Hazme divertirme."],
+
+        ["YUJI","...Te voy a derrotar."],
+
+        ["SUKUNA","JAJAJAJA."],
+
+        ["SUKUNA","INTÉNTALO."]
+
+    ]);
+
+}
+
+/* =========================================================
+RENDER
+========================================================= */
+
+function render(){
+
+    const c=
+        state.characters[state.active];
+
+    document.getElementById("playerCharacter")
+        .innerHTML=
+        characterHTML(state.active);
+
+    document.getElementById("playerName")
+        .textContent=c.name;
+
+    document.getElementById("activeText")
+        .textContent=c.name;
+
+    document.getElementById("playerHPText")
+        .textContent=
+        `${Math.max(0,c.hp)} / ${c.max}`;
+
+    document.getElementById("playerHP")
+        .style.width=
+        Math.max(0,c.hp/c.max*100)+"%";
+
+    document.getElementById("enemyHPText")
+        .textContent=
+        `${Math.max(0,state.sukuna)} / ${state.maxSukuna}`;
+
+    document.getElementById("enemyHP")
+        .style.width=
+        Math.max(
+            0,
+            state.sukuna/state.maxSukuna*100
+        )+"%";
+
+    document.getElementById("ceText")
+        .textContent=
+        `${state.energy} / 100`;
+
+    document.getElementById("ce")
+        .style.width=
+        state.energy+"%";
+
+    document.getElementById("comboText")
+        .textContent=
+        `${state.combo} HIT`;
+
+    document.getElementById("combo")
+        .style.width=
+        Math.min(100,state.combo*8)+"%";
+
+    document.getElementById("terrorText")
+        .textContent=
+        state.terror+"%";
+
+    document.getElementById("terror")
+        .style.width=
+        state.terror+"%";
+
+    document.getElementById("streak")
+        .textContent=
+        state.streak;
+
+}
+
+/* =========================================================
+LOG
+========================================================= */
+
+function log(text,type=""){
+
+    const box=
+        document.getElementById("battleLog");
+
+    const div=
+        document.createElement("div");
+
+    div.className="log "+type;
+
+    div.textContent="> "+text;
+
+    box.appendChild(div);
+
+    while(box.children.length>7)
+        box.removeChild(box.firstChild);
+
+}
+
+/* =========================================================
+PARTICLES
+========================================================= */
+
+let particleInterval=null;
+
+function startParticles(){
+
+    if(particleInterval)
+        return;
+
+    particleInterval=setInterval(()=>{
+
+        if(!state.started || state.gameOver)
+            return;
+
+        const p=
+            document.createElement("div");
+
+        p.className="particle";
+
+        const x=
+            30+Math.random()*40;
+
+        p.style.left=x+"%";
+        p.style.bottom=
+            (170+Math.random()*220)+"px";
+
+        p.style.setProperty("--x",x);
+
+        p.style.animationDuration=
+            (1.5+Math.random()*2)+"s";
+
+        document
+            .getElementById("particles")
+            .appendChild(p);
+
+        setTimeout(()=>{
+            p.remove();
+        },4000);
+
+    },180);
+
+}
+
+/* =========================================================
+EFFECTS
+========================================================= */
+
+function effect(type){
+
+    const e=
+        document.getElementById("effects");
+
+    const div=
+        document.createElement("div");
+
+    div.className=type;
+
+    if(type==="slash"){
+
+        div.style.left=
+            (30+Math.random()*40)+"%";
+
+        div.style.top=
+            (30+Math.random()*30)+"%";
+
+    }
+
+    if(type==="impact"){
+
+        div.style.left="70%";
+        div.style.top="50%";
+
+    }
+
+    e.appendChild(div);
+
+    setTimeout(()=>{
+        div.remove();
+    },800);
+
+}
+
+/* =========================================================
+DAMAGE NUMBER
+========================================================= */
+
+function damageNumber(value){
+
+    const d=
+        document.createElement("div");
+
+    d.className="damageNumber";
+
+    d.textContent="-"+value;
+
+    d.style.left=
+        (62+Math.random()*12)+"%";
+
+    d.style.top=
+        (38+Math.random()*20)+"%";
+
+    document
+        .getElementById("effects")
+        .appendChild(d);
+
+    setTimeout(()=>{
+        d.remove();
+    },1000);
+
+}
+
+/* =========================================================
+SHAKE
+========================================================= */
+
+function shake(){
+
+    const g=
+        document.getElementById("game");
+
+    g.style.transform=
+        "translateX(-8px)";
+
+    setTimeout(()=>{
+        g.style.transform=
+            "translateX(8px)";
+    },50);
+
+    setTimeout(()=>{
+        g.style.transform="";
+    },100);
+
+}
+
+/* =========================================================
+CINEMATIC
+========================================================= */
+
+let cine=[];
+
+function cinematic(lines){
+
+    cine=lines;
+
+    state.locked=true;
+
+    document.getElementById("cinematic")
+        .style.display="flex";
+
+    showCine(0);
+
+}
+
+function showCine(i){
+
+    if(!cine[i]){
+
+        closeCinematic();
+
+        return;
+
+    }
+
+    document.getElementById("cineWho")
+        .textContent=
+        cine[i][0];
+
+    document.getElementById("cineQuote")
+        .textContent=
+        cine[i][1];
+
+}
+
+function nextCinematic(){
+
+    cine.shift();
+
+    if(cine.length===0){
+
+        closeCinematic();
+
+        return;
+
+    }
+
+    showCine(0);
+
+}
+
+function closeCinematic(){
+
+    document.getElementById("cinematic")
+        .style.display="none";
+
+    state.locked=false;
+
+}
+
+/* =========================================================
+SKILL
+========================================================= */
+
+function useSkill(type){
+
+    if(
+        state.locked ||
+        state.gameOver
+    )
+        return;
+
+    const c=
+        state.characters[state.active];
+
+    const cost={
+
+        basic:10,
+        technique:20,
+        special:30,
+        ultimate:50
+
+    }[type];
+
+    if(state.cooldowns[type]>0){
+
+        log(
+            `${type.toUpperCase()} está en cooldown.`,
+            "red"
+        );
+
+        return;
+
+    }
+
+    if(state.energy<cost){
+
+        log(
+            "No tienes suficiente energía.",
+            "red"
+        );
+
+        return;
+
+    }
+
+    state.energy-=cost;
+
+    state.cooldowns[type]=
+        type==="ultimate"
+        ?5
+        :2;
+
+    state.combo++;
+    state.streak++;
+
+    let damage=c[type];
+
+    if(state.combo>=3)
+        damage+=100;
+
+    if(state.combo>=6)
+        damage+=200;
+
+    if(state.active==="yuji")
+        yujiSkill(type,damage);
+
+    else if(state.active==="gojo")
+        gojoSkill(type,damage);
+
+    else if(state.active==="yuta")
+        yutaSkill(type,damage);
+
+    else if(state.active==="megumi")
+        megumiSkill(type,damage);
+
+    else if(state.active==="maki")
+        makiSkill(type,damage);
+
+    else if(state.active==="uraume")
+        uraumeSkill(type,damage);
+
+    render();
+
+}
+
+/* =========================================================
+YUJI
+========================================================= */
+
+function yujiSkill(type,damage){
+
+    if(type==="basic"){
+
+        attackAnimation();
+
+        log(
+            "YUJI — DIVERGENT FIST",
+            "white"
+        );
+
+        hit(damage);
+
+    }
+
+    if(type==="technique"){
+
+        attackAnimation();
+
+        effect("impact");
+        effect("blackFlash");
+        shake();
+
+        log(
+            "YUJI — BLACK FLASH!",
+            "red"
+        );
+
+        hit(damage+220);
+
+    }
+
+    if(type==="special"){
+
+        cinematic([
+
+            ["YUJI","¡No eres el único monstruo aquí!"],
+            ["YUJI","BLACK FLASH."]
+
+        ]);
+
+        setTimeout(()=>{
+
+            effect("blackFlash");
+            effect("redFlash");
+            shake();
+
+            hit(damage+350);
+
+        },350);
+
+    }
+
+    if(type==="ultimate"){
+
+        cinematic([
+
+            ["YUJI","Por todos los que mataste."],
+            ["YUJI","Por todos los que quedaron atrás."],
+            ["YUJI","¡ESTO TERMINA AQUÍ!"]
+
+        ]);
+
+        setTimeout(()=>{
+
+            effect("flash");
+            effect("redFlash");
+            effect("blackFlash");
+
+            shake();
+
+            hit(damage+600);
+
+        },500);
+
+    }
+
+}
+
+/* =========================================================
+GOJO
+========================================================= */
+
+function gojoSkill(type,damage){
+
+    document.getElementById("game")
+        .classList.add("gojoStage");
+
+    if(type==="basic"){
+
+        log(
+            "GOJO — BLUE",
+            "blue"
+        );
+
+        attackAnimation();
+
+        effect("blueFlash");
+
+        hit(damage);
+
+    }
+
+    if(type==="technique"){
+
+        cinematic([
+
+            ["GOJO","Cursed Technique Reversal:"],
+            ["GOJO","RED."]
+
+        ]);
+
+        setTimeout(()=>{
+
+            effect("redFlash");
+
+            shake();
+
+            hit(damage+300);
+
+        },350);
+
+    }
+
+    if(type==="special"){
+
+        cinematic([
+
+            ["GOJO","¿Me extrañaste?"],
+            ["GOJO","Unlimited Void."]
+
+        ]);
+
+        setTimeout(()=>{
+
+            effect("purpleFlash");
+
+            hit(damage+500);
+
+        },450);
+
+    }
+
+    if(type==="ultimate"){
+
+        cinematic([
+
+            ["GOJO","Blue."],
+            ["GOJO","Red."],
+            ["GOJO","Purple."],
+            ["GOJO","HOLLOW PURPLE."]
+
+        ]);
+
+        setTimeout(()=>{
+
+            effect("purpleFlash");
+            effect("flash");
+
+            shake();
+
+            hit(damage+800);
+
+        },700);
+
+    }
+
+}
+
+/* =========================================================
+YUTA
+========================================================= */
+
+function yutaSkill(type,damage){
+
+    if(type==="basic"){
+
+        attackAnimation();
+
+        hit(damage);
+
+    }
+
+    if(type==="technique"){
+
+        log(
+            "YUTA — COPIED TECHNIQUE",
+            "blue"
+        );
+
+        effect("blueFlash");
+
+        hit(damage+150);
+
+    }
+
+    if(type==="special"){
+
+        cinematic([
+
+            ["YUTA","Rika."],
+            ["RIKA","YUUUTAAA."],
+            ["YUTA","Acaba con esto."]
+
+        ]);
+
+        setTimeout(()=>{
+
+            effect("flash");
+            effect("purpleFlash");
+
+            shake();
+
+            hit(damage+400);
+
+        },450);
+
+    }
+
+    if(type==="ultimate"){
+
+        cinematic([
+
+            ["YUTA","No quiero perder a nadie más."],
+            ["YUTA","Rika... dame todo."],
+            ["RIKA","AAAAAAAH!"]
+
+        ]);
+
+        setTimeout(()=>{
+
+            effect("purpleFlash");
+            effect("flash");
+
+            shake();
+
+            hit(damage+700);
+
+        },600);
+
+    }
+
+}
+
+/* =========================================================
+MEGUMI
+========================================================= */
+
+function megumiSkill(type,damage){
+
+    if(type==="basic"){
+
+        attackAnimation();
+
+        hit(damage);
+
+    }
+
+    if(type==="technique"){
+
+        log(
+            "MEGUMI — TEN SHADOWS",
+            "blue"
+        );
+
+        document
+            .getElementById("game")
+            .classList.add("purpleStage");
+
+        effect("purpleFlash");
+
+        hit(damage+180);
+
+    }
+
+    if(type==="special"){
+
+        cinematic([
+
+            ["MEGUMI","No tengo muchas opciones."],
+            ["MEGUMI","Entonces usaré la que queda."],
+            ["MEGUMI","MAHORAGA."]
+
+        ]);
+
+        setTimeout(()=>{
+            summonMahoraga();
+            hit(damage);
+        },500);
+
+    }
+
+    if(type==="ultimate"){
+
+        cinematic([
+
+            ["MEGUMI","Chimera Shadow Garden."],
+            ["SUKUNA","..."],
+            ["MEGUMI","Ven."]
+
+        ]);
+
+        setTimeout(()=>{
+
+            effect("purpleFlash");
+
+            hit(damage+500);
+
+        },400);
+
+    }
+
+}
+
+/* =========================================================
+MAKI
+========================================================= */
+
+function makiSkill(type,damage){
+
+    if(type==="basic"){
+
+        attackAnimation();
+
+        hit(damage);
+
+    }
+
+    if(type==="technique"){
+
+        log(
+            "MAKI — SPLIT SOUL KATANA",
+            "white"
+        );
+
+        effect("slash");
+        effect("slash");
+
+        hit(damage+200);
+
+    }
+
+    if(type==="special"){
+
+        cinematic([
+
+            ["MAKI","No puedo sentir tu energía."],
+            ["MAKI","Pero sí puedo cortarte."]
+
+        ]);
+
+        setTimeout(()=>{
+
+            effect("slash");
+            effect("slash");
+            effect("slash");
+
+            hit(damage+300);
+
+        },250);
+
+    }
+
+    if(type==="ultimate"){
+
+        cinematic([
+
+            ["MAKI","Sukuna."],
+            ["MAKI","Esta espada atraviesa tu alma."]
+
+        ]);
+
+        setTimeout(()=>{
+
+            effect("flash");
+
+            for(let i=0;i<6;i++){
+
+                setTimeout(
+                    ()=>effect("slash"),
+                    i*80
+                );
+
+            }
+
+            hit(damage+600);
+
+        },300);
+
+    }
+
+}
+
+/* =========================================================
+URAUME
+========================================================= */
+
+function uraumeSkill(type,damage){
+
+    document
+        .getElementById("game")
+        .classList.add("iceStage");
+
+    if(type==="basic"){
+
+        effect("iceFlash");
+
+        hit(damage);
+
+    }
+
+    if(type==="technique"){
+
+        cinematic([
+            ["URAUME","FROZEN STAR."]
+        ]);
+
+        setTimeout(()=>{
+
+            effect("iceFlash");
+
+            hit(damage+200);
+
+        },250);
+
+    }
+
+    if(type==="special"){
+
+        cinematic([
+            ["URAUME","No permitiré que interfieras con el Rey."]
+        ]);
+
+        setTimeout(()=>{
+
+            effect("iceFlash");
+
+            hit(damage+400);
+
+        },300);
+
+    }
+
+    if(type==="ultimate"){
+
+        cinematic([
+
+            ["URAUME","Todo este lugar."],
+            ["URAUME","Será hielo."]
+
+        ]);
+
+        setTimeout(()=>{
+
+            effect("iceFlash");
+            effect("flash");
+
+            hit(damage+600);
+
+        },400);
+
+    }
+
+}
+
+/* =========================================================
+HIT
+========================================================= */
+
+function hit(damage){
+
+    if(
+        state.adaptation>=4 &&
+        state.mahoraga
+    ){
+
+        damage=
+            Math.floor(damage*.3);
+
+        log(
+            "MAHORAGA: ADAPTADO.",
+            "gold"
+        );
+
+    }
+
+    damage=Math.max(1,Math.floor(damage));
+
+    state.sukuna-=damage;
+
+    state.terror=
+        Math.min(
+            100,
+            state.terror+4
+        );
+
+    damageNumber(damage);
+
+    const enemy=
+        document.getElementById(
+            "sukunaFighter"
+        );
+
+    enemy.classList.add("damage");
+
+    effect("impact");
+
+    shake();
+
+    setTimeout(()=>{
+
+        enemy.classList.remove("damage");
+
+    },300);
+
+    log(
+        `-${damage} HP SUKUNA`,
+        "white"
+    );
+
+    adaptationTick();
+
+    phaseCheck();
+
+    if(state.sukuna<=0){
+
+        state.sukuna=0;
+
+        sukunaDeath();
+
+        return;
+
+    }
+
+    enemyCounter();
+
+    render();
+
+}
+
+/* =========================================================
+ATTACK ANIMATION
+========================================================= */
+
+function attackAnimation(){
+
+    const p=
+        document.getElementById(
+            "playerFighter"
+        );
+
+    p.classList.add("attack");
+
+    setTimeout(()=>{
+
+        p.classList.remove("attack");
+
+    },300);
+
+}
+
+/* =========================================================
+ENEMY
+========================================================= */
+
+function enemyCounter(){
+
+    if(state.gameOver)
+        return;
+
+    setTimeout(()=>{
+
+        if(state.locked)
+            return;
+
+        if(state.gameOver)
+            return;
+
+        let damage=200;
+
+        if(state.phase>=2)
+            damage+=100;
+
+        if(state.phase>=3)
+            damage+=120;
+
+        if(state.phase>=4)
+            damage+=250;
+
+        const attacks=[
+
+            "DISMANTLE",
+            "CLEAVE",
+            "KAMINO"
+
+        ];
+
+        let attack=
+            attacks[
+                Math.floor(
+                    Math.random()*attacks.length
+                )
+            ];
+
+        if(
+            state.terror>=75 &&
+            Math.random()<.3
+        ){
+
+            attack=
+                "WORLD CUTTING SLASH";
+
+            damage=850;
+
+        }
+
+        if(state.defending){
+
+            damage=
+                Math.floor(damage*.35);
+
+            state.defending=false;
+
+            log(
+                `DEFENSA — ${damage} DAÑO`,
+                "blue"
+            );
+
+        }
+
+        const c=
+            state.characters[state.active];
+
+        c.hp-=damage;
+
+        if(attack==="KAMINO"){
+
+            effect("fire");
+
+        }else{
+
+            effect("slash");
+
+        }
+
+        if(attack==="WORLD CUTTING SLASH"){
+
+            effect("redFlash");
+            effect("flash");
+
+        }
+
+        document
+            .getElementById("playerFighter")
+            .classList.add("damage");
+
+        setTimeout(()=>{
+
+            document
+                .getElementById("playerFighter")
+                .classList.remove("damage");
+
+        },300);
+
+        state.terror=
+            Math.min(
+                100,
+                state.terror+7
+            );
+
+        log(
+            `SUKUNA — ${attack} — ${damage}`,
+            "red"
+        );
+
+        if(c.hp<=0){
+
+            c.hp=0;
+
+            deathCinematic();
+
+        }
+
+        render();
+
+    },600);
+
+}
+
+/* =========================================================
+DEFEND
+========================================================= */
+
+function defend(){
+
+    if(state.locked)
+        return;
+
+    state.defending=true;
+
+    state.combo=0;
+
+    log(
+        "Guardia preparada.",
+        "blue"
+    );
+
+    enemyCounter();
+
+}
+
+/* =========================================================
+RECOVER
+========================================================= */
+
+function recover(){
+
+    if(state.locked)
+        return;
+
+    if(state.energy<30)
+        return;
+
+    state.energy-=30;
+
+    const c=
+        state.characters[state.active];
+
+    c.hp=Math.min(
+        c.max,
+        c.hp+650
+    );
+
+    effect("blueFlash");
+
+    log(
+        "RCT — +650 HP",
+        "blue"
+    );
+
+    render();
+
+}
+
+/* =========================================================
+CHARGE
+========================================================= */
+
+function charge(){
+
+    if(state.locked)
+        return;
+
+    state.energy=
+        Math.min(
+            100,
+            state.energy+35
+        );
+
+    state.combo=0;
+
+    effect("purpleFlash");
+
+    log(
+        "ENERGÍA MALDITA RECUPERADA.",
+        "blue"
+    );
+
+    enemyCounter();
+
+    render();
+
+}
+
+/* =========================================================
+SWITCH
+========================================================= */
+
+function switchCharacter(){
+
+    if(state.locked)
+        return;
+
+    const ids=
+        Object.keys(state.characters)
+        .filter(id=>
+            state.characters[id].alive
+        );
+
+    if(ids.length<=1)
+        return;
+
+    let i=
+        ids.indexOf(state.active);
+
+    i=(i+1)%ids.length;
+
+    state.active=ids[i];
+
+    state.combo=0;
+
+    render();
+
+    characterEntrance(state.active);
+
+}
+
+/* =========================================================
+ENTRANCES
+========================================================= */
+
+function characterEntrance(id){
+
+    if(id==="gojo"){
+
+        document
+            .getElementById("game")
+            .classList.add("gojoStage");
+
+        cinematic([
+
+            ["GOJO","Yo me encargo."],
+            ["GOJO","Puedes descansar un segundo."]
+
+        ]);
+
+    }
+
+    if(id==="yuta"){
+
+        cinematic([
+
+            ["YUTA","Llegué."],
+            ["YUTA","Ahora somos dos."]
+
+        ]);
+
+    }
+
+    if(id==="maki"){
+
+        cinematic([
+
+            ["MAKI","¿Dónde está?"],
+            ["MAKI","Quiero verlo de frente."]
+
+        ]);
+
+    }
+
+    if(id==="megumi"){
+
+        cinematic([
+
+            ["MEGUMI","Esta vez..."],
+            ["MEGUMI","No voy a retroceder."]
+
+        ]);
+
+    }
+
+}
+
+/* =========================================================
+SYNERGY
+========================================================= */
+
+function synergyAttack(){
+
+    if(state.locked)
+        return;
+
+    const alive=
+        Object.keys(state.characters)
+        .filter(id=>
+            id!==state.active &&
+            state.characters[id].alive
+        );
+
+    if(alive.length===0){
+
+        log(
+            "No hay aliados disponibles.",
+            "red"
+        );
+
+        return;
+
+    }
+
+    let partner=
+        alive[
+            Math.floor(
+                Math.random()*alive.length
+            )
+        ];
+
+    if(
+        state.active==="yuji" &&
+        state.characters.gojo.alive
+    )
+        partner="gojo";
+
+    if(
+        state.active==="yuta" &&
+        state.characters.maki.alive
+    )
+        partner="maki";
+
+    if(
+        state.active==="megumi" &&
+        state.mahoraga
+    )
+        partner="mahoraga";
+
+    showSynergy(
+        state.active,
+        partner
+    );
+
+}
+
+/* =========================================================
+SYNERGY SYSTEM
+========================================================= */
+
+function showSynergy(a,b){
+
+    let title="DUAL ASSAULT";
+    let damage=650;
+
+    if(a==="yuji" && b==="gojo"){
+
+        title="TEACHER & VESSEL";
+        damage=1100;
+
+        cinematic([
+
+            ["GOJO","¿Listo?"],
+            ["YUJI","Desde hace mucho."]
+
+        ]);
+
+    }
+
+    else if(a==="yuta" && b==="maki"){
+
+        title="SPECIAL GRADE & WARRIOR";
+        damage=1050;
+
+        cinematic([
+
+            ["MAKI","Yuta."],
+            ["YUTA","Sí."]
+
+        ]);
+
+    }
+
+    else if(a==="megumi" && b==="mahoraga"){
+
+        title="TEN SHADOWS";
+        damage=1250;
+
+        cinematic([
+
+            ["MEGUMI","Mahoraga."],
+            ["MAHORAGA","..."],
+            ["SUKUNA","Así que finalmente lo entiendes."]
+
+        ]);
+
+    }
+
+    else if(a==="yuji" && b==="yuta"){
+
+        title="BROTHERS";
+        damage=1200;
+
+        cinematic([
+
+            ["YUJI","Yuta."],
+            ["YUTA","Vamos."]
+
+        ]);
+
+    }
+
+    else if(a==="gojo" && b==="yuta"){
+
+        title="THE STRONGEST DUO";
+        damage=1400;
+
+        cinematic([
+
+            ["GOJO","Hazlo como practicamos."],
+            ["YUTA","Entendido."]
+
+        ]);
+
+    }
+
+    document.getElementById("synBig")
+        .textContent=title;
+
+    document.getElementById("synergy")
+        .style.display="flex";
+
+    setTimeout(()=>{
+
+        document.getElementById("synergy")
+            .style.display="none";
+
+        effect("flash");
+        shake();
+
+        state.sukuna-=damage;
+
+        state.combo+=3;
+
+        damageNumber(damage);
+
+        log(
+            `SYNERGY — ${title} — ${damage} DMG`,
+            "gold"
+        );
+
+        phaseCheck();
+
+        if(state.sukuna<=0){
+
+            state.sukuna=0;
+
+            sukunaDeath();
+
+        }
+
+        render();
+
+    },850);
+
+}
+
+/* =========================================================
+MAHORAGA
+========================================================= */
+
+function summonMahoraga(){
+
+    state.mahoraga=true;
+
+    document.getElementById("mahoraga")
+        .style.display="flex";
+
+    log(
+        "MAHORAGA HA SIDO INVOCADO.",
+        "gold"
+    );
+
+}
+
+function showMahoraga(){
+
+    if(!state.mahoraga){
+
+        log(
+            "Mahoraga todavía no ha aparecido.",
+            "gold"
+        );
+
+        return;
+
+    }
+
+    document.getElementById("mahoraga")
+        .style.display="flex";
+
+}
+
+function closeMahoraga(){
+
+    document.getElementById("mahoraga")
+        .style.display="none";
+
+}
+
+function adaptationTick(){
+
+    if(!state.mahoraga)
+        return;
+
+    if(state.adaptation>=4)
+        return;
+
+    state.adaptation++;
+
+    document.getElementById("adaptFill")
+        .style.width=
+        (state.adaptation/4*100)+"%";
+
+    document.getElementById("adaptText")
+        .textContent=
+        `ADAPTATION: ${state.adaptation} / 4`;
+
+    log(
+        `LA RUEDA GIRA — ${state.adaptation}/4`,
+        "gold"
+    );
+
+}
+
+/* =========================================================
+OBSERVE
+========================================================= */
+
+function observe(){
+
+    let text="";
+
+    if(state.sukuna>10000)
+        text=
+            "Sukuna todavía está jugando.";
+
+    else if(state.sukuna>5000)
+        text=
+            "Su energía está aumentando.";
+
+    else
+        text=
+            "Sukuna está entrando en su estado final.";
+
+    log(
+        "OBSERVACIÓN: "+text,
+        "blue"
+    );
+
+}
+
+/* =========================================================
+PHASES
+========================================================= */
+
+function phaseCheck(){
+
+    let newPhase=1;
+
+    if(state.sukuna<=11000)
+        newPhase=2;
+
+    if(state.sukuna<=7500)
+        newPhase=3;
+
+    if(state.sukuna<=4000)
+        newPhase=4;
+
+    if(state.sukuna<=1800)
+        newPhase=5;
+
+    if(newPhase===state.phase)
+        return;
+
+    state.phase=newPhase;
+
+    const phaseNames=[
+
+        "",
+
+        "PHASE I — PLAYTIME",
+
+        "PHASE II — SERIOUS",
+
+        "PHASE III — THE WHEEL",
+
+        "PHASE IV — MALEVOLENT SHRINE",
+
+        "PHASE V — THE WORLD"
+
+    ];
+
+    document.getElementById("phase")
+        .textContent=
+        phaseNames[state.phase];
+
+    document.getElementById("phaseNumber")
+        .textContent=
+        ["","I","II","III","IV","V"]
+        [state.phase];
+
+    if(state.phase===2){
+
+        effect("redFlash");
+
+        cinematic([
+
+            ["SUKUNA","Ya me divertí bastante."],
+            ["SUKUNA","Ahora voy a empezar a matarlos."]
+
+        ]);
+
+    }
+
+    if(state.phase===3){
+
+        summonMahoraga();
+
+        effect("goldFlash");
+
+        cinematic([
+
+            ["SUKUNA","La rueda ha comenzado."],
+            ["SUKUNA","Veamos cuánto tardan en comprenderlo."]
+
+        ]);
+
+    }
+
+    if(state.phase===4){
+
+        document
+            .getElementById("game")
+            .classList.add("shrine");
+
+        effect("redFlash");
+
+        cinematic([
+
+            ["SUKUNA","Expansión de Dominio."],
+            ["SUKUNA","MALEVOLENT SHRINE."]
+
+        ]);
+
+        state.terror=100;
+
+    }
+
+    if(state.phase===5){
+
+        effect("redFlash");
+
+        cinematic([
+
+            ["SUKUNA","Ya no hay razón para contenerme."],
+            ["SUKUNA","WORLD CUTTING SLASH."]
+
+        ]);
+
+    }
+
+}
+
+/* =========================================================
+DEATH CINEMATIC
+========================================================= */
+
+function deathCinematic(){
+
+    const id=state.active;
+
+    const c=state.characters[id];
+
+    c.alive=false;
+
+    document.getElementById("deathWho")
+        .textContent=c.name;
+
+    document.getElementById("deathText")
+        .textContent=
+        "HAS CAÍDO.";
+
+    document.getElementById("death")
+        .style.display="flex";
+
+    document
+        .getElementById("playerFighter")
+        .classList.add("dead");
+
+    setTimeout(()=>{
+
+        document
+            .getElementById("death")
+            .style.display="none";
+
+        document
+            .getElementById("playerFighter")
+            .classList.remove("dead");
+
+        const next=
+            Object.keys(state.characters)
+            .find(id=>
+                state.characters[id].alive
+            );
+
+        if(next){
+
+            state.active=next;
+
+            cinematic([
+
+                [
+                    state.characters[next].name,
+                    "..."
+                ],
+
+                ["SUKUNA","Otro."]
+
+            ]);
+
+            render();
+
+        }else{
+
+            lose();
+
+        }
+
+    },1800);
+
+}
+
+/* =========================================================
+SUKUNA DEATH
+========================================================= */
+
+function sukunaDeath(){
+
+    if(state.gameOver)
+        return;
+
+    state.gameOver=true;
+
+    cinematic([
+
+        ["SUKUNA","..."],
+
+        ["SUKUNA","Así que este es el final."],
+
+        ["SUKUNA","Qué aburrido."],
+
+        ["YUJI","Se acabó."],
+
+        ["SUKUNA","No."],
+
+        ["SUKUNA","Solo terminó esta pelea."]
+
+    ]);
+
+    setTimeout(()=>{
+
+        document.getElementById("endTitle")
+            .textContent=
+            "THE KING FALLS";
+
+        document.getElementById("endText")
+            .textContent=
+            "El Santuario se derrumba mientras los supervivientes permanecen en pie.";
+
+        document.getElementById("ending")
+            .style.display="flex";
+
+    },3500);
+
+}
+
+/* =========================================================
+LOSE
+========================================================= */
+
+function lose(){
+
+    state.gameOver=true;
+
+    document.getElementById("endTitle")
+        .textContent=
+        "THE SHRINE WINS";
+
+    document.getElementById("endText")
+        .textContent=
+        "Todos los combatientes han caído.";
+
+    document.getElementById("ending")
+        .style.display="flex";
+
+}
+
+/* =========================================================
+EVENTS
+========================================================= */
+
+function randomEvent(){
+
+    if(state.locked)
+        return;
+
+    const events=[
+
+        {
+            title:"GOJO ARRIVES",
+
+            text:
+                "Una presión azul atraviesa el campo.",
+
+            buttons:[
+
+                [
+                    "DEJARLO ENTRAR",
+                    ()=>{
+                        spawn("gojo");
+                        closeEvent();
+                    }
+                ],
+
+                [
+                    "IGNORARLO",
+                    closeEvent
+                ]
+
+            ]
+
+        },
+
+        {
+
+            title:"RIKA",
+
+            text:
+                "Una presencia aparece detrás de Yuta.",
+
+            buttons:[
+
+                [
+                    "LLAMAR A RIKA",
+                    ()=>{
+                        spawn("yuta");
+                        closeEvent();
+                    }
+                ],
+
+                [
+                    "ESPERAR",
+                    closeEvent
+                ]
+
+            ]
+
+        },
+
+        {
+
+            title:"MAKI BREAKS THE FIELD",
+
+            text:
+                "Una barrera se rompe.",
+
+            buttons:[
+
+                [
+                    "ENTRAR",
+                    ()=>{
+                        spawn("maki");
+                        closeEvent();
+                    }
+                ],
+
+                [
+                    "NO",
+                    closeEvent
+                ]
+
+            ]
+
+        },
+
+        {
+
+            title:"URAUME",
+
+            text:
+                "El suelo empieza a congelarse.",
+
+            buttons:[
+
+                [
+                    "ENFRENTARLO",
+                    ()=>{
+                        spawn("uraume");
+                        closeEvent();
+                    }
+                ],
+
+                [
+                    "RETROCEDER",
+                    closeEvent
+                ]
+
+            ]
+
+        }
+
+    ];
+
+    const e=
+        events[
+            Math.floor(
+                Math.random()*events.length
+            )
+        ];
+
+    document.getElementById("eventTitle")
+        .textContent=e.title;
+
+    document.getElementById("eventDescription")
+        .textContent=e.text;
+
+    const box=
+        document.getElementById("eventButtons");
+
+    box.innerHTML="";
+
+    e.buttons.forEach(b=>{
+
+        const button=
+            document.createElement("button");
+
+        button.className="eventButton";
+
+        button.textContent=b[0];
+
+        button.onclick=b[1];
+
+        box.appendChild(button);
+
+    });
+
+    document.getElementById("event")
+        .style.display="flex";
+
+}
+
+function closeEvent(){
+
+    document.getElementById("event")
+        .style.display="none";
+
+    render();
+
+}
+
+/* =========================================================
+SPAWN
+========================================================= */
+
+function spawn(id){
+
+    if(!state.characters[id])
+        return;
+
+    state.characters[id].alive=true;
+
+    state.characters[id].hp=
+        state.characters[id].max;
+
+    state.active=id;
+
+    render();
+
+    characterEntrance(id);
+
+}
+
+/* =========================================================
+COOLDOWN
+========================================================= */
+
+setInterval(()=>{
+
+    for(const key in state.cooldowns){
+
+        if(state.cooldowns[key]>0)
+            state.cooldowns[key]--;
+
+    }
+
+},1000);
+
+/* =========================================================
+ENERGY REGEN
+========================================================= */
+
+setInterval(()=>{
+
+    if(
+        state.started &&
+        !state.gameOver &&
+        !state.locked
+    ){
+
+        state.energy=
+            Math.min(
+                100,
+                state.energy+3
+            );
+
+        render();
+
+    }
+
+},1200);
+
+/* =========================================================
+DEV
+========================================================= */
+
+function toggleDev(){
+
+    const menu=
+        document.getElementById("devMenu");
+
+    menu.style.display=
+        menu.style.display==="block"
+        ?"none"
+        :"block";
+
+}
+
+function dev(action){
+
+    if(action==="damage"){
+
+        state.sukuna-=1000;
+
+        if(state.sukuna<0)
+            state.sukuna=0;
+
+        phaseCheck();
+
+    }
+
+    if(action==="heal"){
+
+        const c=
+            state.characters[state.active];
+
+        c.hp=c.max;
+
+    }
+
+    if(action==="energy")
+        state.energy=100;
+
+    if(action==="gojo")
+        spawn("gojo");
+
+    if(action==="yuta")
+        spawn("yuta");
+
+    if(action==="megumi")
+        spawn("megumi");
+
+    if(action==="maki")
+        spawn("maki");
+
+    if(action==="shrine"){
+
+        state.phase=4;
+
+        document
+            .getElementById("game")
+            .classList.add("shrine");
+
+        state.terror=100;
+
+        document.getElementById("phase")
+            .textContent=
+            "PHASE IV — MALEVOLENT SHRINE";
+
+        document.getElementById("phaseNumber")
+            .textContent="IV";
+
+    }
+
+    if(action==="purple"){
+
+        effect("purpleFlash");
+
+        state.sukuna-=1500;
+
+        if(state.sukuna<0)
+            state.sukuna=0;
+
+        damageNumber(1500);
+
+        shake();
+
+        phaseCheck();
+
+    }
+
+    if(action==="maho")
+        summonMahoraga();
+
+    if(action==="adapt"){
+
+        state.mahoraga=true;
+        state.adaptation=4;
+
+        document.getElementById("adaptFill")
+            .style.width="100%";
+
+        document.getElementById("adaptText")
+            .textContent=
+            "ADAPTATION: 4 / 4";
+
+    }
+
+    if(action==="event")
+        randomEvent();
+
+    if(action==="win"){
+
+        state.sukuna=0;
+
+        sukunaDeath();
+
+    }
+
+    render();
+
+}
+
+/* =========================================================
+KEYBOARD
+========================================================= */
+
+document.addEventListener("keydown",e=>{
+
+    if(
+        e.key==="Enter" &&
+        document.getElementById("cinematic")
+            .style.display==="flex"
+    ){
+
+        nextCinematic();
+
+        return;
+
+    }
+
+    if(e.key==="1")
+        useSkill("basic");
+
+    if(e.key==="2")
+        useSkill("technique");
+
+    if(e.key==="3")
+        useSkill("special");
+
+    if(e.key==="4")
+        useSkill("ultimate");
+
+    if(e.key==="5")
+        defend();
+
+    if(e.key==="6")
+        switchCharacter();
+
+    if(e.key==="7")
+        synergyAttack();
+
+    if(e.key==="8")
+        randomEvent();
+
+    if(e.key==="9")
+        recover();
+
+    if(e.key==="0")
+        charge();
+
+    if(e.key.toLowerCase()==="d")
+        toggleDev();
+
+});
+
+/* =========================================================
+INIT
+========================================================= */
+
+render();
+
+</script>
+
+</body>
+<!-- =========================================================
+     RETURN BUTTON — CHARACTER THEMED
+========================================================= -->
+
+<a href="index.html" id="return-dev">
+
+    <span class="return-icon">←</span>
+
+    <span class="return-content">
+        <small>RETURN TO</small>
+        <strong>DEVELOPER CENTER</strong>
+    </span>
+
+</a>
+
+
+<style>
+
+/* =========================================================
+   BASE
+========================================================= */
+
+#return-dev{
+
+    position:fixed;
+
+    top:22px;
+    left:22px;
+
+    z-index:2147483646;
+
+    display:flex;
+    align-items:center;
+    gap:11px;
+
+    padding:10px 15px;
+
+    text-decoration:none;
+
+    font-family:monospace;
+
+    background:rgba(5,5,8,.72);
+
+    border:1px solid;
+
+    border-radius:8px;
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+        0 0 20px rgba(0,0,0,.5);
+
+    opacity:0;
+
+    transform:
+        translateX(-20px);
+
+    animation:
+        returnButtonAppear
+        .8s
+        4.3s
+        cubic-bezier(.2,.8,.2,1)
+        forwards;
+
+    transition:
+        .3s ease;
+
+}
+
+
+/* =========================================================
+   ICONO
+========================================================= */
+
+.return-icon{
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:28px;
+    height:28px;
+
+    border:1px solid;
+
+    border-radius:50%;
+
+    font-size:18px;
+
+    transition:
+        .3s ease;
+
+}
+
+
+/* =========================================================
+   TEXTO
+========================================================= */
+
+.return-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:3px;
+
+}
+
+.return-content small{
+
+    font-size:8px;
+
+    letter-spacing:3px;
+
+    opacity:.55;
+
+}
+
+.return-content strong{
+
+    font-size:11px;
+
+    letter-spacing:2px;
+
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE APARICIÓN
+========================================================= */
+
+@keyframes returnButtonAppear{
+
+    0%{
+
+        opacity:0;
+
+        transform:
+            translateX(-20px);
+
+    }
+
+    100%{
+
+        opacity:1;
+
+        transform:
+            translateX(0);
+
+    }
+
+}
+
+
+/* =========================================================
+   YHWACH
+========================================================= */
+
+body.yhwach-page #return-dev{
+
+    color:#ffe36b;
+
+    border-color:
+        rgba(255,210,50,.35);
+
+    box-shadow:
+
+        0 0 15px rgba(255,200,0,.08),
+
+        inset 0 0 15px rgba(255,200,0,.04);
+
+}
+
+body.yhwach-page #return-dev .return-icon{
+
+    border-color:#ffd000;
+
+    box-shadow:
+        0 0 12px rgba(255,210,0,.5);
+
+}
+
+body.yhwach-page #return-dev:hover{
+
+    color:#fff3a0;
+
+    border-color:#ffd000;
+
+    background:
+        rgba(35,28,5,.9);
+
+    box-shadow:
+
+        0 0 20px rgba(255,210,0,.35),
+
+        0 0 50px rgba(255,170,0,.12);
+
+    transform:
+        translateX(4px);
+
+}
+
+body.yhwach-page #return-dev:hover .return-icon{
+
+    transform:
+        rotate(-10deg)
+        translateX(-3px);
+
+}
+
+
+/* =========================================================
+   SUKUNA
+========================================================= */
+
+body.sukuna-page #return-dev{
+
+    color:#ff4b4b;
+
+    border-color:
+        rgba(255,30,30,.35);
+
+    box-shadow:
+
+        0 0 15px rgba(255,0,0,.08),
+
+        inset 0 0 15px rgba(255,0,0,.04);
+
+}
+
+body.sukuna-page #return-dev .return-icon{
+
+    border-color:#ff2020;
+
+    box-shadow:
+        0 0 12px rgba(255,0,0,.55);
+
+}
+
+body.sukuna-page #return-dev:hover{
+
+    color:#fff;
+
+    border-color:#ff2020;
+
+    background:
+        rgba(35,3,3,.92);
+
+    box-shadow:
+
+        0 0 20px rgba(255,0,0,.4),
+
+        0 0 55px rgba(255,0,0,.15);
+
+    transform:
+        translateX(4px);
+
+}
+
+body.sukuna-page #return-dev:hover .return-icon{
+
+    transform:
+        translateX(-3px)
+        rotate(-8deg);
+
+}
+
+
+/* =========================================================
+   DIO
+========================================================= */
+
+body.dio-page #return-dev{
+
+    color:#ffe36b;
+
+    border-color:
+        rgba(255,215,80,.35);
+
+    box-shadow:
+
+        0 0 15px rgba(255,210,0,.08),
+
+        inset 0 0 15px rgba(255,210,0,.04);
+
+}
+
+body.dio-page #return-dev .return-icon{
+
+    border-color:#ffd000;
+
+    box-shadow:
+        0 0 12px rgba(255,210,0,.5);
+
+}
+
+body.dio-page #return-dev:hover{
+
+    color:#fff5ae;
+
+    border-color:#ffd000;
+
+    background:
+        rgba(30,25,4,.92);
+
+    box-shadow:
+
+        0 0 20px rgba(255,210,0,.4),
+
+        0 0 60px rgba(255,180,0,.14);
+
+    transform:
+        translateX(4px);
+
+}
+
+body.dio-page #return-dev:hover .return-icon{
+
+    transform:
+        translateX(-3px)
+        rotate(-10deg);
+
+}
+
+
+/* =========================================================
+   MÓVIL
+========================================================= */
+
+@media(max-width:600px){
+
+    #return-dev{
+
+        top:12px;
+        left:12px;
+
+        padding:8px 11px;
+
+        gap:8px;
+
+    }
+
+    .return-icon{
+
+        width:24px;
+        height:24px;
+
+        font-size:15px;
+
+    }
+
+    .return-content small{
+
+        font-size:7px;
+
+        letter-spacing:2px;
+
+    }
+
+    .return-content strong{
+
+        font-size:9px;
+
+        letter-spacing:1px;
+
+    }
+
+}
+
+</style>
+
+
+<script>
+
+/* =========================================================
+   DETECTAR EL JUEGO
+========================================================= */
+
+(function(){
+
+    const button =
+        document.getElementById("return-dev");
+
+    if(!button) return;
+
+
+    const page =
+        window.location.pathname
+        .split("/")
+        .pop()
+        .toLowerCase();
+
+
+    /* =========================
+       YHWACH
+    ========================= */
+
+    if(page === "yhwa.html"){
+
+        document.body.classList.add(
+            "yhwach-page"
+        );
+
+    }
+
+
+    /* =========================
+       SUKUNA
+    ========================= */
+
+    else if(page === "sukuna.html"){
+
+        document.body.classList.add(
+            "sukuna-page"
+        );
+
+    }
+
+
+    /* =========================
+       DIO
+    ========================= */
+
+    else if(page === "dio.html"){
+
+        document.body.classList.add(
+            "dio-page"
+        );
+
+    }
+
+
+})();
+
+</script>
+<!-- =========================================================
+     SUKUNA — ENTRADA CINEMATOGRÁFICA
+     Pegar inmediatamente después de <body>
+========================================================= -->
+
+<div id="sukuna-entry">
+
+    <div class="sukuna-entry-grid"></div>
+
+    <div class="sukuna-entry-slice slice-one"></div>
+
+    <div class="sukuna-entry-slice slice-two"></div>
+
+    <div class="sukuna-entry-domain">
+
+        <div class="sukuna-entry-kanji">
+            伏魔御厨子
+        </div>
+
+        <small>
+            MALEVOLENT SHRINE
+        </small>
+
+    </div>
+
+</div>
+
+
+<style>
+
+#sukuna-entry{
+
+    position:fixed;
+
+    inset:0;
+
+    width:100vw;
+    height:100vh;
+
+    background:#050000;
+
+    z-index:2147483647;
+
+    overflow:hidden;
+
+    pointer-events:none;
+
+    animation:
+        sukunaEntryEnd
+        3.4s
+        ease-out
+        forwards;
+}
+
+
+/* =========================================================
+   DOMINIO
+========================================================= */
+
+.sukuna-entry-grid{
+
+    position:absolute;
+
+    inset:-50%;
+
+    background:
+
+        linear-gradient(
+            rgba(255,0,0,.08) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(255,0,0,.08) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        70px 70px;
+
+    transform:
+        perspective(500px)
+        rotateX(55deg)
+        scale(1.5);
+
+    opacity:0;
+
+    animation:
+        sukunaGrid
+        3s
+        .2s
+        ease-out
+        forwards;
+}
+
+@keyframes sukunaGrid{
+
+    0%{
+        opacity:0;
+        transform:
+            perspective(500px)
+            rotateX(55deg)
+            scale(.5);
+    }
+
+    30%{
+        opacity:1;
+    }
+
+    75%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            perspective(500px)
+            rotateX(55deg)
+            scale(2);
+    }
+}
+
+
+/* =========================================================
+   CORTES
+========================================================= */
+
+.sukuna-entry-slice{
+
+    position:absolute;
+
+    width:160vw;
+
+    left:-30vw;
+
+    height:5px;
+
+    background:#fff;
+
+    box-shadow:
+
+        0 0 10px white,
+
+        0 0 25px red,
+
+        0 0 70px red;
+
+    transform:
+        rotate(-25deg)
+        scaleX(0);
+
+    transform-origin:center;
+}
+
+.slice-one{
+
+    top:48%;
+
+    animation:
+        sukunaSlice
+        1s
+        .7s
+        cubic-bezier(.1,.8,.1,1)
+        forwards;
+}
+
+.slice-two{
+
+    top:54%;
+
+    height:2px;
+
+    background:#ff1515;
+
+    animation:
+        sukunaSlice
+        1.1s
+        .85s
+        cubic-bezier(.1,.8,.1,1)
+        forwards;
+}
+
+@keyframes sukunaSlice{
+
+    0%{
+        transform:
+            rotate(-25deg)
+            scaleX(0);
+    }
+
+    30%{
+        transform:
+            rotate(-25deg)
+            scaleX(1);
+    }
+
+    100%{
+        transform:
+            rotate(-25deg)
+            scaleX(1);
+        opacity:0;
+    }
+}
+
+
+/* =========================================================
+   TEXTO
+========================================================= */
+
+.sukuna-entry-domain{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%)
+        scale(.5);
+
+    text-align:center;
+
+    opacity:0;
+
+    color:#fff;
+
+    font-family:
+        "Noto Serif JP",
+        serif;
+
+    animation:
+        sukunaDomain
+        2.3s
+        .5s
+        cubic-bezier(.1,.8,.1,1)
+        forwards;
+}
+
+.sukuna-entry-kanji{
+
+    font-size:
+        clamp(55px,11vw,150px);
+
+    text-shadow:
+
+        0 0 15px red,
+
+        0 0 40px red,
+
+        0 0 90px #800;
+}
+
+.sukuna-entry-domain small{
+
+    display:block;
+
+    margin-top:10px;
+
+    font-family:monospace;
+
+    letter-spacing:7px;
+
+    font-size:
+        clamp(9px,1.5vw,16px);
+
+    color:#ff4545;
+
+    text-shadow:
+        0 0 15px red;
+}
+
+@keyframes sukunaDomain{
+
+    0%{
+        opacity:0;
+
+        transform:
+            translate(-50%,-50%)
+            scale(.5);
+    }
+
+    30%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1.1);
+    }
+
+    65%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1);
+    }
+
+    100%{
+        opacity:0;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1.5);
+    }
+}
+
+
+/* =========================================================
+   FINAL
+========================================================= */
+
+@keyframes sukunaEntryEnd{
+
+    0%{
+        opacity:1;
+    }
+
+    82%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+        visibility:hidden;
+    }
+}
+
+</style>
+</html>

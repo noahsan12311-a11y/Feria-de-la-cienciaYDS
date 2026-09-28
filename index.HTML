@@ -1,0 +1,4166 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Center - Scratch Projects Lab</title>
+
+    <style>
+        /* ================================
+           VARIABLES DEL SISTEMA
+        ================================= */
+        :root {
+            --bg-principal: #080d18;
+            --bg-secundario: #0d1424;
+            --bg-tarjeta: #121b2d;
+            --bg-tarjeta-hover: #172338;
+
+            --texto-principal: #f8fafc;
+            --texto-secundario: #94a3b8;
+            --texto-tenue: #64748b;
+
+            --color-acento: #38bdf8;
+            --color-acento-claro: #7dd3fc;
+            --color-exito: #4ade80;
+            --color-scratch: #fbbf24;
+
+            --borde: #26354d;
+            --borde-claro: #334155;
+
+            --fuente-principal: "Inter", "Segoe UI", Arial, sans-serif;
+            --fuente-titulo: "Space Grotesk", "Segoe UI", Arial, sans-serif;
+            --fuente-codigo: "JetBrains Mono", "Courier New", monospace;
+        }
+
+
+        /* ================================
+           REINICIO GENERAL
+        ================================= */
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+
+            font-family: var(--fuente-principal);
+            color: var(--texto-principal);
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(56, 189, 248, 0.08),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 80%,
+                    rgba(74, 222, 128, 0.05),
+                    transparent 25%
+                ),
+                var(--bg-principal);
+
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+        }
+
+
+        /* ================================
+           BARRA SUPERIOR
+        ================================= */
+        header {
+            position: relative;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 30px;
+
+            padding: 28px 5%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(18, 27, 45, 0.98),
+                    rgba(13, 20, 36, 0.98)
+                );
+
+            border-bottom: 1px solid var(--borde-claro);
+
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.25);
+
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 180px;
+            height: 2px;
+
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--color-acento),
+                transparent
+            );
+
+            animation: linea-header 4s linear infinite;
+        }
+
+        @keyframes linea-header {
+            0% {
+                transform: translateX(-200px);
+            }
+
+            100% {
+                transform: translateX(calc(100vw + 200px));
+            }
+        }
+
+
+        /* ================================
+           TÍTULO
+        ================================= */
+        .header-titulo {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-titulo h1 {
+            margin: 0;
+
+            font-family: var(--fuente-titulo);
+            font-size: clamp(1.45rem, 3vw, 2rem);
+            font-weight: 800;
+
+            letter-spacing: 0.5px;
+
+            color: var(--color-acento);
+
+            text-shadow:
+                0 0 20px rgba(56, 189, 248, 0.18);
+        }
+
+        .header-titulo h1::before {
+            content: "> ";
+
+            color: var(--color-exito);
+            font-family: var(--fuente-codigo);
+        }
+
+        .header-titulo p {
+            margin: 7px 0 0;
+
+            color: var(--texto-secundario);
+
+            font-size: 0.92rem;
+            max-width: 650px;
+        }
+
+
+        /* ================================
+           ESTADO DEL SISTEMA
+        ================================= */
+        .consola-status {
+            position: relative;
+            z-index: 1;
+
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 9px 14px;
+
+            background: rgba(8, 13, 24, 0.75);
+
+            border: 1px solid var(--borde-claro);
+            border-radius: 8px;
+
+            color: var(--color-exito);
+
+            font-family: var(--fuente-codigo);
+            font-size: 0.78rem;
+
+            white-space: nowrap;
+
+            box-shadow:
+                inset 0 0 20px rgba(0, 0, 0, 0.18),
+                0 0 15px rgba(74, 222, 128, 0.04);
+        }
+
+        .consola-status::before {
+            content: "";
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: var(--color-exito);
+
+            box-shadow:
+                0 0 8px var(--color-exito);
+
+            animation: estado 1.8s ease-in-out infinite;
+        }
+
+        @keyframes estado {
+            0%, 100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.35;
+            }
+        }
+
+
+        /* ================================
+           CONTENEDOR PRINCIPAL
+        ================================= */
+        .main-container {
+            width: min(1300px, 90%);
+
+            margin: 45px auto 70px;
+        }
+
+
+        /* ================================
+           CAJA DE INFORMACIÓN
+        ================================= */
+        .seccion-info {
+            position: relative;
+
+            margin-bottom: 38px;
+            padding: 20px 23px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(18, 27, 45, 0.95),
+                    rgba(13, 20, 36, 0.95)
+                );
+
+            border: 1px solid var(--borde);
+            border-left: 4px solid var(--color-acento);
+
+            border-radius: 10px;
+
+            color: var(--texto-secundario);
+
+            font-size: 0.94rem;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .seccion-info::before {
+            content: "SYSTEM_MESSAGE";
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: var(--color-acento);
+
+            font-family: var(--fuente-codigo);
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        .seccion-info strong {
+            color: var(--texto-principal);
+        }
+
+
+        /* ================================
+           CUADRÍCULA DE PROYECTOS
+        ================================= */
+        .workspace-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(290px, 1fr)
+                );
+
+            gap: 22px;
+        }
+
+
+        /* ================================
+           TARJETAS
+        ================================= */
+        .proyecto-card {
+            position: relative;
+
+            display: flex;
+            flex-direction: column;
+
+            min-height: 320px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(18, 27, 45, 0.98),
+                    rgba(13, 20, 36, 0.98)
+                );
+
+            border: 1px solid var(--borde);
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .proyecto-card::after {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--color-acento),
+                    transparent
+                );
+
+            opacity: 0;
+
+            transition: opacity 0.25s ease;
+        }
+
+        .proyecto-card:hover {
+            transform: translateY(-7px);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--bg-tarjeta-hover),
+                    #101b2d
+                );
+
+            border-color: rgba(56, 189, 248, 0.55);
+
+            box-shadow:
+                0 18px 45px rgba(0, 0, 0, 0.35),
+                0 0 25px rgba(56, 189, 248, 0.07);
+        }
+
+        .proyecto-card:hover::after {
+            opacity: 1;
+        }
+
+
+        /* ================================
+           CABECERA DE TARJETA
+        ================================= */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 12px 17px;
+
+            background:
+                rgba(8, 13, 24, 0.55);
+
+            border-bottom: 1px solid var(--borde);
+
+            font-family: var(--fuente-codigo);
+            font-size: 0.7rem;
+
+            color: var(--texto-tenue);
+        }
+
+        .card-header span:first-child {
+            color: var(--color-acento);
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .card-header span:last-child {
+            color: var(--color-scratch);
+
+            padding: 3px 7px;
+
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 5px;
+
+            font-size: 0.62rem;
+
+            flex-shrink: 0;
+        }
+
+
+        /* ================================
+           CUERPO DE TARJETA
+        ================================= */
+        .card-body {
+            display: flex;
+            flex-direction: column;
+
+            flex-grow: 1;
+
+            padding: 22px;
+        }
+
+        .card-body h2 {
+            margin: 0 0 11px;
+
+            font-family: var(--fuente-titulo);
+
+            font-size: 1.25rem;
+            line-height: 1.25;
+
+            color: var(--texto-principal);
+        }
+
+        .card-body p {
+            flex-grow: 1;
+
+            margin: 0 0 22px;
+
+            color: var(--texto-secundario);
+
+            font-size: 0.88rem;
+            line-height: 1.7;
+        }
+
+
+        /* ================================
+           BOTÓN RUN PROJECT
+        ================================= */
+        .btn-ejecutar {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+
+            padding: 11px 15px;
+
+            background:
+                rgba(74, 222, 128, 0.025);
+
+            color: var(--color-exito);
+
+            border: 1px solid rgba(74, 222, 128, 0.5);
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            font-family: var(--fuente-codigo);
+            font-size: 0.78rem;
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            overflow: hidden;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .btn-ejecutar::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -100%;
+
+            width: 100%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.08),
+                    transparent
+                );
+
+            transition: left 0.45s ease;
+        }
+
+        .btn-ejecutar:hover::before {
+            left: 100%;
+        }
+
+        .btn-ejecutar:hover {
+            background: var(--color-exito);
+
+            color: #07110b;
+
+            border-color: var(--color-exito);
+
+            box-shadow:
+                0 0 20px rgba(74, 222, 128, 0.18);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* ================================
+           NAVEGACIÓN
+        ================================= */
+        .navegacion {
+            margin-top: 48px;
+
+            display: flex;
+            justify-content: center;
+        }
+
+        .boton-pagina {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 190px;
+
+            padding: 12px 23px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--color-acento),
+                    #0ea5e9
+                );
+
+            color: #06111d;
+
+            border: 1px solid rgba(125, 211, 252, 0.5);
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-size: 0.88rem;
+            font-weight: 800;
+
+            box-shadow:
+                0 8px 25px rgba(56, 189, 248, 0.12);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                filter 0.2s ease;
+        }
+
+        .boton-pagina::after {
+            content: " →";
+
+            font-family: var(--fuente-codigo);
+        }
+
+        .boton-pagina:hover {
+            transform: translateY(-3px);
+
+            filter: brightness(1.08);
+
+            box-shadow:
+                0 12px 30px rgba(56, 189, 248, 0.22);
+        }
+
+
+        /* ================================
+           PIE DE PÁGINA
+        ================================= */
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 22px 5%;
+
+            background:
+                rgba(13, 20, 36, 0.95);
+
+            border-top: 1px solid var(--borde);
+
+            color: var(--texto-tenue);
+
+            font-family: var(--fuente-codigo);
+            font-size: 0.7rem;
+        }
+
+        footer span:first-child {
+            color: var(--color-acento);
+        }
+
+        footer span:last-child {
+            text-align: right;
+        }
+
+
+        /* ================================
+           SCROLLBAR
+        ================================= */
+        ::-webkit-scrollbar {
+            width: 9px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-principal);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #26354d;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b4e6a;
+        }
+
+
+        /* ================================
+           SELECCIÓN DE TEXTO
+        ================================= */
+        ::selection {
+            background: rgba(56, 189, 248, 0.25);
+            color: white;
+        }
+
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+        @media (max-width: 800px) {
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+
+                padding: 24px 5%;
+            }
+
+            .consola-status {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .main-container {
+                width: 92%;
+                margin-top: 30px;
+            }
+
+            .workspace-grid {
+                grid-template-columns: repeat(
+                    auto-fit,
+                    minmax(260px, 1fr)
+                );
+            }
+
+            footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            footer span:last-child {
+                text-align: left;
+            }
+        }
+
+
+        @media (max-width: 520px) {
+
+            .header-titulo h1 {
+                font-size: 1.3rem;
+            }
+
+            .header-titulo p {
+                font-size: 0.82rem;
+            }
+
+            .workspace-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .proyecto-card {
+                min-height: 300px;
+            }
+
+            .seccion-info {
+                font-size: 0.85rem;
+            }
+
+            footer {
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =================================
+         ENCABEZADO
+    ================================== -->
+    <header>
+
+        <div class="header-titulo">
+
+            <h1>CENTRAL DE DESARROLLO SCRATCH</h1>
+
+            <p>
+                Repositorio web de aplicaciones interactivas
+                y videojuegos lógicos
+            </p>
+
+        </div>
+
+        <div class="consola-status">
+            STATUS: ONLINE // SYS_READY
+        </div>
+
+    </header>
+
+
+    <!-- =================================
+         CONTENIDO PRINCIPAL
+    ================================== -->
+    <main class="main-container">
+
+        <div class="seccion-info">
+
+            <strong>Instrucciones de ejecución:</strong>
+
+            Selecciona cualquiera de los módulos inferiores
+            para abrir el proyecto correspondiente de Scratch
+            en una pestaña independiente.
+
+        </div>
+
+
+        <!-- =================================
+             REPOSITORIO DE PROYECTOS
+        ================================== -->
+        <div class="workspace-grid">
+
+
+            <!-- =================================
+                 PROYECTO 01 - LABERINTO
+            ================================== -->
+            <div class="proyecto-card">
+
+                <div class="card-header">
+                    <span>ID: 001_LABERINTO</span>
+                    <span>SCRATCH</span>
+                </div>
+
+                <div class="card-body">
+
+                    <h2>Laberinto</h2>
+
+                    <p>
+                        Videojuego interactivo de navegación en el
+                        que el jugador debe encontrar el camino
+                        correcto a través de un laberinto.
+                    </p>
+
+                    <a
+                        href="https://scratch.mit.edu/projects/1366319532/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-ejecutar"
+                    >
+                        &gt; RUN_PROJECT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PROYECTO 02 - CLASIFICAR EDADES
+            ================================== -->
+            <div class="proyecto-card">
+
+                <div class="card-header">
+                    <span>ID: 002_EDADES</span>
+                    <span>SCRATCH</span>
+                </div>
+
+                <div class="card-body">
+
+                    <h2>Clasificar Edades</h2>
+
+                    <p>
+                        Programa interactivo que recibe una edad
+                        y permite identificar la categoría
+                        correspondiente según el rango establecido.
+                    </p>
+
+                    <a
+                        href="https://scratch.mit.edu/projects/1366319532/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-ejecutar"
+                    >
+                        &gt; RUN_PROJECT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PROYECTO 03 - SIGNOS ZODIACALES
+            ================================== -->
+            <div class="proyecto-card">
+
+                <div class="card-header">
+                    <span>ID: 003_ZODIACO</span>
+                    <span>SCRATCH</span>
+                </div>
+
+                <div class="card-body">
+
+                    <h2>Signos Zodiacales</h2>
+
+                    <p>
+                        Aplicación interactiva que permite
+                        identificar el signo zodiacal a partir
+                        de la fecha de nacimiento del usuario.
+                    </p>
+
+                    <a
+                        href="https://scratch.mit.edu/projects/1318772204/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-ejecutar"
+                    >
+                        &gt; RUN_PROJECT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PROYECTO 04 - LA MOSCA
+            ================================== -->
+            <div class="proyecto-card">
+
+                <div class="card-header">
+                    <span>ID: 004_LA_MOSCA</span>
+                    <span>SCRATCH</span>
+                </div>
+
+                <div class="card-body">
+
+                    <h2>¡¡¡¡MALDITA MOSCA!!!!</h2>
+
+                    <p>
+                        Juego de tiempo y velocidad en el que
+                        el jugador debe reaccionar rápidamente
+                        para interactuar con una mosca antes
+                        de que se termine el tiempo.
+                    </p>
+
+                    <a
+                        href="https://scratch.mit.edu/projects/1385557989/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-ejecutar"
+                    >
+                        &gt; RUN_PROJECT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PROYECTO 05 - MEMORIA
+            ================================== -->
+            <div class="proyecto-card">
+
+                <div class="card-header">
+                    <span>ID: 005_MEMORIA</span>
+                    <span>SCRATCH</span>
+                </div>
+
+                <div class="card-body">
+
+                    <h2>Juego de Memoria</h2>
+
+                    <p>
+                        Juego interactivo de memoria en el que
+                        el jugador debe recordar posiciones y
+                        encontrar las parejas correspondientes.
+                    </p>
+
+                    <a
+                        href="https://scratch.mit.edu/projects/1385558438/fullscreen/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-ejecutar"
+                    >
+                        &gt; RUN_PROJECT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PROYECTO 06 - PIEDRA PAPEL TIJERA
+            ================================== -->
+            <div class="proyecto-card">
+
+                <div class="card-header">
+                    <span>ID: 006_PPT</span>
+                    <span>SCRATCH</span>
+                </div>
+
+                <div class="card-body">
+
+                    <h2>Piedra, Papel, Tijera</h2>
+
+                    <p>
+                        Versión interactiva del clásico juego
+                        de Piedra, Papel o Tijera, donde el
+                        jugador compite contra el programa.
+                    </p>
+
+                    <a
+                        href="https://scratch.mit.edu/projects/1385559338/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-ejecutar"
+                    >
+                        &gt; RUN_PROJECT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PROYECTO 07 - BUSCAMINAS
+            ================================== -->
+            <div class="proyecto-card">
+
+                <div class="card-header">
+                    <span>ID: 007_BUSCAMINAS</span>
+                    <span>SCRATCH</span>
+                </div>
+
+                <div class="card-body">
+
+                    <h2>Busca Minas</h2>
+
+                    <p>
+                        Juego de lógica basado en el clásico
+                        Buscaminas, donde el jugador debe descubrir
+                        las casillas evitando las minas ocultas.
+                    </p>
+
+                    <a
+                        href="https://scratch.mit.edu/projects/1385559581/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-ejecutar"
+                    >
+                        &gt; RUN_PROJECT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PROYECTO 08 - PREGUNTAS Y RESPUESTAS
+            ================================== -->
+            <div class="proyecto-card">
+
+                <div class="card-header">
+                    <span>ID: 008_PREGUNTAS</span>
+                    <span>SCRATCH</span>
+                </div>
+
+                <div class="card-body">
+
+                    <h2>Preguntas y Respuestas</h2>
+
+                    <p>
+                        Juego interactivo basado en preguntas y
+                        respuestas que pone a prueba los conocimientos
+                        del jugador. Orientado especialmente a personas
+                        de mayor edad.
+                    </p>
+
+                    <a
+                        href="https://scratch.mit.edu/projects/1385559690/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-ejecutar"
+                    >
+                        &gt; RUN_PROJECT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PROYECTO 09 - CARRERA DE COCHES
+            ================================== -->
+            <div class="proyecto-card">
+
+                <div class="card-header">
+                    <span>ID: 009_CARRERA</span>
+                    <span>SCRATCH</span>
+                </div>
+
+                <div class="card-body">
+
+                    <h2>Carrera de Coches</h2>
+
+                    <p>
+                        Videojuego de carreras en el que el jugador
+                        controla un coche y debe competir por la pista
+                        hasta alcanzar la meta.
+                    </p>
+
+                    <a
+                        href="https://scratch.mit.edu/projects/1385560404/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-ejecutar"
+                    >
+                        &gt; RUN_PROJECT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PROYECTO 10 - 5 SEGUNDOS
+            ================================== -->
+            <div class="proyecto-card">
+
+                <div class="card-header">
+                    <span>ID: 010_5_SEGUNDOS</span>
+                    <span>SCRATCH</span>
+                </div>
+
+                <div class="card-body">
+
+                    <h2>Tú Tienes 5 Segundos</h2>
+
+                    <p>
+                        Juego de velocidad y reacción en el que
+                        el jugador debe completar el objetivo antes
+                        de que se termine el límite de cinco segundos.
+                    </p>
+
+                    <a
+                        href="https://scratch.mit.edu/projects/1385560634/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-ejecutar"
+                    >
+                        &gt; RUN_PROJECT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================
+             NAVEGACIÓN ENTRE PÁGINAS
+        ================================== -->
+        <div class="navegacion">
+
+            <a
+                href="pagina2.html"
+                class="boton-pagina"
+            >
+                Ir a la Página 2
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <!-- =================================
+         PIE DE PÁGINA
+    ================================== -->
+    <footer>
+
+        <span>
+            Console Core v2026.4.1
+        </span>
+
+        <span>
+            Diseñado en entorno web estándar utilizando
+            CSS Grid y Flexbox. (nomepaganlosuficiente..regresa)
+        </span>
+
+<!-- =========================================================
+     EASTER EGG — SECRET ACCESS SYSTEM
+
+     2011 → YHWACH → Yhwa.html
+     2007 → SUKUNA → Sukuna.html
+     1987 → DIO → Dio.html
+========================================================= -->
+
+<style>
+
+/* =========================================================
+   ZONA SECRETA
+========================================================= */
+
+.zona-secreta{
+    position:fixed;
+    bottom:0;
+    right:0;
+    width:30px;
+    height:30px;
+    z-index:2147483647;
+    cursor:pointer;
+    background:transparent;
+}
+
+
+/* =========================================================
+   PANEL PRINCIPAL
+========================================================= */
+
+#panel-secreto{
+    position:fixed;
+    inset:0;
+
+    width:100vw;
+    height:100vh;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(20,20,30,.55),
+            rgba(0,0,0,.96)
+        );
+
+    backdrop-filter:blur(9px);
+
+    z-index:2147483646;
+}
+
+#panel-secreto.activo{
+    display:flex;
+}
+
+
+/* =========================================================
+   CONTENEDOR
+========================================================= */
+
+#secreto-contenido{
+
+    position:relative;
+
+    width:min(470px,90vw);
+
+    padding:40px 35px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,8,12,.99),
+            rgba(20,20,28,.99)
+        );
+
+    border:1px solid rgba(255,255,255,.12);
+
+    border-radius:14px;
+
+    text-align:center;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 0 50px rgba(0,0,0,.9),
+        inset 0 0 40px rgba(255,255,255,.025);
+
+    animation:
+        entradaSecreta .35s ease;
+}
+
+@keyframes entradaSecreta{
+
+    from{
+        opacity:0;
+        transform:
+            scale(.92)
+            translateY(15px);
+    }
+
+    to{
+        opacity:1;
+        transform:
+            scale(1)
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   CERRAR
+========================================================= */
+
+#cerrar-secreto{
+
+    position:absolute;
+
+    top:12px;
+    right:15px;
+
+    width:31px;
+    height:31px;
+
+    border:1px solid rgba(255,255,255,.14);
+
+    background:rgba(255,255,255,.04);
+
+    color:#999;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    z-index:20;
+}
+
+#cerrar-secreto:hover{
+
+    color:white;
+
+    background:
+        rgba(255,255,255,.1);
+
+    border-color:
+        rgba(255,255,255,.3);
+}
+
+
+/* =========================================================
+   TÍTULOS
+========================================================= */
+
+#secreto-titulo{
+
+    font-family:monospace;
+
+    font-size:
+        clamp(20px,5vw,27px);
+
+    letter-spacing:4px;
+
+    color:white;
+
+    margin-bottom:12px;
+
+    transition:.3s;
+}
+
+#secreto-estado{
+
+    font-family:monospace;
+
+    font-size:12px;
+
+    color:#777;
+
+    min-height:18px;
+
+    margin-bottom:25px;
+
+    transition:.3s;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+#clave-secreta{
+
+    width:100%;
+
+    box-sizing:border-box;
+
+    padding:14px;
+
+    background:#050505;
+
+    border:1px solid #333;
+
+    border-radius:6px;
+
+    outline:none;
+
+    color:white;
+
+    font-family:monospace;
+
+    text-align:center;
+
+    font-size:20px;
+
+    letter-spacing:8px;
+
+    transition:.2s;
+}
+
+#clave-secreta:focus{
+
+    border-color:#777;
+
+    box-shadow:
+        0 0 18px rgba(255,255,255,.08);
+}
+
+
+/* =========================================================
+   BOTÓN
+========================================================= */
+
+#boton-secreto{
+
+    margin-top:15px;
+
+    width:100%;
+
+    padding:14px;
+
+    border:1px solid #333;
+
+    border-radius:6px;
+
+    background:#101010;
+
+    color:#ddd;
+
+    font-family:monospace;
+
+    font-weight:bold;
+
+    letter-spacing:3px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+#boton-secreto:hover{
+
+    background:#1d1d1d;
+
+    color:white;
+
+    border-color:#555;
+}
+
+
+/* =========================================================
+   MENSAJE
+========================================================= */
+
+#mensaje-secreto{
+
+    min-height:22px;
+
+    margin-top:15px;
+
+    font-family:monospace;
+
+    font-size:12px;
+
+    color:#777;
+
+    line-height:1.5;
+}
+
+
+/* =========================================================
+   PARTÍCULAS
+========================================================= */
+
+#panel-secreto::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    pointer-events:none;
+
+    opacity:.2;
+
+    background-image:
+        radial-gradient(
+            circle,
+            white 1px,
+            transparent 1px
+        );
+
+    background-size:35px 35px;
+
+    animation:
+        particulasSecretas 15s linear infinite;
+}
+
+@keyframes particulasSecretas{
+
+    from{
+        background-position:0 0;
+    }
+
+    to{
+        background-position:300px 500px;
+    }
+}
+
+
+/* =========================================================
+   YHWACH — INTERFAZ ÚNICA
+========================================================= */
+
+.yhwach{
+
+    border-color:
+        rgba(255,210,55,.65)!important;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(100,65,0,.18),
+            rgba(8,8,8,.99) 70%
+        )!important;
+
+    box-shadow:
+
+        0 0 45px rgba(255,190,0,.22),
+
+        0 0 100px rgba(255,170,0,.08),
+
+        inset 0 0 45px
+        rgba(255,200,0,.08)!important;
+}
+
+.yhwach #secreto-titulo{
+
+    color:#ffe36a;
+
+    text-shadow:
+
+        0 0 8px #ffcc22,
+
+        0 0 20px #ff9900,
+
+        0 0 40px #8a5600;
+}
+
+.yhwach #secreto-estado{
+
+    color:#e7b943;
+}
+
+.yhwach #boton-secreto{
+
+    color:#ffe79a;
+
+    border-color:
+        rgba(255,210,70,.45);
+
+    background:
+        rgba(100,65,0,.16);
+}
+
+.yhwach #boton-secreto:hover{
+
+    background:
+        rgba(150,95,0,.25);
+
+    border-color:
+        #ffd43b;
+
+    box-shadow:
+        0 0 15px rgba(255,190,0,.2);
+}
+
+
+/* =========================================================
+   CORONA YHWACH
+========================================================= */
+
+.futuro-corona{
+
+    position:absolute;
+
+    width:280px;
+    height:280px;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius:50%;
+
+    border:
+        2px solid
+        rgba(255,210,50,.18);
+
+    box-shadow:
+
+        0 0 30px
+        rgba(255,190,0,.18),
+
+        inset 0 0 30px
+        rgba(255,180,0,.08);
+
+    animation:
+        coronaFuturo 6s linear infinite;
+
+    pointer-events:none;
+
+    z-index:0;
+}
+
+.futuro-corona::before,
+.futuro-corona::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:20px;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(255,220,100,.18);
+}
+
+.futuro-corona::after{
+
+    inset:45px;
+
+    border-color:
+        rgba(255,180,30,.14);
+}
+
+@keyframes coronaFuturo{
+
+    from{
+        transform:
+            translate(-50%,-50%)
+            rotate(0deg);
+    }
+
+    to{
+        transform:
+            translate(-50%,-50%)
+            rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   OJOS YHWACH
+========================================================= */
+
+.ojos-yhwach{
+
+    position:absolute;
+
+    inset:0;
+
+    pointer-events:none;
+
+    z-index:5;
+}
+
+.ojo{
+
+    position:absolute;
+
+    width:35px;
+    height:22px;
+
+    border-radius:50%;
+
+    border:
+        2px solid #ffd84a;
+
+    background:#0b0902;
+
+    box-shadow:
+
+        0 0 10px #ffb300,
+
+        0 0 25px rgba(255,170,0,.5);
+}
+
+.ojo:nth-child(1){
+    top:20px;
+    left:20px;
+}
+
+.ojo:nth-child(2){
+    top:20px;
+    right:20px;
+}
+
+.ojo:nth-child(3){
+    bottom:20px;
+    left:20px;
+}
+
+.ojo:nth-child(4){
+    bottom:20px;
+    right:20px;
+}
+
+.ojo::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:8px;
+    height:8px;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(
+            calc(-50% + var(--ojo-x,0px)),
+            calc(-50% + var(--ojo-y,0px))
+        );
+
+    border-radius:50%;
+
+    background:#fff1a3;
+
+    box-shadow:
+
+        0 0 8px #ffd000,
+
+        0 0 18px #ffae00;
+}
+
+
+/* =========================================================
+   SUKUNA — INTERFAZ ÚNICA
+========================================================= */
+
+.sukuna{
+
+    border-color:
+        rgba(255,35,35,.65)!important;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(120,0,0,.18),
+            rgba(8,5,5,.99) 70%
+        )!important;
+
+    box-shadow:
+
+        0 0 45px
+        rgba(255,0,0,.22),
+
+        0 0 100px
+        rgba(170,0,0,.08),
+
+        inset 0 0 40px
+        rgba(180,0,0,.1)!important;
+}
+
+.sukuna #secreto-titulo{
+
+    color:#ff4545;
+
+    text-shadow:
+
+        0 0 8px #ff2020,
+
+        0 0 20px #c00000,
+
+        0 0 40px #600;
+}
+
+.sukuna #secreto-estado{
+
+    color:#ff7777;
+}
+
+.sukuna #boton-secreto{
+
+    color:#ffb0b0;
+
+    border-color:
+        rgba(255,40,40,.45);
+
+    background:
+        rgba(100,0,0,.18);
+}
+
+.sukuna #boton-secreto:hover{
+
+    background:
+        rgba(150,0,0,.28);
+
+    border-color:
+        #ff3030;
+
+    box-shadow:
+        0 0 15px
+        rgba(255,0,0,.25);
+}
+
+
+/* =========================================================
+   MARCAS SUKUNA
+========================================================= */
+
+.marcas-sukuna{
+
+    position:absolute;
+
+    inset:0;
+
+    pointer-events:none;
+
+    opacity:.45;
+}
+
+.marca-sukuna{
+
+    position:absolute;
+
+    width:150px;
+    height:3px;
+
+    background:#ff2020;
+
+    box-shadow:
+
+        0 0 10px red,
+
+        0 0 25px red;
+
+    transform:rotate(-35deg);
+}
+
+.marca-sukuna:nth-child(1){
+
+    top:20%;
+    left:-20px;
+}
+
+.marca-sukuna:nth-child(2){
+
+    top:50%;
+    right:-30px;
+}
+
+.marca-sukuna:nth-child(3){
+
+    bottom:15%;
+    left:20%;
+}
+
+
+/* =========================================================
+   DIO — INTERFAZ ÚNICA
+========================================================= */
+
+.dio{
+
+    border-color:
+        rgba(255,220,60,.6)!important;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(110,75,0,.2),
+            rgba(8,7,3,.99) 70%
+        )!important;
+
+    box-shadow:
+
+        0 0 50px
+        rgba(255,190,0,.2),
+
+        0 0 100px
+        rgba(255,160,0,.08),
+
+        inset 0 0 40px
+        rgba(255,210,0,.08)!important;
+}
+
+.dio #secreto-titulo{
+
+    color:#ffe36b;
+
+    text-shadow:
+
+        0 0 8px #ffd000,
+
+        0 0 20px #ffae00,
+
+        0 0 40px #806000;
+}
+
+.dio #secreto-estado{
+
+    color:#ffe59a;
+}
+
+.dio #boton-secreto{
+
+    color:#fff0a5;
+
+    border-color:
+        rgba(255,220,70,.45);
+
+    background:
+        rgba(100,75,0,.16);
+}
+
+.dio #boton-secreto:hover{
+
+    background:
+        rgba(150,110,0,.24);
+
+    border-color:
+        #ffe14a;
+
+    box-shadow:
+        0 0 15px
+        rgba(255,210,0,.2);
+}
+
+
+/* =========================================================
+   RELOJ DIO
+========================================================= */
+
+.reloj-dio{
+
+    position:absolute;
+
+    width:130px;
+    height:130px;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border:
+        3px solid
+        rgba(255,220,80,.35);
+
+    border-radius:50%;
+
+    box-shadow:
+        0 0 30px
+        rgba(255,190,0,.2);
+
+    animation:
+        relojDio 4s linear infinite;
+
+    pointer-events:none;
+}
+
+.reloj-dio::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:3px;
+    height:50px;
+
+    left:50%;
+    top:15px;
+
+    transform-origin:
+        50% 100%;
+
+    background:#ffe36b;
+
+    box-shadow:
+        0 0 8px #ffcc00;
+}
+
+@keyframes relojDio{
+
+    from{
+        transform:
+            translate(-50%,-50%)
+            rotate(0deg);
+    }
+
+    to{
+        transform:
+            translate(-50%,-50%)
+            rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error-secreto{
+
+    animation:
+        secretoShake .35s ease;
+}
+
+@keyframes secretoShake{
+
+    0%,100%{
+        transform:translateX(0);
+    }
+
+    20%{
+        transform:translateX(-10px);
+    }
+
+    40%{
+        transform:translateX(10px);
+    }
+
+    60%{
+        transform:translateX(-7px);
+    }
+
+    80%{
+        transform:translateX(7px);
+    }
+}
+
+.error-glitch{
+
+    color:#ff3333!important;
+
+    animation:
+        glitchTexto .25s
+        steps(2)
+        infinite;
+}
+
+@keyframes glitchTexto{
+
+    0%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-3px);
+    }
+
+    50%{
+        transform:translateX(4px);
+    }
+
+    75%{
+        transform:translateX(-2px);
+    }
+
+    100%{
+        transform:translateX(0);
+    }
+}
+
+
+/* =========================================================
+   CAPA CINEMATOGRÁFICA GLOBAL
+========================================================= */
+
+#cinematic-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    width:100vw;
+    height:100vh;
+
+    min-width:100vw;
+    min-height:100vh;
+
+    overflow:hidden;
+
+    pointer-events:none;
+
+    opacity:0;
+
+    z-index:2147483645;
+
+    isolation:isolate;
+
+    contain:strict;
+}
+
+
+/* =========================================================
+   SUKUNA FINAL
+========================================================= */
+
+#cinematic-overlay.sukuna-final{
+
+    opacity:1;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(150,0,0,.7),
+            rgba(30,0,0,.94) 45%,
+            #000 100%
+        );
+
+    animation:
+        sukunaPantalla
+        1.45s
+        cubic-bezier(.15,.8,.15,1)
+        forwards;
+}
+
+#cinematic-overlay.sukuna-final::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:180vw;
+    height:9px;
+
+    left:-40vw;
+    top:50%;
+
+    background:#fff;
+
+    box-shadow:
+
+        0 0 8px white,
+
+        0 0 25px red,
+
+        0 0 70px red;
+
+    transform:
+        rotate(-32deg)
+        scaleX(0);
+
+    animation:
+        sukunaSlash
+        1.1s
+        cubic-bezier(.2,.8,.1,1)
+        forwards;
+}
+
+#cinematic-overlay.sukuna-final::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:180vw;
+    height:3px;
+
+    left:-40vw;
+    top:50%;
+
+    background:#ff1111;
+
+    box-shadow:
+
+        0 0 20px red,
+
+        0 0 60px red;
+
+    transform:
+        rotate(-32deg)
+        scaleX(0);
+
+    animation:
+        sukunaSlash2
+        1.2s
+        .08s
+        cubic-bezier(.2,.8,.1,1)
+        forwards;
+}
+
+@keyframes sukunaSlash{
+
+    0%{
+        transform:
+            rotate(-32deg)
+            scaleX(0);
+    }
+
+    25%{
+        transform:
+            rotate(-32deg)
+            scaleX(1);
+    }
+
+    100%{
+        transform:
+            rotate(-32deg)
+            scaleX(1);
+        opacity:0;
+    }
+}
+
+@keyframes sukunaSlash2{
+
+    0%{
+        transform:
+            rotate(-32deg)
+            scaleX(0);
+    }
+
+    25%{
+        transform:
+            rotate(-32deg)
+            scaleX(1);
+    }
+
+    100%{
+        transform:
+            rotate(-32deg)
+            scaleX(1);
+        opacity:0;
+    }
+}
+
+@keyframes sukunaPantalla{
+
+    0%{
+        opacity:0;
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:1;
+        background:
+            rgba(0,0,0,.98);
+    }
+}
+
+
+/* =========================================================
+   TEXTO SUKUNA
+========================================================= */
+
+.sukuna-domain-text{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%)
+        scale(.4);
+
+    color:white;
+
+    font-size:
+        clamp(50px,9vw,130px);
+
+    font-family:
+        "Noto Serif JP",
+        serif;
+
+    text-shadow:
+
+        0 0 15px red,
+
+        0 0 40px red,
+
+        0 0 80px #900;
+
+    white-space:nowrap;
+
+    animation:
+        dominioSukuna
+        1.2s
+        cubic-bezier(.1,.8,.1,1)
+        forwards;
+
+    z-index:10;
+}
+
+@keyframes dominioSukuna{
+
+    0%{
+        opacity:0;
+
+        transform:
+            translate(-50%,-50%)
+            scale(.4);
+    }
+
+    25%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1.1);
+    }
+
+    70%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1);
+    }
+
+    100%{
+        opacity:0;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1.4);
+    }
+}
+
+
+/* =========================================================
+   YHWACH FINAL — DORADO
+========================================================= */
+
+#cinematic-overlay.yhwach-final{
+
+    opacity:1;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255,230,90,.75) 0%,
+            rgba(180,115,0,.65) 18%,
+            rgba(65,35,0,.92) 45%,
+            #000 100%
+        );
+
+    animation:
+        yhwachPantalla
+        1.9s
+        cubic-bezier(.2,.7,.1,1)
+        forwards;
+}
+
+
+/* NÚCLEO */
+
+#cinematic-overlay.yhwach-final::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:30vw;
+    height:30vw;
+
+    min-width:250px;
+    min-height:250px;
+
+    transform:
+        translate(-50%,-50%)
+        scale(.1);
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+
+            #fffde0 0%,
+
+            #ffe46a 5%,
+
+            #ffc400 16%,
+
+            #d88900 30%,
+
+            rgba(100,55,0,.4) 52%,
+
+            transparent 72%
+        );
+
+    filter:blur(2px);
+
+    box-shadow:
+
+        0 0 80px #ffd000,
+
+        0 0 180px #a86600,
+
+        0 0 300px rgba(255,190,0,.4);
+
+    animation:
+        yhwachNucleo
+        1.9s
+        cubic-bezier(.1,.8,.1,1)
+        forwards;
+}
+
+
+/* ONDAS */
+
+#cinematic-overlay.yhwach-final::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-50%;
+
+    border-radius:50%;
+
+    background:
+        repeating-radial-gradient(
+            circle at center,
+            transparent 0 7%,
+            rgba(255,215,70,.16) 7.3% 7.6%,
+            transparent 8%
+        );
+
+    animation:
+        yhwachOndas
+        1.9s
+        linear forwards;
+}
+
+@keyframes yhwachPantalla{
+
+    0%{
+        opacity:0;
+        filter:brightness(1);
+    }
+
+    20%{
+        opacity:1;
+        filter:
+            brightness(1.6)
+            saturate(1.4);
+    }
+
+    70%{
+        opacity:1;
+        filter:
+            brightness(.8)
+            saturate(1.8);
+    }
+
+    100%{
+        opacity:1;
+        filter:
+            brightness(.18)
+            saturate(1.6);
+    }
+}
+
+@keyframes yhwachNucleo{
+
+    0%{
+        transform:
+            translate(-50%,-50%)
+            scale(.1);
+    }
+
+    40%{
+        transform:
+            translate(-50%,-50%)
+            scale(1);
+    }
+
+    75%{
+        transform:
+            translate(-50%,-50%)
+            scale(2.2);
+    }
+
+    100%{
+        transform:
+            translate(-50%,-50%)
+            scale(7);
+
+        opacity:0;
+    }
+}
+
+@keyframes yhwachOndas{
+
+    0%{
+        transform:scale(.1);
+        opacity:0;
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    100%{
+        transform:scale(2);
+        opacity:0;
+    }
+}
+
+
+/* =========================================================
+   OJOS GLOBALES YHWACH
+========================================================= */
+
+.yhwach-global-eyes{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    pointer-events:none;
+
+    z-index:20;
+}
+
+.y-global-eye{
+
+    position:absolute;
+
+    width:
+        clamp(35px,5vw,80px);
+
+    height:
+        clamp(22px,3vw,48px);
+
+    border-radius:50%;
+
+    border:
+        2px solid #ffd84a;
+
+    background:#0c0900;
+
+    box-shadow:
+
+        0 0 15px #ffcc00,
+
+        0 0 40px
+        rgba(255,180,0,.8);
+
+    transform:
+        translate(-50%,-50%)
+        scale(.1);
+
+    animation:
+        ojoGlobal
+        1.7s
+        cubic-bezier(.1,.8,.1,1)
+        forwards;
+}
+
+.y-global-eye::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:25%;
+    aspect-ratio:1;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius:50%;
+
+    background:#fff4a8;
+
+    box-shadow:
+
+        0 0 15px #ffd000,
+
+        0 0 30px #ffae00;
+}
+
+@keyframes ojoGlobal{
+
+    0%{
+        opacity:0;
+
+        transform:
+            translate(-50%,-50%)
+            scale(.1)
+            rotate(-20deg);
+    }
+
+    35%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1.15)
+            rotate(0);
+    }
+
+    70%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1);
+    }
+
+    100%{
+        opacity:0;
+
+        transform:
+            translate(-50%,-50%)
+            scale(2.5);
+    }
+}
+
+
+/* =========================================================
+   DIO FINAL
+========================================================= */
+
+#cinematic-overlay.dio-final{
+
+    opacity:1;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,240,130,.15),
+            rgba(20,10,0,.96)
+        );
+
+    animation:
+        dioPantalla
+        800ms
+        ease-out
+        forwards;
+}
+
+#cinematic-overlay.dio-final::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 5vw,
+            rgba(255,220,60,.04)
+            5.1vw 5.3vw
+        );
+
+    animation:
+        dioRealityGlobal
+        250ms
+        linear infinite;
+}
+
+#cinematic-overlay.dio-final::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:#fff6bd;
+
+    opacity:0;
+
+    animation:
+        dioFlash
+        800ms
+        ease-out
+        forwards;
+}
+
+@keyframes dioPantalla{
+
+    0%{
+        opacity:0;
+        transform:scale(1);
+    }
+
+    20%{
+        opacity:1;
+        transform:scale(1.02);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(.98);
+    }
+
+    100%{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@keyframes dioRealityGlobal{
+
+    0%{
+        transform:
+            translateX(0)
+            scaleX(1);
+    }
+
+    50%{
+        transform:
+            translateX(-2%)
+            scaleX(1.04);
+    }
+
+    100%{
+        transform:
+            translateX(2%)
+            scaleX(.96);
+    }
+}
+
+@keyframes dioFlash{
+
+    0%{
+        opacity:0;
+    }
+
+    65%{
+        opacity:0;
+    }
+
+    82%{
+        opacity:.85;
+    }
+
+    100%{
+        opacity:0;
+    }
+}
+
+
+/* =========================================================
+   RELOJ GLOBAL DIO
+========================================================= */
+
+.dio-global-clock{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:
+        clamp(180px,25vw,380px);
+
+    aspect-ratio:1;
+
+    transform:
+        translate(-50%,-50%)
+        scale(.1);
+
+    border:
+        clamp(3px,.4vw,6px)
+        solid
+        rgba(255,220,80,.8);
+
+    border-radius:50%;
+
+    box-shadow:
+
+        0 0 30px #ffcc00,
+
+        0 0 80px
+        rgba(255,180,0,.7),
+
+        inset 0 0 50px
+        rgba(255,200,0,.15);
+
+    z-index:50;
+
+    animation:
+        relojGlobalDio
+        800ms
+        cubic-bezier(.1,.8,.1,1)
+        forwards;
+}
+
+.dio-global-clock::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:4px;
+    height:42%;
+
+    left:50%;
+    top:8%;
+
+    transform-origin:
+        50% 100%;
+
+    background:#fff0a0;
+
+    box-shadow:
+        0 0 15px #ffcc00;
+
+    animation:
+        manecillaDio
+        400ms
+        linear infinite;
+}
+
+.dio-global-clock::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:12px;
+    height:12px;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius:50%;
+
+    background:white;
+
+    box-shadow:
+        0 0 20px #ffcc00;
+}
+
+@keyframes relojGlobalDio{
+
+    0%{
+        opacity:0;
+
+        transform:
+            translate(-50%,-50%)
+            scale(.1)
+            rotate(-180deg);
+    }
+
+    35%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1.2)
+            rotate(0);
+    }
+
+    100%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1)
+            rotate(360deg);
+    }
+}
+
+@keyframes manecillaDio{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   BLOQUEAR SCROLL DURANTE CINEMÁTICA
+========================================================= */
+
+body.sukuna-global,
+body.yhwach-global,
+body.dio-global{
+
+    overflow:hidden!important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:600px){
+
+    #secreto-contenido{
+
+        padding:32px 20px;
+    }
+
+    #secreto-titulo{
+
+        font-size:19px;
+        letter-spacing:2px;
+    }
+
+    .dio-global-clock{
+
+        width:55vw;
+    }
+
+}
+
+</style>
+
+
+<!-- =========================================================
+     ZONA INVISIBLE
+========================================================= -->
+
+<div
+    class="zona-secreta"
+    onclick="abrirAccesoSecreto()">
+</div>
+
+
+<!-- =========================================================
+     PANEL SECRETO
+========================================================= -->
+
+<div id="panel-secreto">
+
+    <div id="secreto-contenido">
+
+        <button
+            id="cerrar-secreto"
+            onclick="cerrarAccesoSecreto()">
+            ×
+        </button>
+
+
+        <!-- Elementos decorativos -->
+
+        <div class="futuro-corona"></div>
+
+
+        <div class="ojos-yhwach">
+
+            <div class="ojo"></div>
+            <div class="ojo"></div>
+            <div class="ojo"></div>
+            <div class="ojo"></div>
+
+        </div>
+
+
+        <div class="marcas-sukuna">
+
+            <div class="marca-sukuna"></div>
+            <div class="marca-sukuna"></div>
+            <div class="marca-sukuna"></div>
+
+        </div>
+
+
+        <div class="reloj-dio"></div>
+
+
+        <!-- Texto -->
+
+        <div id="secreto-titulo">
+            SECRET_ACCESS
+        </div>
+
+
+        <div id="secreto-estado">
+            &gt; ENTER_ACCESS_CODE
+        </div>
+
+
+        <!-- Código -->
+
+        <input
+            id="clave-secreta"
+            type="password"
+            maxlength="4"
+            autocomplete="off"
+            placeholder="••••"
+            oninput="detectarCodigo()"
+            onkeydown="detectarEnter(event)"
+        >
+
+
+        <button
+            id="boton-secreto"
+            onclick="verificarClave()">
+
+            EXECUTE
+
+        </button>
+
+
+        <div id="mensaje-secreto"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     CAPA CINEMATOGRÁFICA
+========================================================= -->
+
+<div id="cinematic-overlay"></div>
+
+
+<script>
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let personajeSeleccionado = null;
+
+
+/* =========================================================
+   ABRIR
+========================================================= */
+
+function abrirAccesoSecreto(){
+
+    const panel =
+        document.getElementById(
+            "panel-secreto"
+        );
+
+    panel.classList.add("activo");
+
+    resetearInterfaz();
+
+    setTimeout(() => {
+
+        document
+            .getElementById(
+                "clave-secreta"
+            )
+            .focus();
+
+    },100);
+}
+
+
+/* =========================================================
+   CERRAR
+========================================================= */
+
+function cerrarAccesoSecreto(){
+
+    document
+        .getElementById(
+            "panel-secreto"
+        )
+        .classList.remove("activo");
+
+    resetearInterfaz();
+}
+
+
+/* =========================================================
+   RESET DE INTERFAZ
+========================================================= */
+
+function resetearInterfaz(){
+
+    personajeSeleccionado = null;
+
+    const contenido =
+        document.getElementById(
+            "secreto-contenido"
+        );
+
+    const titulo =
+        document.getElementById(
+            "secreto-titulo"
+        );
+
+    const estado =
+        document.getElementById(
+            "secreto-estado"
+        );
+
+    const mensaje =
+        document.getElementById(
+            "mensaje-secreto"
+        );
+
+    const input =
+        document.getElementById(
+            "clave-secreta"
+        );
+
+    const boton =
+        document.getElementById(
+            "boton-secreto"
+        );
+
+    const overlay =
+        document.getElementById(
+            "cinematic-overlay"
+        );
+
+
+    contenido.className = "";
+
+    titulo.innerText =
+        "SECRET_ACCESS";
+
+    estado.innerText =
+        "> ENTER_ACCESS_CODE";
+
+    mensaje.innerText = "";
+
+    mensaje.className = "";
+
+    mensaje.style.color = "";
+
+    input.value = "";
+
+    input.style.display = "";
+
+    boton.style.display = "";
+
+    boton.innerText =
+        "EXECUTE";
+
+    overlay.className = "";
+
+    overlay.innerHTML = "";
+
+
+    document.body.classList.remove(
+        "sukuna-global",
+        "yhwach-global",
+        "dio-global"
+    );
+}
+
+
+/* =========================================================
+   DETECTAR CÓDIGO
+========================================================= */
+
+function detectarCodigo(){
+
+    const input =
+        document.getElementById(
+            "clave-secreta"
+        );
+
+    if(
+        input.value.length >= 4
+    ){
+
+        verificarClave();
+
+    }
+}
+
+
+/* =========================================================
+   ENTER
+========================================================= */
+
+function detectarEnter(event){
+
+    if(
+        event.key === "Enter"
+    ){
+
+        verificarClave();
+
+    }
+}
+
+
+/* =========================================================
+   ACTIVAR YHWACH
+========================================================= */
+
+function activarYhwach(){
+
+    personajeSeleccionado =
+        "yhwach";
+
+
+    const contenido =
+        document.getElementById(
+            "secreto-contenido"
+        );
+
+    const titulo =
+        document.getElementById(
+            "secreto-titulo"
+        );
+
+    const estado =
+        document.getElementById(
+            "secreto-estado"
+        );
+
+    const input =
+        document.getElementById(
+            "clave-secreta"
+        );
+
+    const boton =
+        document.getElementById(
+            "boton-secreto"
+        );
+
+    const mensaje =
+        document.getElementById(
+            "mensaje-secreto"
+        );
+
+
+    contenido.className =
+        "yhwach";
+
+
+    titulo.innerText =
+        "THE ALMIGHTY";
+
+
+    estado.innerText =
+        '> "I HAVE SEEN THIS FUTURE."';
+
+
+    input.style.display =
+        "none";
+
+
+    boton.innerText =
+        "CONFIRM FUTURE";
+
+
+    mensaje.innerText =
+        "> THE FUTURE HAS BEEN CHOSEN.";
+
+
+    mensaje.style.color =
+        "#e7b943";
+}
+
+
+/* =========================================================
+   ACTIVAR SUKUNA
+========================================================= */
+
+function activarSukuna(){
+
+    personajeSeleccionado =
+        "sukuna";
+
+
+    const contenido =
+        document.getElementById(
+            "secreto-contenido"
+        );
+
+    const titulo =
+        document.getElementById(
+            "secreto-titulo"
+        );
+
+    const estado =
+        document.getElementById(
+            "secreto-estado"
+        );
+
+    const input =
+        document.getElementById(
+            "clave-secreta"
+        );
+
+    const boton =
+        document.getElementById(
+            "boton-secreto"
+        );
+
+    const mensaje =
+        document.getElementById(
+            "mensaje-secreto"
+        );
+
+
+    contenido.className =
+        "sukuna";
+
+
+    titulo.innerText =
+        "MALEVOLENT SHRINE";
+
+
+    estado.innerText =
+        '"YOU HAVE ENTERED MY DOMAIN."';
+
+
+    input.style.display =
+        "none";
+
+
+    boton.innerText =
+        "OPEN DOMAIN";
+
+
+    mensaje.innerText =
+        "> MALEVOLENT SHRINE: OPEN.";
+
+
+    mensaje.style.color =
+        "#ff7777";
+}
+
+
+/* =========================================================
+   ACTIVAR DIO
+========================================================= */
+
+function activarDio(){
+
+    personajeSeleccionado =
+        "dio";
+
+
+    const contenido =
+        document.getElementById(
+            "secreto-contenido"
+        );
+
+    const titulo =
+        document.getElementById(
+            "secreto-titulo"
+        );
+
+    const estado =
+        document.getElementById(
+            "secreto-estado"
+        );
+
+    const input =
+        document.getElementById(
+            "clave-secreta"
+        );
+
+    const boton =
+        document.getElementById(
+            "boton-secreto"
+        );
+
+    const mensaje =
+        document.getElementById(
+            "mensaje-secreto"
+        );
+
+
+    contenido.className =
+        "dio";
+
+
+    titulo.innerText =
+        "THE WORLD";
+
+
+    estado.innerText =
+        '"YOU HAVE NO IDEA WHAT IS ABOUT TO HAPPEN."';
+
+
+    input.style.display =
+        "none";
+
+
+    boton.innerText =
+        "STOP TIME";
+
+
+    mensaje.innerText =
+        "> TIME WILL STOP.";
+
+
+    mensaje.style.color =
+        "#ffe59a";
+}
+
+
+/* =========================================================
+   FRASES DE ERROR
+========================================================= */
+
+const frasesError = [
+
+    "> ACCESS DENIED.",
+
+    "> INVALID FUTURE.",
+
+    "> YOU ARE NOT THE CHOSEN ONE.",
+
+    "> THAT CODE DOES NOT EXIST.",
+
+    "> SYSTEM REJECTED YOU.",
+
+    "> WRONG TIMELINE.",
+
+    "> DESTINY REFUSED.",
+
+    "> NICE TRY.",
+
+    "> ACCESS TERMINATED.",
+
+    "> UNKNOWN USER."
+
+];
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+function errorSecreto(){
+
+    const contenido =
+        document.getElementById(
+            "secreto-contenido"
+        );
+
+    const mensaje =
+        document.getElementById(
+            "mensaje-secreto"
+        );
+
+    const input =
+        document.getElementById(
+            "clave-secreta"
+        );
+
+
+    const frase =
+        frasesError[
+            Math.floor(
+                Math.random() *
+                frasesError.length
+            )
+        ];
+
+
+    mensaje.innerText =
+        frase;
+
+    mensaje.className =
+        "error-glitch";
+
+
+    contenido.classList.add(
+        "error-secreto"
+    );
+
+
+    input.value = "";
+
+
+    setTimeout(() => {
+
+        contenido.classList.remove(
+            "error-secreto"
+        );
+
+    },500);
+
+
+    setTimeout(() => {
+
+        cerrarAccesoSecreto();
+
+    },1300);
+}
+
+
+/* =========================================================
+   CONFIRMAR PERSONAJE
+========================================================= */
+
+function confirmarPersonaje(){
+
+    if(
+        personajeSeleccionado ===
+        "yhwach"
+    ){
+
+        finalYhwach();
+
+        return;
+    }
+
+
+    if(
+        personajeSeleccionado ===
+        "sukuna"
+    ){
+
+        finalSukuna();
+
+        return;
+    }
+
+
+    if(
+        personajeSeleccionado ===
+        "dio"
+    ){
+
+        iniciarCinematicaDio();
+
+        return;
+    }
+
+}
+
+
+/* =========================================================
+   SUKUNA — FINAL
+   CONECTADO AL SECRET ARCHIVE
+========================================================= */
+
+function finalSukuna(){
+
+    const overlay =
+        document.getElementById(
+            "cinematic-overlay"
+        );
+
+
+    document
+        .getElementById(
+            "panel-secreto"
+        )
+        .classList.remove(
+            "activo"
+        );
+
+
+    document.body.classList.add(
+        "sukuna-global"
+    );
+
+
+    overlay.className = "";
+
+    overlay.innerHTML = "";
+
+    overlay.classList.add(
+        "sukuna-final"
+    );
+
+
+    const texto =
+        document.createElement(
+            "div"
+        );
+
+
+    texto.className =
+        "sukuna-domain-text";
+
+
+    texto.innerText =
+        "伏魔御厨子";
+
+
+    overlay.appendChild(
+        texto
+    );
+
+
+    /* =====================================================
+       REGISTRAR DESCUBRIMIENTO
+    ===================================================== */
+
+    localStorage.setItem(
+        "archive_sukuna",
+        "true"
+    );
+
+
+    /* =====================================================
+       REDIRECCIÓN
+    ===================================================== */
+
+    setTimeout(() => {
+
+        window.location.href =
+            "Sukuna.html";
+
+    },1450);
+}
+
+
+/* =========================================================
+   YHWACH — FINAL
+   CONECTADO AL SECRET ARCHIVE
+========================================================= */
+
+function finalYhwach(){
+
+    const overlay =
+        document.getElementById(
+            "cinematic-overlay"
+        );
+
+
+    document
+        .getElementById(
+            "panel-secreto"
+        )
+        .classList.remove(
+            "activo"
+        );
+
+
+    document.body.classList.add(
+        "yhwach-global"
+    );
+
+
+    overlay.className = "";
+
+    overlay.innerHTML = "";
+
+    overlay.classList.add(
+        "yhwach-final"
+    );
+
+
+    const ojos =
+        document.createElement(
+            "div"
+        );
+
+
+    ojos.className =
+        "yhwach-global-eyes";
+
+
+    const posiciones = [
+
+        ["12%","15%"],
+        ["30%","28%"],
+        ["50%","12%"],
+        ["72%","22%"],
+        ["88%","12%"],
+
+        ["18%","52%"],
+        ["42%","48%"],
+        ["64%","55%"],
+        ["83%","48%"],
+
+        ["8%","82%"],
+        ["32%","76%"],
+        ["57%","84%"],
+        ["82%","78%"]
+
+    ];
+
+
+    posiciones.forEach(
+        ([x,y]) => {
+
+            const ojo =
+                document.createElement(
+                    "div"
+                );
+
+
+            ojo.className =
+                "y-global-eye";
+
+
+            ojo.style.left =
+                x;
+
+            ojo.style.top =
+                y;
+
+
+            ojos.appendChild(
+                ojo
+            );
+
+        }
+    );
+
+
+    overlay.appendChild(
+        ojos
+    );
+
+
+    /* =====================================================
+       REGISTRAR DESCUBRIMIENTO
+    ===================================================== */
+
+    localStorage.setItem(
+        "archive_yhwach",
+        "true"
+    );
+
+
+    /* =====================================================
+       REDIRECCIÓN
+    ===================================================== */
+
+    setTimeout(() => {
+
+        window.location.href =
+            "Yhwa.html";
+
+    },1900);
+}
+
+
+/* =========================================================
+   DIO — CINEMÁTICA COMPLETA
+========================================================= */
+
+function iniciarCinematicaDio(){
+
+    const overlay =
+        document.getElementById(
+            "cinematic-overlay"
+        );
+
+
+    document
+        .getElementById(
+            "panel-secreto"
+        )
+        .classList.remove(
+            "activo"
+        );
+
+
+    document.body.classList.add(
+        "dio-global"
+    );
+
+
+    overlay.className = "";
+
+    overlay.innerHTML = "";
+
+    overlay.style.opacity =
+        "1";
+
+
+    /*
+       FASE 1
+       THE WORLD
+    */
+
+    const texto1 =
+        document.createElement(
+            "div"
+        );
+
+
+    texto1.style.position =
+        "absolute";
+
+    texto1.style.inset =
+        "0";
+
+    texto1.style.display =
+        "flex";
+
+    texto1.style.alignItems =
+        "center";
+
+    texto1.style.justifyContent =
+        "center";
+
+    texto1.style.textAlign =
+        "center";
+
+    texto1.style.color =
+        "#ffe36b";
+
+    texto1.style.fontFamily =
+        "monospace";
+
+    texto1.style.fontSize =
+        "clamp(28px,6vw,70px)";
+
+    texto1.style.fontWeight =
+        "900";
+
+    texto1.style.textShadow =
+        "0 0 15px #ffcc00, 0 0 40px #ff9900";
+
+    texto1.innerHTML =
+        "THE WORLD<br><small style='font-size:.4em;letter-spacing:5px'>TIME HAS STOPPED.</small>";
+
+
+    overlay.appendChild(
+        texto1
+    );
+
+
+    /*
+       FASE 2
+    */
+
+    setTimeout(() => {
+
+        texto1.innerHTML =
+            "<small style='letter-spacing:8px'>ZA WARUDO...</small>";
+
+    },650);
+
+
+    /*
+       FASE 3
+    */
+
+    setTimeout(() => {
+
+        texto1.innerHTML =
+            "THE WORLD<br><small style='font-size:.4em;letter-spacing:4px'>ONLY DIO CAN MOVE.</small>";
+
+    },1000);
+
+
+    /*
+       FASE 4
+       ACELERACIÓN
+    */
+
+    setTimeout(() => {
+
+        texto1.style.animation =
+            "dioRealityGlobal .18s linear infinite";
+
+
+        texto1.innerHTML =
+            "<small style='letter-spacing:6px'>TIME ACCELERATION...</small>";
+
+
+        overlay.style.background =
+            "radial-gradient(circle,rgba(255,230,90,.25),rgba(10,5,0,.97))";
+
+    },1500);
+
+
+    /*
+       FASE 5
+       MADE IN HEAVEN
+    */
+
+    setTimeout(() => {
+
+        texto1.style.animation =
+            "none";
+
+        texto1.innerHTML =
+            "MADE IN HEAVEN";
+
+        texto1.style.fontSize =
+            "clamp(30px,7vw,90px)";
+
+        texto1.style.textShadow =
+            "0 0 15px white, 0 0 40px #ffd000, 0 0 100px #ff9900";
+
+    },1850);
+
+
+    /*
+       FASE FINAL
+    */
+
+    setTimeout(() => {
+
+        finalDio();
+
+    },2050);
+}
+
+
+/* =========================================================
+   DIO — FLASH FINAL
+   CONECTADO AL SECRET ARCHIVE
+========================================================= */
+
+function finalDio(){
+
+    const overlay =
+        document.getElementById(
+            "cinematic-overlay"
+        );
+
+
+    overlay.className = "";
+
+    overlay.innerHTML = "";
+
+    overlay.classList.add(
+        "dio-final"
+    );
+
+
+    const reloj =
+        document.createElement(
+            "div"
+        );
+
+
+    reloj.className =
+        "dio-global-clock";
+
+
+    overlay.appendChild(
+        reloj
+    );
+
+
+    /* =====================================================
+       REGISTRAR DESCUBRIMIENTO
+    ===================================================== */
+
+    localStorage.setItem(
+        "archive_dio",
+        "true"
+    );
+
+
+    /* =====================================================
+       REDIRECCIÓN
+    ===================================================== */
+
+    setTimeout(() => {
+
+        window.location.href =
+            "Dio.html";
+
+    },800);
+}
+
+
+/* =========================================================
+   VERIFICAR CLAVE
+========================================================= */
+
+function verificarClave(){
+
+    const input =
+        document.getElementById(
+            "clave-secreta"
+        );
+
+
+    const codigo =
+        input.value.trim();
+
+
+    /*
+       SI YA HAY PERSONAJE:
+       EL BOTÓN AHORA ES CONFIRMAR
+    */
+
+    if(
+        personajeSeleccionado
+    ){
+
+        confirmarPersonaje();
+
+        return;
+    }
+
+
+    /*
+       YHWACH
+    */
+
+    if(
+        codigo === "2011"
+    ){
+
+        activarYhwach();
+
+        return;
+    }
+
+
+    /*
+       SUKUNA
+    */
+
+    if(
+        codigo === "2007"
+    ){
+
+        activarSukuna();
+
+        return;
+    }
+
+
+    /*
+       DIO
+    */
+
+    if(
+        codigo === "1987"
+    ){
+
+        activarDio();
+
+        return;
+    }
+
+
+    /*
+       INCORRECTO
+    */
+
+    errorSecreto();
+}
+
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape"
+        ){
+
+            const panel =
+                document.getElementById(
+                    "panel-secreto"
+                );
+
+
+            if(
+                panel.classList.contains(
+                    "activo"
+                )
+            ){
+
+                cerrarAccesoSecreto();
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   OJOS DEL PANEL SIGUEN EL MOUSE
+========================================================= */
+
+document.addEventListener(
+    "mousemove",
+    function(event){
+
+        const ojosReales =
+            document.querySelectorAll(
+                ".ojo"
+            );
+
+
+        ojosReales.forEach(
+            ojo => {
+
+                const rect =
+                    ojo.getBoundingClientRect();
+
+
+                const centroX =
+                    rect.left +
+                    rect.width / 2;
+
+
+                const centroY =
+                    rect.top +
+                    rect.height / 2;
+
+
+                const dx =
+                    event.clientX -
+                    centroX;
+
+
+                const dy =
+                    event.clientY -
+                    centroY;
+
+
+                const angulo =
+                    Math.atan2(
+                        dy,
+                        dx
+                    );
+
+
+                const distancia =
+                    Math.min(
+                        5,
+                        Math.sqrt(
+                            dx * dx +
+                            dy * dy
+                        ) / 80
+                    );
+
+
+                const x =
+                    Math.cos(
+                        angulo
+                    ) *
+                    distancia;
+
+
+                const y =
+                    Math.sin(
+                        angulo
+                    ) *
+                    distancia;
+
+
+                ojo.style.setProperty(
+                    "--ojo-x",
+                    x + "px"
+                );
+
+                ojo.style.setProperty(
+                    "--ojo-y",
+                    y + "px"
+                );
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
